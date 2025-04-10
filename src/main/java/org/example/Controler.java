@@ -2,6 +2,7 @@ package org.example;
 
 
 import jakarta.annotation.PostConstruct;
+import jakarta.ejb.Stateless;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -13,12 +14,12 @@ import jakarta.ws.rs.core.Response;
 
 import java.util.ArrayList;
 import java.util.List;
-
 @Path("/book")
+@RequestScoped
 public class Controler {
 
 
-    @PersistenceUnit(unitName = "myUnit")
+    @PersistenceContext(unitName = "myUnit")
     EntityManager entityManager;
 
 

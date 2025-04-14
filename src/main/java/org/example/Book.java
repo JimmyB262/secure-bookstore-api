@@ -1,11 +1,13 @@
 package org.example;
 
+import jakarta.json.bind.annotation.JsonbPropertyOrder;
 import jakarta.persistence.*;
 
+
 @Entity
+@JsonbPropertyOrder({ "id", "title", "author", "stock" })
 public class Book {
     @Id
-
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer  id;
 
@@ -23,20 +25,20 @@ public class Book {
     public Book() {
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public boolean isStock() {

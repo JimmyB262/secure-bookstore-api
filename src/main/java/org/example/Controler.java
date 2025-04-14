@@ -1,40 +1,47 @@
 package org.example;
 
 
-import jakarta.annotation.PostConstruct;
-import jakarta.ejb.Stateless;
 import jakarta.enterprise.context.RequestScoped;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.PersistenceUnit;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
-import java.util.ArrayList;
+import java.util.Optional;
 import java.util.List;
 @Path("/book")
 @RequestScoped
 public class Controler {
 
 
-    @PersistenceContext(unitName = "myUnit")
-    EntityManager entityManager;
-
+    @Inject
+    BookRepository bookRepo; // auto-injected by the container
 
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Book> books(){
-        List<Book> results = entityManager
-                .createQuery("Select b from Book b", Book.class)
-                .getResultList();
-        return results;
+
+        return bookRepo.getBooks();
+
     }
 
+    @GET
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response seeBook(@PathParam("id") Integer id){
 
-    // GET /book/{id}   για να διαβαστεί ένα βιβλίο:   να επιστρέφει JSON (status 200: ή 404 για notfound)
+        Book book = bookRepo.getBookById(id);
+
+        if (book == null){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(book).build();
+
+    }
+
+    // GET /book/{id}   για να διαβαστεί ένα βιβλίο:   να επιστρέφει JSON (status 200: ή 404 για not found)
 
 
     // GET /book  JSON list με όλα τα βιβλία
@@ -42,18 +49,52 @@ public class Controler {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
     public Response saveBook(Book book){
-        book.setId(0);
-        entityManager.persist(book);
 
-            return Response.ok(book).build();
+        book = bookRepo.saveBook((book));
+        return Response.ok(book).build();
 
     }
 
+
     // POST /book να δεχεται JSON book και να το αποθηκευιει. (status 200 ή 400 Bad request)
 
+    @DELETE
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response deleteBook(@PathParam("id") Integer id){
+        Optional<Book> opt = bookRepo.deleteBook(id);
+
+        if (!opt.isPresent()){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(opt.get()).build();
+
+    }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response updateBook(Book book){
+
+        Book book1 = bookRepo.updateBook(book);
+
+        if (book1 == null){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(book).build();
+
+    }
 
 
+    //get /book/{id}
+    //put id in json
+    //new class bookrepository
 
 
 

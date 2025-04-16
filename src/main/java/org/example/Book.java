@@ -13,6 +13,7 @@ public class Book {
 
     private String title;
     private String author;
+    @Column(name = "is_in_stock")
     private boolean stock;
 
     public Book(Integer id, String author, boolean stock, String title) {

@@ -1,27 +1,31 @@
-package org.example;
+package org.example.entity;
 
 import jakarta.persistence.*;
 
 @Entity
 public class Stock {
 
-    private Integer  id;
+    @Id
+    @OneToOne
+    @JoinColumn(name = "id")
+    private Book book;
+
     private Integer quantity;
 
-    public Stock(Integer id, Integer quantity) {
-        this.id = id;
+    public Stock(Book book, Integer quantity) {
+        this.book = book;
         this.quantity = quantity;
     }
 
     public Stock() {
     }
 
-    public Integer getId() {
-        return id;
+    public Book getId() {
+        return book;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(Book book) {
+        this.book = book;
     }
 
     public Integer getQuantity() {

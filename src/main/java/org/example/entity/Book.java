@@ -1,4 +1,4 @@
-package org.example;
+package org.example.entity;
 
 import jakarta.json.bind.annotation.JsonbPropertyOrder;
 import jakarta.persistence.*;
@@ -16,14 +16,17 @@ public class Book {
     private String title;
     private String isbn;
     private BigDecimal price;
-    private Integer author_id;
 
-    public Book(Integer id, String title, String isbn, BigDecimal price, Integer author_id) {
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Author author; //TODO thelw na deixnei to id sto json
+
+    public Book(Integer id, String title, String isbn, BigDecimal price, Author author) {
         this.id = id;
         this.title = title;
         this.isbn = isbn;
         this.price = price;
-        this.author_id = author_id;
+        this.author = author;
     }
 
 
@@ -31,12 +34,12 @@ public class Book {
 
     }
 
-    public Integer getAuthor_id() {
-        return author_id;
+    public Author getAuthor_id() {
+        return author;
     }
 
-    public void setAuthor_id(Integer author_id) {
-        this.author_id = author_id;
+    public void setAuthor_id(Author author) {
+        this.author = author;
     }
 
     public Integer getId() {

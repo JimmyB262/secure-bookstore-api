@@ -1,10 +1,9 @@
-package org.example;
+package org.example.repository;
 
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
-import jakarta.ws.rs.core.Response;
+import org.example.entity.Book;
 
 import java.util.List;
 import java.util.Optional;
@@ -74,4 +73,6 @@ public class BookRepository {
         return book;
 
     }
+
+
 }

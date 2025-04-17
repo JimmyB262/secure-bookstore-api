@@ -1,4 +1,4 @@
-package org.example;
+package org.example.controller;
 
 
 import jakarta.enterprise.context.RequestScoped;
@@ -7,11 +7,14 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.example.entity.Book;
+import org.example.repository.BookRepository;
+
 import java.util.Optional;
 import java.util.List;
 @Path("/book")
 @RequestScoped
-public class Controler {
+public class BookControler {
 
 
     @Inject

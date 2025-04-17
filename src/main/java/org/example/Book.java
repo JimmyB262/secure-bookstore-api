@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 @JsonbPropertyOrder({ "id", "title", "author", "stock" })
 public class Book {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer  id;
 
     private String title;

@@ -1,10 +1,9 @@
-package org.example;
+package org.example.repository;
 
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
-import jakarta.ws.rs.core.Response;
+import org.example.entity.Book;
 
 import java.util.List;
 import java.util.Optional;
@@ -63,13 +62,17 @@ public class BookRepository {
         if (book1 == null){
             return null;
         }
-        book1.setAuthor(book.getAuthor());
+        book1.setIsbn(book.getIsbn());
+        book1.setPrice(book.getPrice());
+        book1.setAuthor_id(book.getAuthor_id());
         book1.setTitle(book.getTitle());
-        book1.setStock(book.isStock());
+
 
         entityManager.merge(book1);
 
         return book;
 
     }
+
+
 }

@@ -1,0 +1,76 @@
+package org.example.entity;
+
+import jakarta.json.bind.annotation.JsonbPropertyOrder;
+import jakarta.persistence.*;
+
+import java.math.BigDecimal;
+
+
+@Entity
+@JsonbPropertyOrder({ "id", "title", "author", "stock" })
+public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Integer  id;
+
+    private String title;
+    private String isbn;
+    private BigDecimal price;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Author author; //TODO thelw na deixnei to id sto json
+
+    public Book(Integer id, String title, String isbn, BigDecimal price, Author author) {
+        this.id = id;
+        this.title = title;
+        this.isbn = isbn;
+        this.price = price;
+        this.author = author;
+    }
+
+
+    public Book() {
+
+    }
+
+    public Author getAuthor_id() {
+        return author;
+    }
+
+    public void setAuthor_id(Author author) {
+        this.author = author;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+}

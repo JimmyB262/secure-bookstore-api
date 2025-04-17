@@ -3,6 +3,8 @@ package org.example;
 import jakarta.json.bind.annotation.JsonbPropertyOrder;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 
 @Entity
 @JsonbPropertyOrder({ "id", "title", "author", "stock" })
@@ -12,18 +14,29 @@ public class Book {
     private Integer  id;
 
     private String title;
-    private String author;
-    @Column(name = "is_in_stock")
-    private boolean stock;
+    private String isbn;
+    private BigDecimal price;
+    private Integer author_id;
 
-    public Book(Integer id, String author, boolean stock, String title) {
+    public Book(Integer id, String title, String isbn, BigDecimal price, Integer author_id) {
         this.id = id;
-        this.author = author;
-        this.stock = stock;
         this.title = title;
+        this.isbn = isbn;
+        this.price = price;
+        this.author_id = author_id;
     }
 
+
     public Book() {
+
+    }
+
+    public Integer getAuthor_id() {
+        return author_id;
+    }
+
+    public void setAuthor_id(Integer author_id) {
+        this.author_id = author_id;
     }
 
     public Integer getId() {
@@ -34,20 +47,20 @@ public class Book {
         this.id = id;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getIsbn() {
+        return isbn;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
-    public boolean isStock() {
-        return stock;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setStock(boolean stock) {
-        this.stock = stock;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public String getTitle() {

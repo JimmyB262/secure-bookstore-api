@@ -63,9 +63,11 @@ public class BookRepository {
         if (book1 == null){
             return null;
         }
-        book1.setAuthor(book.getAuthor());
+        book1.setIsbn(book.getIsbn());
+        book1.setPrice(book.getPrice());
+        book1.setAuthor_id(book.getAuthor_id());
         book1.setTitle(book.getTitle());
-        book1.setStock(book.isStock());
+
 
         entityManager.merge(book1);
 

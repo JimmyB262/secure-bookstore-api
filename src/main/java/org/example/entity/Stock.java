@@ -1,5 +1,6 @@
 package org.example.entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,6 +9,7 @@ public class Stock {
     @Id
     @OneToOne
     @JoinColumn(name = "id")
+    @JsonbTransient
     private Book book;
 
     private Integer quantity;
@@ -20,6 +22,14 @@ public class Stock {
     public Stock() {
     }
 
+    public Integer getBookId() {
+        return book != null ? book.getId() : null;
+    }
+
+    //ola ta vivlia kai thn posothta
+    // ena vivlio kai posothta tou
+
+    @JsonbTransient
     public Book getId() {
         return book;
     }

@@ -1,6 +1,7 @@
 package org.example.entity;
 
 import jakarta.json.bind.annotation.JsonbPropertyOrder;
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -19,6 +20,7 @@ public class Book {
 
     @ManyToOne
     @JoinColumn(name = "author_id")
+    @JsonbTransient
     private Author author; //TODO thelw na deixnei to id sto json
 
     public Book(Integer id, String title, String isbn, BigDecimal price, Author author) {
@@ -29,11 +31,16 @@ public class Book {
         this.author = author;
     }
 
+    public Integer getAuthorId() {
+        return author != null ? author.getAuthor_id() : null;
+    }
+
 
     public Book() {
 
     }
 
+    @JsonbTransient
     public Author getAuthor_id() {
         return author;
     }

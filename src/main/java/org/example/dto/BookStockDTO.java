@@ -1,5 +1,9 @@
 package org.example.dto;
 
+
+import jakarta.json.bind.annotation.JsonbPropertyOrder;
+
+@JsonbPropertyOrder({ "title", "quantity" })
 public class BookStockDTO {
 
     private String title;

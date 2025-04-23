@@ -24,7 +24,7 @@ public class StockController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Stock> stock(){
+    public List<BookStockDTO> stock(){
 
         return stockRepo.getStock();
 
@@ -35,13 +35,13 @@ public class StockController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response seeStockWithBookId(@PathParam("id") Integer id){
 
-        Stock stock = stockRepo.getStockById(id);
+        BookStockDTO bookStockDTO = stockRepo.getStockById(id);
 
-        if (stock == null){
+        if (bookStockDTO == null){
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        return Response.ok(stock).build();
+        return Response.ok(bookStockDTO).build();
 
     }
 
@@ -88,5 +88,6 @@ public class StockController {
     public Integer seeAuthorSumOfBooks(@PathParam("id") Integer id){
 
         return stockRepo.getSumOfAuthorBooks(id);
+
     }
 }

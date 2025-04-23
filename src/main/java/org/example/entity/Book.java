@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 
 
 @Entity
-@JsonbPropertyOrder({ "id", "title", "author", "stock" })
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

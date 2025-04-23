@@ -19,19 +19,23 @@ public class StockRepository {
     @PersistenceContext(unitName = "myUnit")
     EntityManager entityManager;
 
-    @Inject
-    AuthorRepository AuthorRepo;
 
-    public List<Stock> getStock(){
-        List<Stock> results = entityManager
-                .createQuery("Select s from Stock s", Stock.class)
+    public List<BookStockDTO> getStock(){
+        List<BookStockDTO> results = entityManager
+                .createQuery("select new org.example.dto.BookStockDTO(s.book.title, s.quantity)" +
+                        "from Stock s", BookStockDTO.class)
                 .getResultList();
         return results;
     }
 
-    public Stock getStockById(Integer id){
+    public BookStockDTO getStockById(Integer id){
 
-        return entityManager.find(Stock.class , id);
+        return entityManager.createQuery(
+                        "select new org.example.dto.BookStockDTO(s.book.title, s.quantity) " +
+                                "from Stock s where s.book.id = :id",
+                        BookStockDTO.class)
+                .setParameter("id", id)
+                .getSingleResult();
 
     }
 

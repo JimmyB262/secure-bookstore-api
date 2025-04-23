@@ -4,6 +4,7 @@ import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.example.dto.BookAuthorDTO;
 import org.example.entity.Author;
 import org.example.entity.Book;
 
@@ -80,10 +81,10 @@ public class AuthorRepository {
 
     public Author findAuthorByBookId(Integer id){
 
-        Book book = BookRepo.getBookById(id);
-        Author author = book.getAuthor_id();
+        BookAuthorDTO bookAuthorDTO = BookRepo.getBookById(id);
+        Integer author_id = bookAuthorDTO.getAuthor_id();
 
-        return author;
+        return getAuthorById(author_id);
     }
 
 }

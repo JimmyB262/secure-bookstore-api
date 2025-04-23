@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.example.dto.BookAuthorDTO;
 import org.example.entity.Book;
 import org.example.repository.BookRepository;
 
@@ -23,7 +24,7 @@ public class BookControler {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Book> books(){
+    public List<BookAuthorDTO> books(){
 
         return bookRepo.getBooks();
 
@@ -34,13 +35,13 @@ public class BookControler {
     @Produces(MediaType.APPLICATION_JSON)
     public Response seeBook(@PathParam("id") Integer id){
 
-        Book book = bookRepo.getBookById(id);
+        BookAuthorDTO bookAuthorDTO = bookRepo.getBookById(id);
 
-        if (book == null){
+        if (bookAuthorDTO == null){
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        return Response.ok(book).build();
+        return Response.ok(bookAuthorDTO).build();
 
     }
 
@@ -55,8 +56,8 @@ public class BookControler {
     @Transactional
     public Response saveBook(Book book){
 
-        book = bookRepo.saveBook((book));
-        return Response.ok(book).build();
+        BookAuthorDTO bookAuthorDTO = bookRepo.saveBook((book));
+        return Response.ok(bookAuthorDTO).build();
 
     }
 
@@ -68,7 +69,7 @@ public class BookControler {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Response deleteBook(@PathParam("id") Integer id){
-        Optional<Book> opt = bookRepo.deleteBook(id);
+        Optional<BookAuthorDTO> opt = bookRepo.deleteBook(id);
 
         if (!opt.isPresent()){
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -84,13 +85,13 @@ public class BookControler {
     @Transactional
     public Response updateBook(Book book){
 
-        Book book1 = bookRepo.updateBook(book);
+        BookAuthorDTO book1 = bookRepo.updateBook(book);
 
         if (book1 == null){
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        return Response.ok(book).build();
+        return Response.ok(book1).build();
 
     }
 

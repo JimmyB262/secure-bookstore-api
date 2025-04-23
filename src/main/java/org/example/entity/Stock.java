@@ -9,7 +9,7 @@ public class Stock {
     @Id
     @OneToOne
     @JoinColumn(name = "id")
-    @JsonbTransient
+
     private Book book;
 
     private Integer quantity;
@@ -26,10 +26,8 @@ public class Stock {
         return book != null ? book.getId() : null;
     }
 
-    //ola ta vivlia kai thn posothta
-    // ena vivlio kai posothta tou
 
-    @JsonbTransient
+
     public Book getId() {
         return book;
     }

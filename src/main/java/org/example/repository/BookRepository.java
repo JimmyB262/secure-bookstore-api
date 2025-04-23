@@ -3,6 +3,8 @@ package org.example.repository;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.example.dto.BookAuthorDTO;
+import org.example.dto.BookStockDTO;
 import org.example.entity.Book;
 
 import java.util.List;
@@ -15,31 +17,44 @@ public class BookRepository {
     EntityManager entityManager;
 
 
-    public List<Book> getBooks(){
-        List<Book> results = entityManager
-                .createQuery("Select b from Book b", Book.class)
+    public List<BookAuthorDTO> getBooks(){
+        List<BookAuthorDTO> results = entityManager
+                .createQuery("select new org.example.dto.BookAuthorDTO(b.id, b.title, b.isbn, b.price, b.author.author_id)" +
+                        "from Book b", BookAuthorDTO.class)
                 .getResultList();
         return results;
     }
 
-    public Book getBookById(Integer id){
+    public BookAuthorDTO getBookById(Integer id){
 
-        return entityManager.find(Book.class , id);
+        return entityManager.createQuery(
+                        "select new org.example.dto.BookAuthorDTO(b.id, b.title, b.isbn, b.price, b.author.author_id) " +
+                                "from Book b where b.id = :id",
+                        BookAuthorDTO.class)
+                .setParameter("id", id)
+                .getSingleResult();
 
     }
 
     //@Transactional
-    public Book saveBook(Book book){
+    public BookAuthorDTO saveBook(Book book){
 
         entityManager.persist(book);
         entityManager.flush();
 
-        return book;
+        Integer id = book.getId();
+
+        return entityManager.createQuery(
+                        "select new org.example.dto.BookAuthorDTO(b.id, b.title, b.isbn, b.price, b.author.author_id) " +
+                                "from Book b where b.id = :id",
+                        BookAuthorDTO.class)
+                .setParameter("id", id)
+                .getSingleResult();
 
     }
 
     //@Transactional
-    public Optional<Book> deleteBook(Integer id){
+    public Optional<BookAuthorDTO> deleteBook(Integer id){
 
         Book book = entityManager.find(Book.class , id);
 
@@ -47,13 +62,21 @@ public class BookRepository {
             return Optional.empty();
         }
 
-        entityManager.remove(book);
-        return Optional.of(book);
+        Optional<BookAuthorDTO> opt = Optional.of(entityManager.createQuery(
+                        "select new org.example.dto.BookAuthorDTO(b.id, b.title, b.isbn, b.price, b.author.author_id) " +
+                                "from Book b where b.id = :id",
+                        BookAuthorDTO.class)
+                .setParameter("id", id)
+                .getSingleResult());
 
+        entityManager.remove(book);
+
+
+        return opt;
     }
 
     //@Transactional
-    public Book updateBook(Book book){
+    public BookAuthorDTO updateBook(Book book){
 
         Integer id = book.getId();
 
@@ -70,8 +93,12 @@ public class BookRepository {
 
         entityManager.merge(book1);
 
-        return book;
-
+        return entityManager.createQuery(
+                        "select new org.example.dto.BookAuthorDTO(b.id, b.title, b.isbn, b.price, b.author.author_id) " +
+                                "from Book b where b.id = :id",
+                        BookAuthorDTO.class)
+                .setParameter("id", id)
+                .getSingleResult();
     }
 
 

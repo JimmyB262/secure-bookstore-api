@@ -44,12 +44,13 @@ public class BookRepository {
 
         Integer id = book.getId();
 
-        return entityManager.createQuery(
-                        "select new org.example.dto.BookAuthorDTO(b.id, b.title, b.isbn, b.price, b.author.author_id) " +
-                                "from Book b where b.id = :id",
-                        BookAuthorDTO.class)
-                .setParameter("id", id)
-                .getSingleResult();
+        return new BookAuthorDTO(
+                book.getId(),
+                book.getTitle(),
+                book.getIsbn(),
+                book.getPrice(),
+                book.getAuthorId()
+        );
 
     }
 
@@ -62,12 +63,13 @@ public class BookRepository {
             return Optional.empty();
         }
 
-        Optional<BookAuthorDTO> opt = Optional.of(entityManager.createQuery(
-                        "select new org.example.dto.BookAuthorDTO(b.id, b.title, b.isbn, b.price, b.author.author_id) " +
-                                "from Book b where b.id = :id",
-                        BookAuthorDTO.class)
-                .setParameter("id", id)
-                .getSingleResult());
+
+        Optional<BookAuthorDTO> opt = Optional.of(new BookAuthorDTO(
+                book.getId(),
+                book.getTitle(),
+                book.getIsbn(),
+                book.getPrice(),
+                book.getAuthorId()));
 
         entityManager.remove(book);
 
@@ -93,12 +95,14 @@ public class BookRepository {
 
         entityManager.merge(book1);
 
-        return entityManager.createQuery(
-                        "select new org.example.dto.BookAuthorDTO(b.id, b.title, b.isbn, b.price, b.author.author_id) " +
-                                "from Book b where b.id = :id",
-                        BookAuthorDTO.class)
-                .setParameter("id", id)
-                .getSingleResult();
+
+        return new BookAuthorDTO(
+                book.getId(),
+                book.getTitle(),
+                book.getIsbn(),
+                book.getPrice(),
+                book.getAuthorId()
+        );
     }
 
 

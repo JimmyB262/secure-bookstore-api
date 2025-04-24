@@ -54,9 +54,9 @@ public class BookControler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response saveBook(Book book){
+    public Response saveBook(BookAuthorDTO bookAuthorDTO){
 
-        BookAuthorDTO bookAuthorDTO = bookRepo.saveBook((book));
+        BookAuthorDTO bookAuthorDTO1 = bookRepo.saveBook((bookAuthorDTO));
         return Response.ok(bookAuthorDTO).build();
 
     }
@@ -83,9 +83,9 @@ public class BookControler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response updateBook(Book book){
+    public Response updateBook(BookAuthorDTO bookAuthorDTO){
 
-        BookAuthorDTO book1 = bookRepo.updateBook(book);
+        BookAuthorDTO book1 = bookRepo.updateBook(bookAuthorDTO);
 
         if (book1 == null){
             return Response.status(Response.Status.NOT_FOUND).build();

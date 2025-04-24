@@ -91,7 +91,7 @@ public class AuthorController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response updateBook(Author author){
+    public Response updateAuthor(Author author){
 
         Author author1 = authorRepo.updateAuthor(author);
 

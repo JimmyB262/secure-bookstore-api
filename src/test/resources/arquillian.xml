@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<arquillian xmlns="http://arquillian.org/schema/arquillian"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://arquillian.org/schema/arquillian http://arquillian.org/schema/arquillian/arquillian-1.0.xsd">
+
+    <container qualifier="wildfly-managed" default="true">
+        <configuration>
+            <property name="containerHost">localhost</property>
+            <property name="containerPort">8080</property>
+        </configuration>
+    </container>
+
+</arquillian>

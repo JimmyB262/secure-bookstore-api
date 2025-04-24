@@ -21,6 +21,9 @@ public class BookAuthorDTO {
         this.title = title;
     }
 
+    public BookAuthorDTO() {
+    }
+
     public Integer getAuthor_id() {
         return author_id;
     }

@@ -1,10 +1,12 @@
 package org.example.repository;
 
 import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.example.dto.BookAuthorDTO;
 import org.example.dto.BookStockDTO;
+import org.example.entity.Author;
 import org.example.entity.Book;
 
 import java.util.List;
@@ -16,6 +18,8 @@ public class BookRepository {
     @PersistenceContext(unitName = "myUnit")
     EntityManager entityManager;
 
+    @Inject
+    AuthorRepository authorRepository;
 
     public List<BookAuthorDTO> getBooks(){
         List<BookAuthorDTO> results = entityManager
@@ -37,20 +41,18 @@ public class BookRepository {
     }
 
     //@Transactional
-    public BookAuthorDTO saveBook(Book book){
+    public BookAuthorDTO saveBook(BookAuthorDTO bookAuthorDTO){
+
+        Author author = authorRepository.getAuthorById(bookAuthorDTO.getAuthor_id());
+
+        Book book = new Book(bookAuthorDTO.getId(), bookAuthorDTO.getTitle(), bookAuthorDTO.getIsbn(),
+                bookAuthorDTO.getPrice() , author);
 
         entityManager.persist(book);
         entityManager.flush();
 
-        Integer id = book.getId();
 
-        return new BookAuthorDTO(
-                book.getId(),
-                book.getTitle(),
-                book.getIsbn(),
-                book.getPrice(),
-                book.getAuthorId()
-        );
+        return bookAuthorDTO;
 
     }
 
@@ -78,7 +80,12 @@ public class BookRepository {
     }
 
     //@Transactional
-    public BookAuthorDTO updateBook(Book book){
+    public BookAuthorDTO updateBook(BookAuthorDTO bookAuthorDTO){
+
+        Author author = authorRepository.getAuthorById(bookAuthorDTO.getAuthor_id());
+
+        Book book = new Book(bookAuthorDTO.getId(), bookAuthorDTO.getTitle(), bookAuthorDTO.getIsbn(),
+                bookAuthorDTO.getPrice() , author);
 
         Integer id = book.getId();
 
@@ -96,13 +103,8 @@ public class BookRepository {
         entityManager.merge(book1);
 
 
-        return new BookAuthorDTO(
-                book.getId(),
-                book.getTitle(),
-                book.getIsbn(),
-                book.getPrice(),
-                book.getAuthorId()
-        );
+        return bookAuthorDTO;
+
     }
 
 

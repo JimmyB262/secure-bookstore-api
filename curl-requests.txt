@@ -1,0 +1,2 @@
+curl -X POST http://localhost:8080/Helloworld-1.0-SNAPSHOT/api/book -H Content-Type: application/json -d {"title":"booktitle","isbn":"1435","price":"14.99" , "author_id":"1"}
+curl -X POST http://localhost:8080/Helloworld-1.0-SNAPSHOT/api/author -H Content-Type: application/json -d "age":"19" application/json -d "author_id":"1" application/json -d "email":"affd@" application/json -d "full_name":"jb" application/json -d "gender":"M" application/json -d "phone":"3434"

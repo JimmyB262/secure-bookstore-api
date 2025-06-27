@@ -9,7 +9,7 @@ public class Stock {
     @Id
     @OneToOne
     @JoinColumn(name = "id")
-
+    @JsonbTransient
     private Book book;
 
     private Integer quantity;
@@ -27,12 +27,12 @@ public class Stock {
     }
 
 
-
-    public Book getId() {
+    @JsonbTransient
+    public Book getBook() {
         return book;
     }
 
-    public void setId(Book book) {
+    public void setBook(Book book) {
         this.book = book;
     }
 

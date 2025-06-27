@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.example.dto.BookAuthorDTO;
 import org.example.dto.BookStockDTO;
 import org.example.entity.Book;
 import org.example.entity.Stock;
@@ -30,6 +31,56 @@ public class StockController {
 
     }
 
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response setStockWithIsbn(BookStockDTO bookStockDTO){
+
+        Integer id = bookStockDTO.getId();
+        BookStockDTO bookStockDTO1 = stockRepo.getStockById(id);
+        if (bookStockDTO1 == null){
+            bookStockDTO1 = stockRepo.saveStock(bookStockDTO);
+            return Response.ok(bookStockDTO1).build();
+        }else{
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+        }
+
+
+    }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response updateStock(BookStockDTO bookStockDTO){
+
+        BookStockDTO stock1 = stockRepo.updateStock(bookStockDTO);
+
+        if (stock1 == null){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(stock1).build();
+
+    }
+
+
+    @DELETE
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response deleteStock(@PathParam("id") Integer id){
+        Optional<BookStockDTO> opt = stockRepo.deleteStock(id);
+
+        if (!opt.isPresent()){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(opt.get()).build();
+
+    }
+
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -48,7 +99,7 @@ public class StockController {
     @GET
     @Path("/max")
     @Produces(MediaType.APPLICATION_JSON)
-    public BookStockDTO seeBookWithMaxStock(){
+    public List<BookStockDTO> seeBookWithMaxStock(){
 
         return stockRepo.getMaxStock();
 
@@ -57,7 +108,7 @@ public class StockController {
     @GET
     @Path("/min")
     @Produces(MediaType.APPLICATION_JSON)
-    public BookStockDTO seeBookWithMinStock(){
+    public List<BookStockDTO> seeBookWithMinStock(){
 
         return stockRepo.getMinStock();
 

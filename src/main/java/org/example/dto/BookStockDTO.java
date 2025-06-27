@@ -3,25 +3,27 @@ package org.example.dto;
 
 import jakarta.json.bind.annotation.JsonbPropertyOrder;
 
-@JsonbPropertyOrder({ "title", "quantity" })
+@JsonbPropertyOrder({"quantity" , "id" })
 public class BookStockDTO {
 
-    private String title;
     private Integer quantity;
+    private Integer id;
 
 
-    public BookStockDTO(String title, Integer quantity) {
-        this.title = title;
+    public BookStockDTO(Integer quantity , Integer id) {
         this.quantity = quantity;
+        this.id = id;
     }
 
-
-    public String getTitle() {
-        return title;
+    public BookStockDTO() {
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getQuantity() {

@@ -5,12 +5,14 @@ import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.example.dto.BookAuthorDTO;
 import org.example.dto.BookStockDTO;
 import org.example.entity.Book;
 import org.example.entity.Stock;
 import org.example.entity.Author;
 
 import java.util.List;
+import java.util.Optional;
 
 @Stateless
 
@@ -19,19 +21,82 @@ public class StockRepository {
     @PersistenceContext(unitName = "myUnit")
     EntityManager entityManager;
 
+    @Inject
+    BookRepository bookRepository;
+
+    @Inject
+    AuthorRepository authorRepository;
+
 
     public List<BookStockDTO> getStock(){
         List<BookStockDTO> results = entityManager
-                .createQuery("select new org.example.dto.BookStockDTO(s.book.title, s.quantity)" +
+                .createQuery("select new org.example.dto.BookStockDTO(s.quantity , s.book.id)" +
                         "from Stock s", BookStockDTO.class)
                 .getResultList();
         return results;
     }
 
+    public BookStockDTO saveStock(BookStockDTO bookStockDTO){
+
+        BookAuthorDTO bookAuthorDTO = bookRepository.getBookById(bookStockDTO.getId());
+        Author author = authorRepository.getAuthorById(bookAuthorDTO.getAuthor_id());
+
+        Book book = new Book(bookAuthorDTO.getId() , bookAuthorDTO.getTitle() , bookAuthorDTO.getIsbn() , bookAuthorDTO.getPrice() , author  );
+
+        Stock stock= new Stock(book , bookStockDTO.getQuantity());
+
+        entityManager.persist(stock);
+        entityManager.flush();
+
+
+        return bookStockDTO;
+
+    }
+
+    public BookStockDTO updateStock(BookStockDTO bookStockDTO){
+
+        BookAuthorDTO bookAuthorDTO = bookRepository.getBookById(bookStockDTO.getId());
+        Author author = authorRepository.getAuthorById(bookAuthorDTO.getAuthor_id());
+        Book book = new Book(bookAuthorDTO.getId(), bookAuthorDTO.getTitle(), bookAuthorDTO.getIsbn(),
+                bookAuthorDTO.getPrice() , author);
+        Stock stock = new Stock(book , bookStockDTO.getQuantity());
+        Integer id = stock.getBookId();
+        Stock stock1 = entityManager.find(Stock.class , id);
+        if (stock1 == null){
+            return null;
+        }
+        stock1.setQuantity(stock.getQuantity());
+        stock1.setBook(book);
+
+        return bookStockDTO;
+
+    }
+
+    //@Transactional
+    public Optional<BookStockDTO> deleteStock(Integer id){
+
+        Stock stock = entityManager.find(Stock.class , id);
+
+        if (stock == null){
+            return Optional.empty();
+        }
+
+
+        Optional<BookStockDTO> opt = Optional.of(new BookStockDTO(
+                stock.getQuantity(),
+                stock.getBookId()
+        ));
+
+        entityManager.remove(stock);
+
+
+        return opt;
+    }
+
     public BookStockDTO getStockById(Integer id){
 
         return entityManager.createQuery(
-                        "select new org.example.dto.BookStockDTO(s.book.title, s.quantity) " +
+                        "select new org.example.dto.BookStockDTO(s.book.id, s.quantity) " +
                                 "from Stock s where s.book.id = :id",
                         BookStockDTO.class)
                 .setParameter("id", id)
@@ -39,25 +104,24 @@ public class StockRepository {
 
     }
 
-    public BookStockDTO getMaxStock(){
+    public List<BookStockDTO> getMaxStock(){
 
-        return entityManager.createQuery(
-                "select new org.example.dto.BookStockDTO(s.book.title, s.quantity)" +
-                        " from Stock s where s.quantity = (select MAX(s2.quantity) from Stock s2)",
-                        BookStockDTO.class
-                )
-                .getSingleResult();
-
+        List<BookStockDTO> results = entityManager
+                .createQuery("select new org.example.dto.BookStockDTO(s.book.id, s.quantity)" +
+                                " from Stock s where s.quantity = (select MAX(s2.quantity) from Stock s2)",
+                        BookStockDTO.class)
+                .getResultList();
+        return results;
     }
 
-    public BookStockDTO getMinStock(){
+    public List<BookStockDTO> getMinStock(){
 
-        return entityManager.createQuery(
-                        "select new org.example.dto.BookStockDTO(s.book.title, s.quantity)" +
+        List<BookStockDTO> results = entityManager
+                .createQuery("select new org.example.dto.BookStockDTO(s.book.id, s.quantity)" +
                                 " from Stock s where s.quantity = (select MIN(s2.quantity) from Stock s2)",
-                        BookStockDTO.class
-                )
-                .getSingleResult();
+                        BookStockDTO.class)
+                .getResultList();
+        return results;
 
     }
 
@@ -104,7 +168,7 @@ public class StockRepository {
     public List<BookStockDTO> getSortedList(){
 
         List<BookStockDTO> results = entityManager
-                .createQuery("select new org.example.dto.BookStockDTO(s.book.title, s.quantity)" +
+                .createQuery("select new org.example.dto.BookStockDTO(s.book.id, s.quantity)" +
                         " from Stock s order by s.quantity desc", BookStockDTO.class)
                 .getResultList();
         return results;

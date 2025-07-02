@@ -1,10 +1,12 @@
 package org.example.controller;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.example.entity.Author;
 import org.example.entity.Book;
 import org.example.repository.AuthorRepository;
@@ -18,9 +20,13 @@ public class AuthorController {
     @Inject
     AuthorRepository authorRepo; // auto-injected by the container
 
+    @Inject
+    JsonWebToken jwt;
+
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("user")
     public List<Author> authors(){
 
         return authorRepo.getAuthors();
@@ -42,6 +48,7 @@ public class AuthorController {
 
     }
 
+    @RolesAllowed("admin")
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)

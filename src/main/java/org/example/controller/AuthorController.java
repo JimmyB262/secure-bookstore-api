@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
@@ -21,6 +22,7 @@ public class AuthorController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("admin")
     public List<Author> authors(){
 
         return authorRepo.getAuthors();
@@ -45,6 +47,7 @@ public class AuthorController {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("user")
     public Response seeAuthor(@PathParam("id") Integer id){
 
         Author author = authorRepo.getAuthorById(id);

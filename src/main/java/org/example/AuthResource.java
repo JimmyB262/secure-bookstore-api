@@ -24,7 +24,7 @@ public class AuthResource {
         String password = credentials.getPassword();
 
         if ("admin".equals(username) && "password".equals(password)) {
-            String token = JwtUtil.generateToken(username, List.of("user"));
+            String token = JwtUtil.generateToken(username, List.of("admin"));
             return Response.ok(Map.of("token", token)).build();
         }
 

@@ -55,12 +55,12 @@ public class JwtUtil {
     public static String generateToken(String username, List<String> roles) {
         Instant now = Instant.now();
         return Jwts.builder()
-                .setSubject(username)                  // sub claim
-                .claim("groups", roles)               // roles for RBAC
-                .setIssuer("my-app")                  // must match config
+                .setSubject(username)
+                .claim("groups", roles)
+                .setIssuer("my-app")
                 .setIssuedAt(Date.from(now))
-                .setExpiration(Date.from(now.plusSeconds(3600))) // 1 hour
-                .signWith(privateKey, SignatureAlgorithm.RS256) // sign with RSA
+                .setExpiration(Date.from(now.plusSeconds(3600)))
+                .signWith(privateKey, SignatureAlgorithm.RS256)
                 .compact();
     }
 

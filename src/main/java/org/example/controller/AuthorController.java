@@ -1,17 +1,24 @@
 package org.example.controller;
 
+import jakarta.annotation.security.DeclareRoles;
 import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.SecurityContext;
 import org.example.entity.Author;
 import org.example.entity.Book;
 import org.example.repository.AuthorRepository;
 
 import java.util.List;
 import java.util.Optional;
+import jakarta.annotation.security.RolesAllowed;
+
+@Stateless
+@DeclareRoles({"user", "admin"})
 @Path("author")
 public class AuthorController {
 
@@ -19,10 +26,9 @@ public class AuthorController {
     @Inject
     AuthorRepository authorRepo; // auto-injected by the container
 
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed("admin")
+    @RolesAllowed({"admin" , "user"})
     public List<Author> authors(){
 
         return authorRepo.getAuthors();
@@ -32,6 +38,7 @@ public class AuthorController {
     @GET
     @Path("/findByBook/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin" , "user"})
     public Response seeAuthorWithBookId(@PathParam("id") Integer id){
 
         Author author = authorRepo.findAuthorByBookId(id);
@@ -47,7 +54,7 @@ public class AuthorController {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed("user")
+    @RolesAllowed({"user" , "admin"})
     public Response seeAuthor(@PathParam("id") Integer id){
 
         Author author = authorRepo.getAuthorById(id);
@@ -65,6 +72,7 @@ public class AuthorController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
+    @RolesAllowed({"admin"})
     public Response saveAuthor(Author author){
 
         author = authorRepo.saveAuthor((author));
@@ -79,6 +87,7 @@ public class AuthorController {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
+    @RolesAllowed({"admin"})
     public Response deleteAuthor(@PathParam("id") Integer id){
         Optional<Author> opt = authorRepo.deleteAuthor(id);
 
@@ -94,6 +103,7 @@ public class AuthorController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
+    @RolesAllowed({"admin"})
     public Response updateAuthor(Author author){
 
         Author author1 = authorRepo.updateAuthor(author);

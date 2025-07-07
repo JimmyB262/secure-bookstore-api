@@ -62,6 +62,11 @@
             <version>2.1</version> <!-- or 2.1 for MicroProfile 6 / Jakarta EE 10 -->
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
 
     </dependencies>
 

@@ -5,7 +5,12 @@ import jakarta.annotation.security.PermitAll;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.example.entity.User;
 import org.example.util.JwtUtil;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import org.mindrot.jbcrypt.BCrypt;
+
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +18,10 @@ import java.util.Map;
 
 @Path("/auth")
 public class AuthResource {
+
+
+    @PersistenceContext
+    private EntityManager em;
 
     @PermitAll
     @POST
@@ -23,8 +32,11 @@ public class AuthResource {
         String username = credentials.getUsername();
         String password = credentials.getPassword();
 
-        if ("admin".equals(username) && "password".equals(password)) {
-            String token = JwtUtil.generateToken(username, List.of("admin"));
+        User user = em.find(User.class, username);
+
+        if (user != null && BCrypt.checkpw(password, user.getPassword())) {
+            List<String> roles = List.of(user.getRoles().split("\\s*,\\s*"));
+            String token = JwtUtil.generateToken(username, roles);
             return Response.ok(Map.of("token", token)).build();
         }
 

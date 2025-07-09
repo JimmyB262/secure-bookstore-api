@@ -1,6 +1,9 @@
 package org.example.controller;
 
 
+import jakarta.annotation.security.DeclareRoles;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.Stateless;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -13,6 +16,9 @@ import org.example.repository.BookRepository;
 
 import java.util.Optional;
 import java.util.List;
+
+@Stateless
+@DeclareRoles({"user", "admin"})
 @Path("/book")
 @RequestScoped
 public class BookControler {
@@ -24,6 +30,7 @@ public class BookControler {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin" , "user"})
     public List<BookAuthorDTO> books(){
 
         return bookRepo.getBooks();
@@ -33,6 +40,7 @@ public class BookControler {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"user" , "admin"})
     public Response seeBook(@PathParam("id") Integer id){
 
         BookAuthorDTO bookAuthorDTO = bookRepo.getBookById(id);
@@ -54,6 +62,7 @@ public class BookControler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
+    @RolesAllowed({"admin"})
     public Response saveBook(BookAuthorDTO bookAuthorDTO){
 
         BookAuthorDTO bookAuthorDTO1 = bookRepo.saveBook((bookAuthorDTO));
@@ -68,6 +77,7 @@ public class BookControler {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
+    @RolesAllowed({"admin"})
     public Response deleteBook(@PathParam("id") Integer id){
         Optional<BookAuthorDTO> opt = bookRepo.deleteBook(id);
 
@@ -83,6 +93,7 @@ public class BookControler {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
+    @RolesAllowed({"admin"})
     public Response updateBook(BookAuthorDTO bookAuthorDTO){
 
         BookAuthorDTO book1 = bookRepo.updateBook(bookAuthorDTO);

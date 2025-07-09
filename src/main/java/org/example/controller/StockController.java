@@ -1,6 +1,9 @@
 package org.example.controller;
 
 
+import jakarta.annotation.security.DeclareRoles;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.Stateless;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -16,6 +19,9 @@ import org.example.repository.StockRepository;
 
 import java.util.Optional;
 import java.util.List;
+
+@Stateless
+@DeclareRoles({"user", "admin"})
 @Path("/stock")
 @RequestScoped
 public class StockController {
@@ -25,6 +31,7 @@ public class StockController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin" , "user"})
     public List<BookStockDTO> stock(){
 
         return stockRepo.getStock();
@@ -35,6 +42,7 @@ public class StockController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
+    @RolesAllowed({"admin"})
     public Response setStockWithIsbn(BookStockDTO bookStockDTO){
 
         Integer id = bookStockDTO.getId();
@@ -53,6 +61,7 @@ public class StockController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
+    @RolesAllowed({"admin"})
     public Response updateStock(BookStockDTO bookStockDTO){
 
         BookStockDTO stock1 = stockRepo.updateStock(bookStockDTO);
@@ -70,6 +79,7 @@ public class StockController {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
+    @RolesAllowed({"admin"})
     public Response deleteStock(@PathParam("id") Integer id){
         Optional<BookStockDTO> opt = stockRepo.deleteStock(id);
 
@@ -84,6 +94,7 @@ public class StockController {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"user" , "admin"})
     public Response seeStockWithBookId(@PathParam("id") Integer id){
 
         BookStockDTO bookStockDTO = stockRepo.getStockById(id);
@@ -99,6 +110,7 @@ public class StockController {
     @GET
     @Path("/max")
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"user" , "admin"})
     public List<BookStockDTO> seeBookWithMaxStock(){
 
         return stockRepo.getMaxStock();
@@ -108,6 +120,7 @@ public class StockController {
     @GET
     @Path("/min")
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"user" , "admin"})
     public List<BookStockDTO> seeBookWithMinStock(){
 
         return stockRepo.getMinStock();
@@ -118,6 +131,7 @@ public class StockController {
     @GET
     @Path("/avg")
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"user" , "admin"})
     public Double seeAvgStockAllBooks(){
 
         return stockRepo.getAverageQuantity();
@@ -127,6 +141,7 @@ public class StockController {
     @GET
     @Path("/sortedlist")
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"user" , "admin"})
     public List<BookStockDTO> seeSortedByQuantityList(){
 
         return stockRepo.getSortedList();
@@ -135,6 +150,7 @@ public class StockController {
 
     @GET
     @Path("/authorsum/{id}")
+    @RolesAllowed({"user" , "admin"})
     @Produces(MediaType.APPLICATION_JSON)
     public Integer seeAuthorSumOfBooks(@PathParam("id") Integer id){
 

@@ -6,7 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "USERS") // Match the table name used in import.sql
+@Table(name = "USERS")
 public class User {
 
     @Id

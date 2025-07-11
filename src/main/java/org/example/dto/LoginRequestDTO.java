@@ -1,6 +1,6 @@
-package org.example;
+package org.example.dto;
 
-public class LoginRequest {
+public class LoginRequestDTO {
     private String username;
     private String password;
 

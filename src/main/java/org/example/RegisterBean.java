@@ -18,6 +18,7 @@ public class RegisterBean {
 
     private String username;
     private String password;
+    private String passwordRepeat;
 
     @PersistenceContext
     private EntityManager em;
@@ -49,10 +50,16 @@ public class RegisterBean {
         }
 
 
-        String passwordPattern = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\\-={};:'\"|,.<>?]).{6,30}$";
+        String passwordPattern = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\\-={};:'\"|,.<>?])[A-Za-z0-9!@#$%^&*()_+\\-={};:'\"|,.<>?]{6,30}$";
         if (!password.matches(passwordPattern)) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "Password must contain at least one uppercase letter, one number, and one special character", null));
+            return null;
+        }
+
+        if (!password.equals(passwordRepeat)) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Passwords do not match", null));
             return null;
         }
 
@@ -95,6 +102,14 @@ public class RegisterBean {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPasswordRepeat() {
+        return passwordRepeat;
+    }
+
+    public void setPasswordRepeat(String passwordRepeat) {
+        this.passwordRepeat = passwordRepeat;
     }
 }
 

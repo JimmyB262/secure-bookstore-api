@@ -1,10 +1,11 @@
-package org.example;
+package org.example.controller;
 
 
 import jakarta.annotation.security.PermitAll;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.example.dto.LoginRequestDTO;
 import org.example.entity.User;
 import org.example.util.JwtUtil;
 import jakarta.persistence.EntityManager;
@@ -28,7 +29,7 @@ public class AuthResource {
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login(LoginRequest credentials) {
+    public Response login(LoginRequestDTO credentials) {
         String username = credentials.getUsername();
         String password = credentials.getPassword();
 

@@ -6,6 +6,7 @@ import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
@@ -16,9 +17,10 @@ import org.example.repository.AuthorRepository;
 import java.util.List;
 import java.util.Optional;
 import jakarta.annotation.security.RolesAllowed;
+import jakarta.enterprise.context.RequestScoped;
 
-@Stateless
-@DeclareRoles({"user", "admin"})
+@RequestScoped
+
 @Path("author")
 public class AuthorController {
 

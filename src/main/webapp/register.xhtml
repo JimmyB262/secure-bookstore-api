@@ -5,42 +5,65 @@
 
 <h:head>
     <title>User Registration</title>
+    <style>
+        .center-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .form-box {
+            padding: 30px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </h:head>
 
 <h:body>
-    <h:form>
-        <h:panelGrid columns="1" cellpadding="5">
+    <div class="center-container">
+        <h:form>
+            <h:panelGrid columns="1" cellpadding="5" styleClass="form-box">
 
-            <h:outputLabel for="username" value="Username:" />
-            <h:inputText id="username" value="#{registerBean.username}" required="true">
-                <f:validateLength minimum="3" maximum="20" />
-                <f:validateRegex pattern="^[a-zA-Z0-9_.]+$" />
-            </h:inputText>
-            <h:outputLabel />
-            <h:message for="username" style="color:red;" />
+                <h:outputLabel for="username" value="Username:" />
+                <h:inputText id="username" value="#{registerBean.username}" required="true">
+                    <f:validateLength minimum="3" maximum="20" />
+                    <f:validateRegex pattern="^[a-zA-Z0-9_.]+$"
+                                     validatorMessage="Username can only contain letters, numbers, underscores, and dots." />
+                </h:inputText>
+                <h:outputLabel />
+                <h:message for="username" style="color:red;" />
 
+                <h:outputLabel for="password" value="Password:" />
+                <h:inputSecret id="password" value="#{registerBean.password}" required="true">
+                    <f:validateLength minimum="6" maximum="30" />
+                    <f:validateRegex pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&amp;*()_+\-={};:'&quot;|,.&lt;&gt;?]).{6,30}$"
+                                     validatorMessage="Password must be 6–30 characters and include at least one uppercase letter, one number, and one special character." />
+                </h:inputSecret>
+                <h:outputLabel />
+                <h:message for="password" style="color:red;" />
 
-            <h:outputLabel for="password" value="Password:" />
-            <h:inputSecret id="password" value="#{registerBean.password}" required="true">
-                <f:validateLength minimum="6" maximum="30" />
-                <f:validateRegex pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&amp;*()_+\-={};:'&quot;|,.&lt;&gt;?]).{6,30}$" />
-            </h:inputSecret>
-            <h:outputLabel />
-            <h:message for="password" style="color:red;" />
+                <h:outputLabel for="passwordRepeat" value="Repeat Password:" />
+                <h:inputSecret id="passwordRepeat" value="#{registerBean.passwordRepeat}" required="true">
+                    <f:validateLength minimum="6" maximum="30" />
+                    <f:validateRegex pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&amp;*()_+\-={};:'&quot;|,.&lt;&gt;?]).{6,30}$"
+                                     validatorMessage="Password must be 6–30 characters and include at least one uppercase letter, one number, and one special character." />
+                </h:inputSecret>
+                <h:outputLabel />
+                <h:message for="passwordRepeat" style="color:red;" />
 
+                <h:outputLabel />
+                <h:commandButton value="Register" action="#{registerBean.register}" />
 
-            <h:outputLabel />
-            <h:commandButton value="Register" action="#{registerBean.register}" />
+            </h:panelGrid>
 
-        </h:panelGrid>
-
-        <h:messages globalOnly="true" layout="table"/>
-
-
-        <h:messages for="username password" layout="table" style="color:red;" showSummary="true" />
-
-
-    </h:form>
+            <h:messages globalOnly="true" layout="table"/>
+        </h:form>
+    </div>
 </h:body>
 </html>
+
 

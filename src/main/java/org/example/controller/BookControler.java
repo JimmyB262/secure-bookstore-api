@@ -20,7 +20,6 @@ import java.util.List;
 @Stateless
 @DeclareRoles({"user", "admin"})
 @Path("/book")
-@RequestScoped
 public class BookControler {
 
 

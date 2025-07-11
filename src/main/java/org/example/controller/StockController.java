@@ -23,7 +23,6 @@ import java.util.List;
 @Stateless
 @DeclareRoles({"user", "admin"})
 @Path("/stock")
-@RequestScoped
 public class StockController {
 
     @Inject
@@ -46,13 +45,8 @@ public class StockController {
     public Response setStockWithIsbn(BookStockDTO bookStockDTO){
 
         Integer id = bookStockDTO.getId();
-        BookStockDTO bookStockDTO1 = stockRepo.getStockById(id);
-        if (bookStockDTO1 == null){
-            bookStockDTO1 = stockRepo.saveStock(bookStockDTO);
-            return Response.ok(bookStockDTO1).build();
-        }else{
-            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
-        }
+        BookStockDTO bookStockDTO1 = stockRepo.saveStock(bookStockDTO);
+        return Response.ok(bookStockDTO1).build();
 
 
     }

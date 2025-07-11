@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>User Login</title>
+    <style>
+        .center-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .form-box {
+            padding: 30px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <div class="center-container">
+        <h:form>
+            <h:panelGrid columns="1" cellpadding="5">
+                <h:outputLabel for="username" value="Username:" />
+                <h:inputText id="username" value="#{loginBean.username}" required="true">
+                    <f:validateLength minimum="3" maximum="20" />
+                </h:inputText>
+                <h:outputLabel />
+                <h:message for="username" style="color:red;" />
+
+                <h:outputLabel for="password" value="Password:" />
+                <h:inputSecret id="password" value="#{loginBean.password}" required="true">
+                    <f:validateLength minimum="6" maximum="30" />
+                </h:inputSecret>
+                <h:outputLabel />
+                <h:message for="password" style="color:red;" />
+
+                <h:outputLabel />
+                <h:commandButton value="Login" action="#{loginBean.login}" />
+            </h:panelGrid>
+
+            <h:messages globalOnly="true" layout="table"/>
+        </h:form>
+    </div>
+</h:body>
+</html>

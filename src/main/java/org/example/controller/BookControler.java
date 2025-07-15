@@ -17,8 +17,8 @@ import org.example.repository.BookRepository;
 import java.util.Optional;
 import java.util.List;
 
-@Stateless
-@DeclareRoles({"user", "admin"})
+@RequestScoped
+
 @Path("/book")
 public class BookControler {
 

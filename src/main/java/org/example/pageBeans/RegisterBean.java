@@ -1,4 +1,4 @@
-package org.example;
+package org.example.pageBeans;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Named;

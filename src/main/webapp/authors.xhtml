@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Author List</title>
+</h:head>
+<h:body>
+    <div style="display: flex; justify-content: center; align-items: flex-start; height: 100vh;">
+        <div>
+            <h2>Authors List</h2>
+            <h:dataTable value="#{authorBean.authors}" var="author" border="1" style="margin-bottom: 20px;">
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                    #{author.author_id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Full Name</f:facet>
+                    #{author.full_name}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Email</f:facet>
+                    #{author.email}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Age</f:facet>
+                    #{author.age}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Phone</f:facet>
+                    #{author.phone}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Gender</f:facet>
+                    #{author.gender}
+                </h:column>
+            </h:dataTable>
+
+
+            <h3>Find Author by ID</h3>
+            <h:form>
+                <h:inputText value="#{authorBean.searchAuthorId}" label="Author ID" />
+                <h:commandButton value="Search" action="#{authorBean.loadAuthorById}" />
+            </h:form>
+            <h:panelGroup rendered="#{not empty authorBean.authorById}">
+                <h:outputText value="Author found:" /><br/>
+                <p>ID: #{authorBean.authorById.author_id}</p>
+                <p>Full Name: #{authorBean.authorById.full_name}</p>
+                <p>Email: #{authorBean.authorById.email}</p>
+                <p>Age: #{authorBean.authorById.age}</p>
+                <p>Phone: #{authorBean.authorById.phone}</p>
+                <p>Gender: #{authorBean.authorById.gender}</p>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{empty authorBean.authorById}">
+                <h:outputText value="No author found with the provided ID." />
+            </h:panelGroup>
+
+            <hr/>
+
+
+            <h3>Find Author by Book ID</h3>
+            <h:form>
+                <h:inputText value="#{authorBean.searchBookId}" label="Book ID" />
+                <h:commandButton value="Search" action="#{authorBean.loadAuthorByBookId}" />
+            </h:form>
+            <h:panelGroup rendered="#{not empty authorBean.authorByBookId}">
+                <h:outputText value="Author found:" /><br/>
+                <p>ID: #{authorBean.authorByBookId.author_id}</p>
+                <p>Full Name: #{authorBean.authorByBookId.full_name}</p>
+                <p>Email: #{authorBean.authorByBookId.email}</p>
+                <p>Age: #{authorBean.authorByBookId.age}</p>
+                <p>Phone: #{authorBean.authorByBookId.phone}</p>
+                <p>Gender: #{authorBean.authorByBookId.gender}</p>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{empty authorBean.authorByBookId}">
+                <h:outputText value="No author found for the provided book ID." />
+            </h:panelGroup>
+        </div>
+    </div>
+</h:body>
+</html>
+

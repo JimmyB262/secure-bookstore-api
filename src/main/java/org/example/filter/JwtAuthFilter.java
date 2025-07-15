@@ -22,7 +22,6 @@ public class JwtAuthFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        System.out.println("JwtAuthFilter triggered for path: " + requestContext.getUriInfo().getPath());
         String token = null;
         String path = requestContext.getUriInfo().getPath();
 
@@ -43,13 +42,13 @@ public class JwtAuthFilter implements ContainerRequestFilter {
                 token = cookie.getValue();
             }
         }
-        System.out.println("Extracted JWT token: " + (token == null ? "null" : token.substring(0, 10) + "..."));
+
 
         //If still missing, reject
         if (token == null) {
             requestContext.abortWith(
                     Response.status(Response.Status.UNAUTHORIZED)
-                            .entity("Missing token" + path).build());
+                            .entity("Missing token. Login with you account first!").build());
             return;
         }
 
@@ -61,7 +60,6 @@ public class JwtAuthFilter implements ContainerRequestFilter {
             String username = claims.getSubject(); // sub claim
             List<String> roles = claims.get("groups", List.class); // roles from "groups"
 
-            System.out.println("Token validated for user: " + username + ", roles: " + roles);
 
             //Set security context
             SecurityContext originalContext = requestContext.getSecurityContext();
@@ -86,7 +84,6 @@ public class JwtAuthFilter implements ContainerRequestFilter {
                     return "Bearer";
                 }
             };
-            System.out.println("Setting security context for user: " + username + ", roles: " + roles);
 
             requestContext.setSecurityContext(customContext);
 

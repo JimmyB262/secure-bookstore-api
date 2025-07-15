@@ -59,7 +59,7 @@ public class JwtUtil {
                 .claim("groups", roles)
                 .setIssuer("my-app")
                 .setIssuedAt(Date.from(now))
-                .setExpiration(Date.from(now.plusSeconds(3600)))
+                .setExpiration(Date.from(now.plusSeconds(450)))
                 .signWith(privateKey, SignatureAlgorithm.RS256)
                 .compact();
     }

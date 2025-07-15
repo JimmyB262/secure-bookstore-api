@@ -1,7 +1,6 @@
-package org.example;
+package org.example.pageBeans;
 
 
-import io.jsonwebtoken.io.IOException;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Named;
 import jakarta.persistence.EntityManager;
@@ -18,7 +17,6 @@ import org.example.util.JwtUtil;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.List;
-import java.util.Objects;
 
 @Named
 @RequestScoped
@@ -68,7 +66,7 @@ public class LoginBean {
                 response.addCookie(cookie);
 
                 try {
-                    context.getExternalContext().redirect("/Helloworld-1.0-SNAPSHOT/api/author");
+                    context.getExternalContext().redirect("/Helloworld-1.0-SNAPSHOT/authors.xhtml");
                     context.responseComplete();
                     return null;
                 } catch (java.io.IOException e) {

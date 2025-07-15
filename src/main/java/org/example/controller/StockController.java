@@ -20,8 +20,8 @@ import org.example.repository.StockRepository;
 import java.util.Optional;
 import java.util.List;
 
-@Stateless
-@DeclareRoles({"user", "admin"})
+@RequestScoped
+
 @Path("/stock")
 public class StockController {
 

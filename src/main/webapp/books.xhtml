@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Books Page</title>
+    <style>
+        .center-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 40px;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .content {
+            width: 80%;
+            max-width: 800px;
+        }
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+
+        hr {
+            margin: 30px 0;
+            width: 100%;
+        }
+    </style>
+</h:head>
+<h:body>
+    <div class="center-container">
+        <div class="content">
+            <h2>All Books</h2>
+            <h:dataTable value="#{bookBean.books}" var="book" border="1">
+                <h:column>
+                    <f:facet name="header">Book ID</f:facet>
+                    #{book.id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Title</f:facet>
+                    #{book.title}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Isbn</f:facet>
+                    #{book.isbn}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Price</f:facet>
+                    #{book.price}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Author ID</f:facet>
+                    #{book.author_id}
+                </h:column>
+            </h:dataTable>
+
+            <hr />
+
+            <h3>Find Book by ID</h3>
+            <h:form>
+                <h:inputText value="#{bookBean.searchBookId}" label="Book ID" />
+                <h:commandButton value="Search" action="#{bookBean.loadBookById}" />
+            </h:form>
+
+            <h:panelGroup rendered="#{not empty bookBean.bookById}">
+                <h:outputText value="Book found:" /><br/>
+                <p>Book ID: #{bookBean.bookById.id}</p>
+                <p>Title: #{bookBean.bookById.title}</p>
+                <p>Isbn: #{bookBean.bookById.isbn}</p>
+                <p>Price: #{bookBean.bookById.price}</p>
+                <p>Author ID: #{bookBean.bookById.author_id}</p>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{empty bookBean.bookById and not empty bookBean.searchBookId}">
+                <p style="color:red;">No book found with the given ID.</p>
+            </h:panelGroup>
+        </div>
+    </div>
+</h:body>
+</html>

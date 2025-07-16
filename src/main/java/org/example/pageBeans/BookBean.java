@@ -51,6 +51,8 @@ public class BookBean {
                 books = response.readEntity(new GenericType<List<BookAuthorDTO>>() {});
             } else {
                 books = Collections.emptyList();
+                FacesContext.getCurrentInstance().getExternalContext()
+                        .redirect("/Helloworld-1.0-SNAPSHOT/login.xhtml");
             }
         } catch (Exception e) {
             e.printStackTrace();

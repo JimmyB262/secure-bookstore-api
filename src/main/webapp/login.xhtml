@@ -28,15 +28,13 @@
         <h:form>
             <h:panelGrid columns="1" cellpadding="5" styleClass="form-box">
                 <h:outputLabel for="username" value="Username:" />
-                <h:inputText id="username" value="#{loginBean.username}" required="true">
-                    <f:validateLength minimum="3" maximum="20" />
+                <h:inputText id="username" value="#{loginBean.username}" required="true" maxlength="20">
                 </h:inputText>
                 <h:outputLabel />
                 <h:message for="username" style="color:red;" />
 
                 <h:outputLabel for="password" value="Password:" />
-                <h:inputSecret id="password" value="#{loginBean.password}" required="true">
-                    <f:validateLength minimum="6" maximum="30" />
+                <h:inputSecret id="password" value="#{loginBean.password}" required="true" maxlength="20">
                 </h:inputSecret>
                 <h:outputLabel />
                 <h:message for="password" style="color:red;" />

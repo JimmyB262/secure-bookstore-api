@@ -25,38 +25,34 @@
 
 <h:body>
     <div class="center-container">
-        <h:form>
-            <h:panelGrid columns="1" cellpadding="5" styleClass="form-box">
+        <h:form id="registerForm">
+
+        <h:panelGrid columns="1" cellpadding="5" styleClass="form-box">
 
                 <h:outputLabel for="username" value="Username:" />
-                <h:inputText id="username" value="#{registerBean.username}" required="true">
-                    <f:validateLength minimum="3" maximum="20" />
-                    <f:validateRegex pattern="^[a-zA-Z0-9_.]+$"
-                                     validatorMessage="Username can only contain letters, numbers, underscores, and dots." />
+                <h:inputText id="username" value="#{registerBean.username}" maxlength="20">
                 </h:inputText>
-                <h:outputLabel />
                 <h:message for="username" style="color:red;" />
 
+
                 <h:outputLabel for="password" value="Password:" />
-                <h:inputSecret id="password" value="#{registerBean.password}" required="true">
-                    <f:validateLength minimum="6" maximum="30" />
-                    <f:validateRegex pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&amp;*()_+\-={};:'&quot;|,.&lt;&gt;?]).{6,30}$"
-                                     validatorMessage="Password must be 6–30 characters and include at least one uppercase letter, one number, and one special character." />
+                <h:inputSecret id="password" value="#{registerBean.password}" maxlength="20">
                 </h:inputSecret>
-                <h:outputLabel />
                 <h:message for="password" style="color:red;" />
 
+
                 <h:outputLabel for="passwordRepeat" value="Repeat Password:" />
-                <h:inputSecret id="passwordRepeat" value="#{registerBean.passwordRepeat}" required="true">
-                    <f:validateLength minimum="6" maximum="30" />
-                    <f:validateRegex pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&amp;*()_+\-={};:'&quot;|,.&lt;&gt;?]).{6,30}$"
-                                     validatorMessage="Password must be 6–30 characters and include at least one uppercase letter, one number, and one special character." />
+                <h:inputSecret id="passwordRepeat" value="#{registerBean.passwordRepeat}"  maxlength="20">
                 </h:inputSecret>
                 <h:outputLabel />
                 <h:message for="passwordRepeat" style="color:red;" />
 
                 <h:outputLabel />
-                <h:commandButton value="Register" action="#{registerBean.register}" />
+                <h:panelGroup style="text-align: center; margin-top: 15px;">
+                    <h:commandButton value="Register" action="#{registerBean.register}" style="margin-right: 10px;" />
+                    <h:button value="Go to Login" outcome="login.xhtml" />
+                </h:panelGroup>
+
 
             </h:panelGrid>
 

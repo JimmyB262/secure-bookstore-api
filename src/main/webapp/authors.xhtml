@@ -4,39 +4,11 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
     <title>Author List</title>
+    <link type="text/css" rel="stylesheet" href="styles/styles.css"/>
 </h:head>
 <h:body>
     <div style="display: flex; justify-content: center; align-items: flex-start; height: 100vh;">
         <div>
-            <h2>Authors List</h2>
-            <h:dataTable value="#{authorBean.authors}" var="author" border="1" style="margin-bottom: 20px;">
-                <h:column>
-                    <f:facet name="header">ID</f:facet>
-                    #{author.author_id}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Full Name</f:facet>
-                    #{author.full_name}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Email</f:facet>
-                    #{author.email}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Age</f:facet>
-                    #{author.age}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Phone</f:facet>
-                    #{author.phone}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Gender</f:facet>
-                    #{author.gender}
-                </h:column>
-            </h:dataTable>
-
-
             <h3>Find Author by ID</h3>
             <h:form>
                 <h:inputText value="#{authorBean.searchAuthorId}" label="Author ID" />
@@ -77,6 +49,111 @@
             <h:panelGroup rendered="#{empty authorBean.authorByBookId}">
                 <h:outputText value="No author found for the provided book ID." />
             </h:panelGroup>
+
+
+            <h:panelGroup rendered="#{userSessionBean.admin}">
+                <hr/>
+                <h3>Add New Author</h3>
+                <h:form>
+                    <h:panelGrid columns="2" cellpadding="5">
+
+                        <h:outputLabel for="author_id" value="Author Id:"/>
+                        <h:inputText id="author_id" value="#{authorBean.newAuthor.author_id}" />
+
+                        <h:outputLabel for="fullName" value="Full Name:"/>
+                        <h:inputText id="fullName" value="#{authorBean.newAuthor.full_name}" />
+
+                        <h:outputLabel for="email" value="Email:"/>
+                        <h:inputText id="email" value="#{authorBean.newAuthor.email}" />
+
+                        <h:outputLabel for="age" value="Age:"/>
+                        <h:inputText id="age" value="#{authorBean.newAuthor.age}" />
+
+                        <h:outputLabel for="phone" value="Phone:"/>
+                        <h:inputText id="phone" value="#{authorBean.newAuthor.phone}" />
+
+                        <h:outputLabel for="gender" value="Gender:"/>
+                        <h:inputText id="gender" value="#{authorBean.newAuthor.gender}" />
+                    </h:panelGrid>
+
+                    <h:commandButton value="Add Author" action="#{authorBean.addAuthor}" />
+                </h:form>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{userSessionBean.admin}">
+                <hr/>
+                <h3>Delete Author</h3>
+                <h:form>
+                    <h:panelGrid columns="2" cellpadding="5">
+
+                        <h:outputLabel for="author_id" value="Author Id:"/>
+                        <h:inputText id="author_id" value="#{authorBean.newAuthor.author_id}" />
+
+                    </h:panelGrid>
+
+                    <h:commandButton value="Delete Author" action="#{authorBean.deleteAuthor}" />
+                </h:form>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{userSessionBean.admin}">
+                <hr/>
+                <h3>Update Author</h3>
+                <h:form>
+                    <h:panelGrid columns="2" cellpadding="5">
+
+                        <h:outputLabel for="author_id" value="Author Id:"/>
+                        <h:inputText id="author_id" value="#{authorBean.newAuthor.author_id}" />
+
+                        <h:outputLabel for="fullName" value="Full Name:"/>
+                        <h:inputText id="fullName" value="#{authorBean.newAuthor.full_name}" />
+
+                        <h:outputLabel for="email" value="Email:"/>
+                        <h:inputText id="email" value="#{authorBean.newAuthor.email}" />
+
+                        <h:outputLabel for="age" value="Age:"/>
+                        <h:inputText id="age" value="#{authorBean.newAuthor.age}" />
+
+                        <h:outputLabel for="phone" value="Phone:"/>
+                        <h:inputText id="phone" value="#{authorBean.newAuthor.phone}" />
+
+                        <h:outputLabel for="gender" value="Gender:"/>
+                        <h:inputText id="gender" value="#{authorBean.newAuthor.gender}" />
+                    </h:panelGrid>
+
+                    <h:commandButton value="Update Author" action="#{authorBean.updateAuthor}" />
+                </h:form>
+            </h:panelGroup>
+
+
+
+            <h2>Authors List</h2>
+            <h:dataTable value="#{authorBean.authors}" var="author" border="1" style="margin-bottom: 20px;">
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                    #{author.author_id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Full Name</f:facet>
+                    #{author.full_name}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Email</f:facet>
+                    #{author.email}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Age</f:facet>
+                    #{author.age}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Phone</f:facet>
+                    #{author.phone}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Gender</f:facet>
+                    #{author.gender}
+                </h:column>
+            </h:dataTable>
+
         </div>
     </div>
 </h:body>

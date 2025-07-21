@@ -3,6 +3,8 @@ package org.example.filter;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import jakarta.annotation.Priority;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
@@ -59,6 +61,16 @@ public class JwtAuthFilter implements ContainerRequestFilter {
 
             String username = claims.getSubject(); // sub claim
             List<String> roles = claims.get("groups", List.class); // roles from "groups"
+
+            HttpServletRequest httpRequest = (HttpServletRequest) requestContext
+                    .getProperty("jakarta.servlet.http.HttpServletRequest");
+
+            if (httpRequest != null) {
+                HttpSession session = httpRequest.getSession(true);
+                session.setAttribute("username", username);
+                session.setAttribute("roles", roles);
+            }
+
 
 
             //Set security context

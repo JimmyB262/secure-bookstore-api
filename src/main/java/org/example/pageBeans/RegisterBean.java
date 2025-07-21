@@ -37,14 +37,14 @@ public class RegisterBean {
 
 
         if (username == null || username.length() < 3 || username.length() > 20) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+            context.addMessage("registerForm:username", new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "Username must be between 3 and 20 characters", null));
             return null;
         }
 
 
         if (password == null || password.length() < 6 || password.length() > 30) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+            context.addMessage("registerForm:password", new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "Password must be between 6 and 30 characters", null));
             return null;
         }
@@ -52,14 +52,21 @@ public class RegisterBean {
 
         String passwordPattern = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\\-={};:'\"|,.<>?])[A-Za-z0-9!@#$%^&*()_+\\-={};:'\"|,.<>?]{6,30}$";
         if (!password.matches(passwordPattern)) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+            context.addMessage("registerForm:password", new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "Password must contain at least one uppercase letter, one number, and one special character", null));
             return null;
         }
 
         if (!password.equals(passwordRepeat)) {
-            FacesContext.getCurrentInstance().addMessage(null,
+            FacesContext.getCurrentInstance().addMessage("registerForm:passwordRepeat",
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Passwords do not match", null));
+            return null;
+        }
+
+        String userPattern ="^[a-zA-Z0-9_.]+$";
+        if (!username.matches(userPattern)) {
+            context.addMessage("registerForm:username", new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Username can only contain letters, numbers, underscores, and dots.", null));
             return null;
         }
 

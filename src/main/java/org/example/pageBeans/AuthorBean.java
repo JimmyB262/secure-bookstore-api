@@ -11,7 +11,9 @@ import jakarta.inject.Named;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.MediaType;
+
 
 
 import java.util.Collections;
@@ -27,6 +29,17 @@ public class AuthorBean {
 
     private Integer searchAuthorId;
     private Integer searchBookId;
+
+    private Author newAuthor = new Author();
+
+    public Author getNewAuthor() {
+        return newAuthor;
+    }
+
+    public void setNewAuthor(Author newAuthor) {
+        this.newAuthor = newAuthor;
+    }
+
 
     @PostConstruct
     public void init() {
@@ -140,6 +153,119 @@ public class AuthorBean {
             client.close();
         }
     }
+
+    public String addAuthor() {
+        Client client = ClientBuilder.newClient();
+        try {
+            String jwt = getJwtFromCookie();
+            if (jwt == null || jwt.isBlank()) {
+                System.err.println("JWT token not found.");
+                return null;
+            }
+
+            Response response = client
+                    .target("http://localhost:8080/Helloworld-1.0-SNAPSHOT/api/author")
+                    .request(MediaType.APPLICATION_JSON)
+                    .header("Authorization", "Bearer " + jwt)
+                    .post(Entity.entity(newAuthor, MediaType.APPLICATION_JSON));
+
+            if (response.getStatus() == 201) {
+                System.out.println("Author added successfully.");
+                loadAllAuthors();
+                newAuthor = new Author();
+            } else {
+                System.err.println("Failed to add author: " + response.getStatus());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            client.close();
+        }
+        loadAllAuthors();
+        return null;
+    }
+
+
+    public String deleteAuthor() {
+        Client client = ClientBuilder.newClient();
+        try {
+            String jwt = getJwtFromCookie();
+            if (jwt == null || jwt.isBlank()) {
+                System.err.println("JWT token not found.");
+                return null;
+            }
+
+            Integer authorId = newAuthor.getAuthor_id();
+            if (authorId == null) {
+                System.err.println("Author ID is null.");
+                return null;
+            }
+
+            Response response = client
+                    .target("http://localhost:8080/Helloworld-1.0-SNAPSHOT/api/author/" + authorId)
+                    .request()
+                    .header("Authorization", "Bearer " + jwt)
+                    .delete();
+
+            if (response.getStatus() == 201) {
+                System.out.println("Author deleted successfully.");
+                loadAllAuthors();
+                newAuthor = new Author();
+            } else {
+                System.err.println("Failed to delete author: " + response.getStatus());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            client.close();
+        }
+        loadAllAuthors();
+        return null;
+    }
+
+    public String updateAuthor() {
+        Client client = ClientBuilder.newClient();
+        try {
+            String jwt = getJwtFromCookie();
+            if (jwt == null || jwt.isBlank()) {
+                System.err.println("JWT token not found.");
+                return null;
+            }
+
+            if (newAuthor == null || newAuthor.getAuthor_id() == null) {
+                System.err.println("Author or Author ID is null.");
+                return null;
+            }
+
+            Response response = client
+                    .target("http://localhost:8080/Helloworld-1.0-SNAPSHOT/api/author")
+                    .request(MediaType.APPLICATION_JSON)
+                    .header("Authorization", "Bearer " + jwt)
+                    .put(Entity.entity(newAuthor, MediaType.APPLICATION_JSON));
+
+            if (response.getStatus() == 200) {
+                System.out.println("Author updated successfully.");
+                loadAllAuthors();
+                newAuthor = new Author();
+                return "index?faces-redirect=true";
+            } else if (response.getStatus() == 404) {
+                System.err.println("Author not found.");
+            } else {
+                System.err.println("Failed to update author: " + response.getStatus());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            client.close();
+        }
+
+        return null;
+    }
+
+
 
 
 

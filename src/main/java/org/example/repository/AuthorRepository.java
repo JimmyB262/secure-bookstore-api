@@ -32,6 +32,13 @@ public class AuthorRepository {
 
     }
 
+    public List<Author> getMatchingAuthors(String name){
+        return entityManager
+                .createQuery("SELECT a FROM Author a WHERE LOWER(a.full_name) LIKE :name", Author.class)
+                .setParameter("name", "%" + name.toLowerCase() + "%")
+                .getResultList();
+    }
+
     //@Transactional
     public Author saveAuthor(Author author){
 

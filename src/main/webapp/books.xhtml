@@ -11,6 +11,91 @@
 <h:body>
     <div class="center-container">
         <div class="content">
+
+            <h3>Find Book by ID</h3>
+            <h:form>
+                <h:inputText value="#{bookBean.searchBookId}" label="Book ID" />
+                <h:commandButton value="Search" action="#{bookBean.loadBookById}" />
+            </h:form>
+
+            <h:panelGroup rendered="#{not empty bookBean.bookById}">
+                <h:outputText value="Book found:" /><br/>
+                <p>Book ID: #{bookBean.bookById.id}</p>
+                <p>Title: #{bookBean.bookById.title}</p>
+                <p>Isbn: #{bookBean.bookById.isbn}</p>
+                <p>Price: #{bookBean.bookById.price}</p>
+                <p>Author ID: #{bookBean.bookById.author_id}</p>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{empty bookBean.bookById and not empty bookBean.searchBookId}">
+                <p style="color:red;">No book found with the given ID.</p>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{userSessionBean.admin}">
+                <hr/>
+                <h3>Add New Book</h3>
+                <h:form>
+                    <h:panelGrid columns="2" cellpadding="5">
+
+                        <h:outputLabel for="title" value="Title:"/>
+                        <h:inputText id="title" value="#{bookBean.newBook.title}" />
+
+                        <h:outputLabel for="isbn" value="Isbn:"/>
+                        <h:inputText id="isbn" value="#{bookBean.newBook.isbn}" />
+
+                        <h:outputLabel for="price" value="Price:"/>
+                        <h:inputText id="price" value="#{bookBean.newBook.price}" />
+
+                        <h:outputLabel for="author_id" value="Author:"/>
+                        <h:inputText id="author_id" value="#{bookBean.newBook.author_id}" />
+
+                    </h:panelGrid>
+
+                    <h:commandButton value="Add Book" action="#{bookBean.addBook}" />
+                </h:form>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{userSessionBean.admin}">
+                <hr/>
+                <h3>Delete Book</h3>
+                <h:form>
+                    <h:panelGrid columns="2" cellpadding="5">
+
+                        <h:outputLabel for="id" value="Book Id:"/>
+                        <h:inputText id="id" value="#{bookBean.newBook.id}" />
+
+                    </h:panelGrid>
+
+                    <h:commandButton value="Delete Book" action="#{bookBean.deleteBook}" />
+                </h:form>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{userSessionBean.admin}">
+                <hr/>
+                <h3>Update Book</h3>
+                <h:form>
+                    <h:panelGrid columns="2" cellpadding="5">
+
+                        <h:outputLabel for="id" value="Book Id:"/>
+                        <h:inputText id="id" value="#{bookBean.newBook.id}" />
+
+                        <h:outputLabel for="title" value="Title:"/>
+                        <h:inputText id="title" value="#{bookBean.newBook.title}" />
+
+                        <h:outputLabel for="isbn" value="Isbn:"/>
+                        <h:inputText id="isbn" value="#{bookBean.newBook.isbn}" />
+
+                        <h:outputLabel for="price" value="Price:"/>
+                        <h:inputText id="price" value="#{bookBean.newBook.price}" />
+
+                        <h:outputLabel for="author_id" value="Author:"/>
+                        <h:inputText id="author_id" value="#{bookBean.newBook.author_id}" />
+                    </h:panelGrid>
+
+                    <h:commandButton value="Update Book" action="#{bookBean.updateBook}" />
+                </h:form>
+            </h:panelGroup>
+
             <h2>All Books</h2>
             <h:dataTable value="#{bookBean.books}" var="book" border="1">
                 <h:column>
@@ -34,27 +119,6 @@
                     #{book.author_id}
                 </h:column>
             </h:dataTable>
-
-            <hr />
-
-            <h3>Find Book by ID</h3>
-            <h:form>
-                <h:inputText value="#{bookBean.searchBookId}" label="Book ID" />
-                <h:commandButton value="Search" action="#{bookBean.loadBookById}" />
-            </h:form>
-
-            <h:panelGroup rendered="#{not empty bookBean.bookById}">
-                <h:outputText value="Book found:" /><br/>
-                <p>Book ID: #{bookBean.bookById.id}</p>
-                <p>Title: #{bookBean.bookById.title}</p>
-                <p>Isbn: #{bookBean.bookById.isbn}</p>
-                <p>Price: #{bookBean.bookById.price}</p>
-                <p>Author ID: #{bookBean.bookById.author_id}</p>
-            </h:panelGroup>
-
-            <h:panelGroup rendered="#{empty bookBean.bookById and not empty bookBean.searchBookId}">
-                <p style="color:red;">No book found with the given ID.</p>
-            </h:panelGroup>
         </div>
     </div>
 </h:body>

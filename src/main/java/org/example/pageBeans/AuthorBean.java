@@ -40,6 +40,9 @@ public class AuthorBean {
         this.newAuthor = newAuthor;
     }
 
+    private String authorSearchTerm;
+    private List<Author> matchingAuthors;
+
 
     @PostConstruct
     public void init() {
@@ -265,6 +268,36 @@ public class AuthorBean {
         return null;
     }
 
+    public String searchAuthor(){
+        Client client = ClientBuilder.newClient();
+        try {
+            String jwt = getJwtFromCookie();
+            if (jwt == null || jwt.isBlank()) {
+                System.err.println("JWT token not found.");
+                return null;
+            }
+
+            Response response = client
+                    .target("http://localhost:8080/Helloworld-1.0-SNAPSHOT/api/author/searchAuthorName/" + authorSearchTerm)
+                    .request(MediaType.APPLICATION_JSON)
+                    .header("Authorization", "Bearer " + jwt)
+                    .get();
+
+            if (response.getStatus() == 200) {
+                matchingAuthors = response.readEntity(new GenericType<List<Author>>() {});
+            } else {
+                System.err.println("Author search failed: " + response.getStatus());
+                matchingAuthors = List.of();
+            }
+        } catch (Exception e) {
+            matchingAuthors = List.of();
+        } finally {
+            client.close();
+        }
+
+        return null;
+    }
+
 
 
 
@@ -313,5 +346,33 @@ public class AuthorBean {
 
     public void setSearchBookId(Integer searchBookId) {
         this.searchBookId = searchBookId;
+    }
+
+    public void setAuthorSearchTerm(String authorSearchTerm) {
+        this.authorSearchTerm = authorSearchTerm;
+    }
+
+    public List<Author> getMatchingAuthors() {
+        return matchingAuthors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
+    }
+
+    public void setAuthorById(Author authorById) {
+        this.authorById = authorById;
+    }
+
+    public void setAuthorByBookId(Author authorByBookId) {
+        this.authorByBookId = authorByBookId;
+    }
+
+    public String getAuthorSearchTerm() {
+        return authorSearchTerm;
+    }
+
+    public void setMatchingAuthors(List<Author> matchingAuthors) {
+        this.matchingAuthors = matchingAuthors;
     }
 }

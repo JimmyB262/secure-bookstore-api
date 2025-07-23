@@ -11,6 +11,7 @@ import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.example.dto.BookAuthorDTO;
 import org.example.dto.BookStockDTO;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
@@ -34,6 +35,12 @@ public class StockBean {
     private Integer authorIdToSearch;
     private Integer authorBookSum;
     private Double avgStock;
+
+    private BookStockDTO newStock = new BookStockDTO();
+
+    public void setNewStock(BookStockDTO newStock) {
+        this.newStock = newStock;
+    }
 
     @PostConstruct
     public void init() {
@@ -108,6 +115,152 @@ public class StockBean {
         } finally {
             client.close();
         }
+    }
+
+    public String addStock() {
+        Client client = ClientBuilder.newClient();
+        try {
+            String jwt = getJwtFromCookie();
+            if (jwt == null || jwt.isBlank()) {
+                System.err.println("JWT token not found.");
+                return null;
+            }
+
+            Response response = client
+                    .target("http://localhost:8080/Helloworld-1.0-SNAPSHOT/api/stock")
+                    .request(MediaType.APPLICATION_JSON)
+                    .header("Authorization", "Bearer " + jwt)
+                    .post(Entity.entity(newStock, MediaType.APPLICATION_JSON));
+
+
+            if (response.getStatus() == 201) {
+                System.out.println("Stock added successfully.");
+                loadAll();
+                newStock = new BookStockDTO();
+            } else {
+                System.err.println("Failed to add stock: " + response.getStatus());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            client.close();
+        }
+        loadAll();
+        return null;
+    }
+
+    public String deleteStock() {
+        System.out.println("deleteStock() method called.");
+        Client client = ClientBuilder.newClient();
+        try {
+            String jwt = getJwtFromCookie();
+            if (jwt == null || jwt.isBlank()) {
+                System.err.println("JWT token not found.");
+                return null;
+            }
+
+            Integer stockId = newStock.getId();
+            if (stockId == null) {
+                System.err.println("Stock ID is null.");
+                return null;
+            }
+            System.out.println("Attempting to delete stock with ID: " + stockId);
+
+            Response response = client
+                    .target("http://localhost:8080/Helloworld-1.0-SNAPSHOT/api/stock/" + stockId)
+                    .request()
+                    .header("Authorization", "Bearer " + jwt)
+                    .delete();
+
+            if (response.getStatus() == 201) {
+                System.out.println("Stock deleted successfully.");
+                loadAll();
+                newStock = new BookStockDTO();
+            } else {
+                System.err.println("Failed to delete Stock: " + response.getStatus());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            client.close();
+        }
+        loadAll();
+        return null;
+    }
+
+
+    public String updateStock() {
+        Client client = ClientBuilder.newClient();
+        try {
+            String jwt = getJwtFromCookie();
+            if (jwt == null || jwt.isBlank()) {
+                System.err.println("JWT token not found.");
+                return null;
+            }
+
+            if (newStock == null || newStock.getId() == null) {
+                System.err.println("Stock Id is null.");
+                return null;
+            }
+
+            Response response = client
+                    .target("http://localhost:8080/Helloworld-1.0-SNAPSHOT/api/stock")
+                    .request(MediaType.APPLICATION_JSON)
+                    .header("Authorization", "Bearer " + jwt)
+                    .put(Entity.entity(newStock, MediaType.APPLICATION_JSON));
+
+            if (response.getStatus() == 200) {
+                System.out.println("Book updated successfully.");
+                loadAll();
+                newStock = new BookStockDTO();
+                return "index?faces-redirect=true";
+            } else if (response.getStatus() == 404) {
+                System.err.println("Stock not found.");
+            } else {
+                System.err.println("Failed to update Stock: " + response.getStatus());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            client.close();
+        }
+
+        return null;
+    }
+
+    public void setStockList(List<BookStockDTO> stockList) {
+        this.stockList = stockList;
+    }
+
+    public void setMaxStock(List<BookStockDTO> maxStock) {
+        this.maxStock = maxStock;
+    }
+
+    public void setMinStock(List<BookStockDTO> minStock) {
+        this.minStock = minStock;
+    }
+
+    public void setSortedStock(List<BookStockDTO> sortedStock) {
+        this.sortedStock = sortedStock;
+    }
+
+    public void setStockById(BookStockDTO stockById) {
+        this.stockById = stockById;
+    }
+
+    public void setAuthorBookSum(Integer authorBookSum) {
+        this.authorBookSum = authorBookSum;
+    }
+
+    public void setAvgStock(Double avgStock) {
+        this.avgStock = avgStock;
+    }
+
+    public BookStockDTO getNewStock() {
+        return newStock;
     }
 
     public List<BookStockDTO> getStockList() {

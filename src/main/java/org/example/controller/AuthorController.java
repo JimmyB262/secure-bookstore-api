@@ -38,6 +38,17 @@ public class AuthorController {
     }
 
     @GET
+    @Path("/searchAuthorName/{name}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin" , "user"})
+    public  List<Author> searchAuthors(@PathParam("name") String name){
+
+        return authorRepo.getMatchingAuthors(name);
+    }
+
+
+
+    @GET
     @Path("/findByBook/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({"admin" , "user"})

@@ -7,9 +7,9 @@
 
 <h:head>
     <title>Stock Info</title>
+    <link type="text/css" rel="stylesheet" href="styles/styles.css"/>
 </h:head>
 <h:body>
-    <h:form>
         <h2>📦 All Stock</h2>
         <h:dataTable value="#{stockBean.stockList}" var="s" border="1">
             <h:column>
@@ -61,7 +61,59 @@
                 #{ss.id}
             </h:column>
         </h:dataTable>
-    </h:form>
+
+        <h:panelGroup rendered="#{userSessionBean.admin}">
+            <hr/>
+            <h3>Add New Stock</h3>
+            <h:form>
+                <h:panelGrid columns="2" cellpadding="5">
+
+                    <h:outputLabel for="quantity" value="Quantity:"/>
+                    <h:inputText id="quantity" value="#{stockBean.newStock.quantity}" />
+
+                    <h:outputLabel for="id" value="Id:"/>
+                    <h:inputText id="id" value="#{stockBean.newStock.id}" />
+
+
+                </h:panelGrid>
+
+                <h:commandButton value="Add Stock" action="#{stockBean.addStock}" />
+            </h:form>
+        </h:panelGroup>
+
+        <h:panelGroup rendered="#{userSessionBean.admin}">
+            <hr/>
+            <h3>Delete Stock</h3>
+            <h:form>
+                <h:panelGrid columns="2" cellpadding="5">
+
+                    <h:outputLabel for="id" value="Stock Id:"/>
+                    <h:inputText id="id" value="#{stockBean.newStock.id}" />
+
+                </h:panelGrid>
+
+                <h:commandButton value="Delete Stock" action="#{stockBean.deleteStock}" />
+            </h:form>
+        </h:panelGroup>
+
+    <h:panelGroup rendered="#{userSessionBean.admin}">
+        <hr/>
+        <h3>Update Stock</h3>
+        <h:form>
+            <h:panelGrid columns="2" cellpadding="5">
+
+                <h:outputLabel for="quantity" value="Quantity:"/>
+                <h:inputText id="quantity" value="#{stockBean.newStock.quantity}" />
+
+                <h:outputLabel for="id" value="Stock Id:"/>
+                <h:inputText id="id" value="#{stockBean.newStock.id}" />
+
+            </h:panelGrid>
+
+            <h:commandButton value="Update Stock" action="#{stockBean.updateStock}" />
+        </h:form>
+    </h:panelGroup>
+
 </h:body>
 </html>
 

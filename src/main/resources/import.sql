@@ -10,8 +10,11 @@ INSERT INTO Book (id, title, isbn, price, author_id) VALUES (1, 'Syntages me ton
 INSERT INTO Book (id, title, isbn, price, author_id) VALUES (2, 'Dokimio', '12342436', 45.99, 2);
 INSERT INTO Book (id, title, isbn, price, author_id) VALUES (3, 'Poihmata', '12313436', 39.99, 3);
 INSERT INTO Book (id, title, isbn, price, author_id) VALUES (4, 'Anthologio', '12341436', 41.99, 4);
+INSERT INTO Book (id, title, isbn, price, author_id) VALUES (5, 'Eteros egw', '12391436', 1.99, 1);
 
 INSERT INTO Stock (id , quantity) VALUES (1, 5);
 INSERT INTO Stock (id , quantity) VALUES (2, 2);
 INSERT INTO Stock (id , quantity) VALUES (3, 10);
 INSERT INTO Stock (id , quantity) VALUES (4, 8);
+
+ALTER TABLE Book ALTER COLUMN id RESTART WITH 6;

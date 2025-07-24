@@ -277,6 +277,8 @@ public class AuthorBean {
                 return null;
             }
 
+            authorSearchTerm = authorSearchTerm.trim();
+
             Response response = client
                     .target("http://localhost:8080/Helloworld-1.0-SNAPSHOT/api/author/searchAuthorName/" + authorSearchTerm)
                     .request(MediaType.APPLICATION_JSON)

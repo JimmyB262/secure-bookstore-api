@@ -37,6 +37,16 @@ public class BookControler {
     }
 
     @GET
+    @Path("/author/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"user" , "admin"})
+    public List<BookAuthorDTO> seeBooksWithAuthorId(@PathParam("id") Integer id){
+
+        return bookRepo.getBooksByAuthorId(id);
+
+    }
+
+    @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({"user" , "admin"})
@@ -51,6 +61,8 @@ public class BookControler {
         return Response.ok(bookAuthorDTO).build();
 
     }
+
+
 
     // GET /book/{id}   για να διαβαστεί ένα βιβλίο:   να επιστρέφει JSON (status 200: ή 404 για not found)
 

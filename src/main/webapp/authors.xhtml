@@ -153,7 +153,9 @@
                 </h:column>
                 <h:column>
                     <f:facet name="header">Full Name</f:facet>
-                    #{author.full_name}
+                    <h:link value="#{author.full_name}" outcome="authorDetails">
+                        <f:param name="id" value="#{author.author_id}" />
+                    </h:link>
                 </h:column>
                 <h:column>
                     <f:facet name="header">Email</f:facet>

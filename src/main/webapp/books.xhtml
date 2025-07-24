@@ -104,7 +104,9 @@
                 </h:column>
                 <h:column>
                     <f:facet name="header">Title</f:facet>
-                    #{book.title}
+                    <h:link value="#{book.title}" outcome="bookDetails">
+                        <f:param name="id" value="#{book.id}" />
+                    </h:link>
                 </h:column>
                 <h:column>
                     <f:facet name="header">Isbn</f:facet>

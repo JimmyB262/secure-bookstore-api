@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+    <title>Author Details</title>
+    <link type="text/css" rel="stylesheet" href="styles/styles.css"/>
+</h:head>
+<h:body>
+    <h1>Author Details</h1>
+
+    <h:panelGrid columns="2">
+        <h:outputText value="Full Name:" />
+        <h:outputText value="#{authorInfoBean.selectedAuthor.full_name}" />
+
+        <h:outputText value="Email:" />
+        <h:outputText value="#{authorInfoBean.selectedAuthor.email}" />
+
+        <h:outputText value="Age:" />
+        <h:outputText value="#{authorInfoBean.selectedAuthor.age}" />
+
+        <h:outputText value="Phone:" />
+        <h:outputText value="#{authorInfoBean.selectedAuthor.phone}" />
+
+        <h:outputText value="Gender:" />
+        <h:outputText value="#{authorInfoBean.selectedAuthor.gender}" />
+    </h:panelGrid>
+
+    <h2>Books by This Author</h2>
+
+    <h:dataTable value="#{authorInfoBean.matchingBooks}" var="book" border="1">
+        <h:column>
+            <f:facet name="header">Book Id</f:facet>
+            #{book.id}
+        </h:column>
+        <h:column>
+            <f:facet name="header">Title</f:facet>
+            <h:link value="#{book.title}" outcome="bookDetails">
+                <f:param name="id" value="#{book.id}" />
+            </h:link>
+        </h:column>
+        <h:column>
+            <f:facet name="header">Isbn</f:facet>
+            #{book.isbn}
+        </h:column>
+        <h:column>
+            <f:facet name="header">Price</f:facet>
+            #{book.price}
+        </h:column>
+        <h:column>
+            <f:facet name="header">Author ID</f:facet>
+            #{book.author_id}
+        </h:column>
+    </h:dataTable>
+
+    <h:button value="Back to Authors" outcome="authors.xhtml" />
+
+</h:body>
+</html>

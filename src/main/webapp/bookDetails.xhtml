@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+    <title>Author Details</title>
+    <link type="text/css" rel="stylesheet" href="styles/styles.css"/>
+</h:head>
+<h:body>
+    <h1>Author Details</h1>
+
+    <h:panelGrid columns="2">
+        <h:outputText value="Book Id:" />
+        <h:outputText value="#{bookInfoBean.selectedBook.id}" />
+
+        <h:outputText value="Title:" />
+        <h:outputText value="#{bookInfoBean.selectedBook.title}" />
+
+        <h:outputText value="Isbn:" />
+        <h:outputText value="#{bookInfoBean.selectedBook.isbn}" />
+
+        <h:outputText value="Price:" />
+        <h:outputText value="#{bookInfoBean.selectedBook.price}" />
+
+        <h:outputText value="Author ID:" />
+        <h:outputText value="#{bookInfoBean.selectedBook.author_id}" />
+    </h:panelGrid>
+
+    <h:button value="Back to Authors" outcome="authors.xhtml" />
+
+</h:body>
+</html>

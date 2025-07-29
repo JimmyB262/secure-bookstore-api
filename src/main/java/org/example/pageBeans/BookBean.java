@@ -138,19 +138,18 @@ public class BookBean {
     }
 
 
-    public String deleteBook() {
+    public void deleteBook(Integer bookId) {
         Client client = ClientBuilder.newClient();
         try {
             String jwt = getJwtFromCookie();
             if (jwt == null || jwt.isBlank()) {
                 System.err.println("JWT token not found.");
-                return null;
+                return;
             }
 
-            Integer bookId = newBook.getId();
             if (bookId == null) {
                 System.err.println("Book ID is null.");
-                return null;
+                return;
             }
 
             Response response = client
@@ -161,10 +160,8 @@ public class BookBean {
 
             if (response.getStatus() == 201) {
                 System.out.println("Book deleted successfully.");
-                loadAllBooks();
-                newBook = new BookAuthorDTO();
             } else {
-                System.err.println("Failed to delete Book: " + response.getStatus());
+                System.err.println("Failed to delete book: " + response.getStatus());
             }
 
         } catch (Exception e) {
@@ -172,9 +169,10 @@ public class BookBean {
         } finally {
             client.close();
         }
+
         loadAllBooks();
-        return null;
     }
+
 
     public String updateBook() {
         Client client = ClientBuilder.newClient();

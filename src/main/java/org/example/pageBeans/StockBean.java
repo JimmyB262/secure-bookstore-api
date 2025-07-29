@@ -150,22 +150,19 @@ public class StockBean {
         return null;
     }
 
-    public String deleteStock() {
-        System.out.println("deleteStock() method called.");
+    public void deleteStock(Integer stockId) {
         Client client = ClientBuilder.newClient();
         try {
             String jwt = getJwtFromCookie();
             if (jwt == null || jwt.isBlank()) {
                 System.err.println("JWT token not found.");
-                return null;
+                return;
             }
 
-            Integer stockId = newStock.getId();
             if (stockId == null) {
                 System.err.println("Stock ID is null.");
-                return null;
+                return;
             }
-            System.out.println("Attempting to delete stock with ID: " + stockId);
 
             Response response = client
                     .target("http://localhost:8080/Helloworld-1.0-SNAPSHOT/api/stock/" + stockId)
@@ -175,10 +172,8 @@ public class StockBean {
 
             if (response.getStatus() == 201) {
                 System.out.println("Stock deleted successfully.");
-                loadAll();
-                newStock = new BookStockDTO();
             } else {
-                System.err.println("Failed to delete Stock: " + response.getStatus());
+                System.err.println("Failed to delete stock: " + response.getStatus());
             }
 
         } catch (Exception e) {
@@ -186,9 +181,10 @@ public class StockBean {
         } finally {
             client.close();
         }
+
         loadAll();
-        return null;
     }
+
 
 
     public String updateStock() {

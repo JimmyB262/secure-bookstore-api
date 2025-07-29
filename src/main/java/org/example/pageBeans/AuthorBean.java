@@ -190,19 +190,18 @@ public class AuthorBean {
     }
 
 
-    public String deleteAuthor() {
+    public void deleteAuthorById(Integer authorId) {
         Client client = ClientBuilder.newClient();
         try {
             String jwt = getJwtFromCookie();
             if (jwt == null || jwt.isBlank()) {
                 System.err.println("JWT token not found.");
-                return null;
+                return;
             }
 
-            Integer authorId = newAuthor.getAuthor_id();
             if (authorId == null) {
                 System.err.println("Author ID is null.");
-                return null;
+                return;
             }
 
             Response response = client
@@ -213,8 +212,6 @@ public class AuthorBean {
 
             if (response.getStatus() == 201) {
                 System.out.println("Author deleted successfully.");
-                loadAllAuthors();
-                newAuthor = new Author();
             } else {
                 System.err.println("Failed to delete author: " + response.getStatus());
             }
@@ -224,8 +221,8 @@ public class AuthorBean {
         } finally {
             client.close();
         }
+
         loadAllAuthors();
-        return null;
     }
 
     public String updateAuthor() {

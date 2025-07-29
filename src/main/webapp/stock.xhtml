@@ -7,9 +7,15 @@
 
 <h:head>
     <title>Stock Info</title>
-    <link type="text/css" rel="stylesheet" href="styles/styles.css"/>
+    <h:outputStylesheet library="styles" name="styles.css"/>
 </h:head>
 <h:body>
+    <div class="button-container">
+        <h:form styleClass="button-form">
+            <h:commandButton value="Books" action="books.xhtml" styleClass="custom-button" />
+            <h:commandButton value="Authors" action="authors.xhtml" styleClass="custom-button" />
+        </h:form>
+    </div>
         <h2>📦 All Stock</h2>
         <h:dataTable value="#{stockBean.stockList}" var="s" border="1">
             <h:column>
@@ -19,6 +25,14 @@
             <h:column>
                 <f:facet name="header">Quantity</f:facet>
                 #{s.quantity}
+            </h:column>
+            <h:column rendered="#{userSessionBean.admin}">
+                <f:facet name="header">Delete</f:facet>
+                <h:form>
+                    <h:commandButton value="X" style="color: red;"
+                                     action="#{stockBean.deleteStock(s.id)}"
+                                     onclick="return confirm('Are you sure you want to delete this stock?');" />
+                </h:form>
             </h:column>
         </h:dataTable>
 

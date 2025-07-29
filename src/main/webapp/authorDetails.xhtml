@@ -4,9 +4,15 @@
       xmlns:f="http://java.sun.com/jsf/core">
 <h:head>
     <title>Author Details</title>
-    <link type="text/css" rel="stylesheet" href="styles/styles.css"/>
+    <h:outputStylesheet library="styles" name="styles.css"/>
 </h:head>
 <h:body>
+    <div class="button-container">
+        <h:form styleClass="button-form">
+            <h:commandButton value="Books" action="books.xhtml" styleClass="custom-button" />
+            <h:commandButton value="Stock" action="stock.xhtml" styleClass="custom-button" />
+        </h:form>
+    </div>
     <h1>Author Details</h1>
 
     <h:panelGrid columns="2">
@@ -25,6 +31,8 @@
         <h:outputText value="Gender:" />
         <h:outputText value="#{authorInfoBean.selectedAuthor.gender}" />
     </h:panelGrid>
+
+    <hr/>
 
     <h2>Books by This Author</h2>
 
@@ -52,6 +60,9 @@
             #{book.author_id}
         </h:column>
     </h:dataTable>
+
+
+    <hr/>
 
     <h:button value="Back to Authors" outcome="authors.xhtml" />
 

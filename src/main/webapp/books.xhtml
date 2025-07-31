@@ -6,7 +6,10 @@
 <h:head>
     <title>Books Page</title>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+
     <h:outputStylesheet library="styles" name="styles.css"/>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </h:head>
 <h:body>
@@ -14,14 +17,14 @@
         <div class="content">
             <div class="button-container">
                 <h:form styleClass="button-form">
-                    <h:commandButton value="Authors" action="authors.xhtml" styleClass="custom-button" />
-                    <h:commandButton value="Stock" action="stock.xhtml" styleClass="custom-button" />
+                    <h:commandButton styleClass="btn btn-primary" value="Authors" action="authors.xhtml"/>
+                    <h:commandButton styleClass="btn btn-primary" value="Stock" action="stock.xhtml" />
                 </h:form>
             </div>
             <h3>Find Book by ID</h3>
             <h:form>
                 <h:inputText value="#{bookBean.searchBookId}" label="Book ID" />
-                <h:commandButton value="Search" action="#{bookBean.loadBookById}" />
+                <h:commandButton styleClass="btn btn-primary ms-3" value="Search" action="#{bookBean.loadBookById}" />
             </h:form>
 
             <h:panelGroup rendered="#{not empty bookBean.bookById}">
@@ -57,7 +60,7 @@
 
                     </h:panelGrid>
 
-                    <h:commandButton value="Add Book" action="#{bookBean.addBook}" />
+                    <h:commandButton styleClass="btn btn-primary" value="Add Book" action="#{bookBean.addBook}" />
                 </h:form>
             </h:panelGroup>
 
@@ -72,7 +75,7 @@
 
                     </h:panelGrid>
 
-                    <h:commandButton value="Delete Book" action="#{bookBean.deleteBook}" />
+                    <h:commandButton styleClass="btn btn-primary" value="Delete Book" action="#{bookBean.deleteBook}" />
                 </h:form>
             </h:panelGroup>
 
@@ -98,7 +101,7 @@
                         <h:inputText id="author_id" value="#{bookBean.newBook.author_id}" />
                     </h:panelGrid>
 
-                    <h:commandButton value="Update Book" action="#{bookBean.updateBook}" />
+                    <h:commandButton styleClass="btn btn-primary" value="Update Book" action="#{bookBean.updateBook}" />
                 </h:form>
             </h:panelGroup>
 
@@ -130,6 +133,7 @@
                     <f:facet name="header">Delete</f:facet>
                         <h:form>
                             <h:commandButton value="X" style="color: red;"
+                                             styleClass="no-bootstrap"
                                              action="#{bookBean.deleteBook(book.id)}"
                                              onclick="return confirm('Are you sure you want to delete this book?');" />
                         </h:form>

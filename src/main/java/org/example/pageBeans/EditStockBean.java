@@ -30,20 +30,17 @@ public class EditStockBean implements Serializable {
     private BookStockDTO stock;
     private Integer id;
 
-    // Inject your AuthorService (replace this with your actual service)
     @Inject
     private StockRepository stockService;
 
     @PostConstruct
     public void init() {
-        // Get ID from URL
         String param = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
         if (param != null) {
             try {
                 id = Integer.parseInt(param);
                 stock = stockService.getStockById(id);
             } catch (NumberFormatException e) {
-                // handle invalid ID
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Invalid stock ID"));
             }
         }
@@ -123,7 +120,6 @@ public class EditStockBean implements Serializable {
         return null;
     }
 
-    // Getters & Setters
     public BookStockDTO getStock() {
         return stock;
     }

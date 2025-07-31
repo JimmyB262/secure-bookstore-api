@@ -4,27 +4,41 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
     <title>Edit Book</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+
     <h:outputStylesheet library="styles" name="styles.css"/>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </h:head>
 <h:body>
-    <h:form>
-        <h2>Edit Book</h2>
+    <div class="container mt-5">
+        <h:form>
+            <h2 class="mb-4">Edit Book</h2>
 
-        <h:panelGrid columns="2" cellpadding="5">
+            <h:panelGrid columns="2" cellpadding="5" styleClass="table table-borderless">
 
-            <h:outputLabel for="id" value="Id:"/>
-            <h:inputText id="id" value="#{editStockBean.stock.id}" required="true" />
+                <h:outputLabel for="id" value="Id:"/>
+                <h:inputText id="id" value="#{editStockBean.stock.id}" required="true"
+                             styleClass="form-control"/>
 
-            <h:outputLabel for="quantity" value="Quantity:"/>
-            <h:inputText id="quantity" value="#{editStockBean.stock.quantity}" required="true" />
+                <h:outputLabel for="quantity" value="Quantity:"/>
+                <h:inputText id="quantity" value="#{editStockBean.stock.quantity}" required="true"
+                             styleClass="form-control"/>
 
-        </h:panelGrid>
+            </h:panelGrid>
 
-        <br />
-        <h:commandButton value="Save Changes" action="#{editStockBean.saveStock}" />
-        <h:messages />
+            <br/>
+            <h:commandButton value="Save Changes"
+                             action="#{editStockBean.saveStock}"
+                             styleClass="btn btn-primary" />
 
-    </h:form>
+            <br/><br/>
+            <h:messages styleClass="alert alert-danger" />
+
+        </h:form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </h:body>
 </html>

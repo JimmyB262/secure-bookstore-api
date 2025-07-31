@@ -26,20 +26,18 @@ public class EditAuthorBean implements Serializable {
     private Author author;
     private Integer id;
 
-    // Inject your AuthorService (replace this with your actual service)
+
     @Inject
     private AuthorRepository authorService;
 
     @PostConstruct
     public void init() {
-        // Get ID from URL
         String param = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
         if (param != null) {
             try {
                 id = Integer.parseInt(param);
                 author = authorService.getAuthorById(id);
             } catch (NumberFormatException e) {
-                // handle invalid ID
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Invalid author ID"));
             }
         }
@@ -119,7 +117,6 @@ public class EditAuthorBean implements Serializable {
         return null;
     }
 
-    // Getters & Setters
     public Author getAuthor() {
         return author;
     }

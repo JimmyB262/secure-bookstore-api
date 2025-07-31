@@ -5,61 +5,46 @@
 
 <h:head>
     <title>User Registration</title>
-    <style>
-        .center-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f5f5f5;
-        }
-        .form-box {
-            padding: 30px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
 </h:head>
 
-<h:body>
-    <div class="center-container">
-        <h:form id="registerForm">
+<h:body class="bg-light">
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="card shadow p-4" style="width: 100%; max-width: 450px;">
+            <h4 class="mb-4 text-center">Register</h4>
+            <h:form id="registerForm">
+                <div class="mb-3">
+                    <h:outputLabel for="username" value="Username:" class="form-label"/>
+                    <h:inputText id="username" value="#{registerBean.username}" maxlength="20"
+                                 styleClass="form-control"/>
+                    <h:message for="username" styleClass="text-danger small"/>
+                </div>
 
-        <h:panelGrid columns="1" cellpadding="5" styleClass="form-box">
+                <div class="mb-3">
+                    <h:outputLabel for="password" value="Password:" class="form-label"/>
+                    <h:inputSecret id="password" value="#{registerBean.password}" maxlength="20"
+                                   styleClass="form-control"/>
+                    <h:message for="password" styleClass="text-danger small"/>
+                </div>
 
-                <h:outputLabel for="username" value="Username:" />
-                <h:inputText id="username" value="#{registerBean.username}" maxlength="20">
-                </h:inputText>
-                <h:message for="username" style="color:red;" />
+                <div class="mb-3">
+                    <h:outputLabel for="passwordRepeat" value="Repeat Password:" class="form-label"/>
+                    <h:inputSecret id="passwordRepeat" value="#{registerBean.passwordRepeat}" maxlength="20"
+                                   styleClass="form-control"/>
+                    <h:message for="passwordRepeat" styleClass="text-danger small"/>
+                </div>
 
+                <div class="d-flex justify-content-between mt-4">
+                    <h:commandButton value="Register" action="#{registerBean.register}" styleClass="btn btn-success" />
+                    <h:button value="Go to Login" outcome="login.xhtml" styleClass="btn btn-outline-secondary" />
+                </div>
 
-                <h:outputLabel for="password" value="Password:" />
-                <h:inputSecret id="password" value="#{registerBean.password}" maxlength="20">
-                </h:inputSecret>
-                <h:message for="password" style="color:red;" />
-
-
-                <h:outputLabel for="passwordRepeat" value="Repeat Password:" />
-                <h:inputSecret id="passwordRepeat" value="#{registerBean.passwordRepeat}"  maxlength="20">
-                </h:inputSecret>
-                <h:outputLabel />
-                <h:message for="passwordRepeat" style="color:red;" />
-
-                <h:outputLabel />
-                <h:panelGroup style="text-align: center; margin-top: 15px;">
-                    <h:commandButton value="Register" action="#{registerBean.register}" style="margin-right: 10px;" />
-                    <h:button value="Go to Login" outcome="login.xhtml" />
-                </h:panelGroup>
-
-
-            </h:panelGrid>
-
-            <h:messages globalOnly="true" layout="table"/>
-        </h:form>
+                <h:messages globalOnly="true" layout="table" styleClass="mt-3 alert alert-danger"/>
+            </h:form>
+        </div>
     </div>
 </h:body>
 </html>
+
 
 

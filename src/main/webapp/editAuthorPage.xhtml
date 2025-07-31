@@ -4,37 +4,43 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
     <title>Edit Author</title>
-    <h:outputStylesheet library="styles" name="styles.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <h:outputStylesheet library="styles" name="styles.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </h:head>
 <h:body>
-    <h:form>
-        <h2>Edit Author</h2>
+    <div class="container mt-5">
+        <h:form>
+            <h2 class="mb-4">Edit Author</h2>
 
-        <h:panelGrid columns="2" cellpadding="5">
+            <h:panelGrid columns="2" cellpadding="5" styleClass="table table-borderless">
 
-            <h:outputLabel for="author_id" value="Author Id:"/>
-            <h:inputText id="author_id" value="#{editAuthorBean.author.author_id}" required="true" />
+                <h:outputLabel for="author_id" value="Author Id:" />
+                <h:inputText id="author_id" value="#{editAuthorBean.author.author_id}" required="true" styleClass="form-control" />
 
-            <h:outputLabel for="fullName" value="Full Name:"/>
-            <h:inputText id="fullName" value="#{editAuthorBean.author.full_name}" required="true" />
+                <h:outputLabel for="fullName" value="Full Name:" />
+                <h:inputText id="fullName" value="#{editAuthorBean.author.full_name}" required="true" styleClass="form-control" />
 
-            <h:outputLabel for="email" value="Email:"/>
-            <h:inputText id="email" value="#{editAuthorBean.author.email}" required="true" />
+                <h:outputLabel for="email" value="Email:" />
+                <h:inputText id="email" value="#{editAuthorBean.author.email}" required="true" styleClass="form-control" />
 
-            <h:outputLabel for="age" value="Age:"/>
-            <h:inputText id="age" value="#{editAuthorBean.author.age}" required="true" />
+                <h:outputLabel for="age" value="Age:" />
+                <h:inputText id="age" value="#{editAuthorBean.author.age}" required="true" styleClass="form-control" />
 
-            <h:outputLabel for="phone" value="Phone:"/>
-            <h:inputText id="phone" value="#{editAuthorBean.author.phone}" required="true" />
+                <h:outputLabel for="phone" value="Phone:" />
+                <h:inputText id="phone" value="#{editAuthorBean.author.phone}" required="true" styleClass="form-control" />
 
-            <h:outputLabel for="gender" value="Gender:"/>
-            <h:inputText id="gender" value="#{editAuthorBean.author.gender}" required="true" />
-        </h:panelGrid>
+                <h:outputLabel for="gender" value="Gender:" />
+                <h:inputText id="gender" value="#{editAuthorBean.author.gender}" required="true" styleClass="form-control" />
 
-        <br />
-        <h:commandButton value="Save Changes" action="#{editAuthorBean.saveAuthor}" />
-        <h:messages />
-    </h:form>
+            </h:panelGrid>
+
+            <br />
+            <h:commandButton value="Save Changes" action="#{editAuthorBean.saveAuthor}" styleClass="btn btn-primary" />
+            <br /><br />
+            <h:messages styleClass="alert alert-danger" />
+        </h:form>
+    </div>
+
 </h:body>
 </html>

@@ -7,14 +7,17 @@
 
 <h:head>
     <title>Stock Info</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+
     <h:outputStylesheet library="styles" name="styles.css"/>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </h:head>
 <h:body>
     <div class="button-container">
         <h:form styleClass="button-form">
-            <h:commandButton value="Books" action="books.xhtml" styleClass="custom-button" />
-            <h:commandButton value="Authors" action="authors.xhtml" styleClass="custom-button" />
+            <h:commandButton styleClass="btn btn-primary" value="Books" action="books.xhtml"/>
+            <h:commandButton styleClass="btn btn-primary" value="Authors" action="authors.xhtml" />
         </h:form>
     </div>
         <h2>📦 All Stock</h2>
@@ -31,6 +34,7 @@
                 <f:facet name="header">Delete</f:facet>
                 <h:form>
                     <h:commandButton value="X" style="color: red;"
+                                     styleClass="no-bootstrap"
                                      action="#{stockBean.deleteStock(s.id)}"
                                      onclick="return confirm('Are you sure you want to delete this stock?');" />
                 </h:form>
@@ -46,7 +50,7 @@
 
         <h2>🔍 Search Book by ID</h2>
         <h:inputText value="#{stockBean.bookIdToSearch}" />
-        <h:commandButton value="Search" action="#{stockBean.searchByBookId}" />
+        <h:commandButton styleClass="btn btn-primary margin-left-10" value="Search" action="#{stockBean.searchByBookId}" />
         <h:panelGroup rendered="#{not empty stockBean.stockById}">
             <p>Book ID: #{stockBean.stockById.id}</p>
             <p>Quantity: #{stockBean.stockById.quantity}</p>
@@ -54,7 +58,7 @@
 
         <h2>👤 Total Books by Author</h2>
         <h:inputText value="#{stockBean.authorIdToSearch}" />
-        <h:commandButton value="Get Total" action="#{stockBean.searchAuthorBookSum}" />
+        <h:commandButton styleClass="btn btn-primary margin-left-10" value="Get Total" action="#{stockBean.searchAuthorBookSum}" />
         <h:panelGroup rendered="#{not empty stockBean.authorBookSum}">
             <p>Total books by author: #{stockBean.authorBookSum}</p>
         </h:panelGroup>
@@ -99,7 +103,7 @@
 
                 </h:panelGrid>
 
-                <h:commandButton value="Add Stock" action="#{stockBean.addStock}" />
+                <h:commandButton styleClass="btn btn-primary" value="Add Stock" action="#{stockBean.addStock}" />
             </h:form>
         </h:panelGroup>
 
@@ -114,7 +118,7 @@
 
                 </h:panelGrid>
 
-                <h:commandButton value="Delete Stock" action="#{stockBean.deleteStock}" />
+                <h:commandButton styleClass="btn btn-primary" value="Delete Stock" action="#{stockBean.deleteStock}" />
             </h:form>
         </h:panelGroup>
 
@@ -132,7 +136,7 @@
 
             </h:panelGrid>
 
-            <h:commandButton value="Update Stock" action="#{stockBean.updateStock}" />
+            <h:commandButton styleClass="btn btn-primary" value="Update Stock" action="#{stockBean.updateStock}" />
         </h:form>
     </h:panelGroup>
 

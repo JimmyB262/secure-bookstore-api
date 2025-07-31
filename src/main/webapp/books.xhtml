@@ -7,6 +7,7 @@
     <title>Books Page</title>
 
     <h:outputStylesheet library="styles" name="styles.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </h:head>
 <h:body>
     <div class="center-container">
@@ -132,6 +133,13 @@
                                              action="#{bookBean.deleteBook(book.id)}"
                                              onclick="return confirm('Are you sure you want to delete this book?');" />
                         </h:form>
+                </h:column>
+                <h:column rendered="#{userSessionBean.admin}">
+                    <f:facet name="header">Edit</f:facet>
+                    <h:link outcome="editBookPage">
+                        <f:param name="id" value="#{book.id}" />
+                        <i class="fas fa-pen" style="color: blue;"></i>
+                    </h:link>
                 </h:column>
             </h:dataTable>
         </div>

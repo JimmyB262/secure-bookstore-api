@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Edit Author</title>
+    <h:outputStylesheet library="styles" name="styles.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</h:head>
+<h:body>
+    <h:form>
+        <h2>Edit Author</h2>
+
+        <h:panelGrid columns="2" cellpadding="5">
+
+            <h:outputLabel for="author_id" value="Author Id:"/>
+            <h:inputText id="author_id" value="#{editAuthorBean.author.author_id}" required="true" />
+
+            <h:outputLabel for="fullName" value="Full Name:"/>
+            <h:inputText id="fullName" value="#{editAuthorBean.author.full_name}" required="true" />
+
+            <h:outputLabel for="email" value="Email:"/>
+            <h:inputText id="email" value="#{editAuthorBean.author.email}" required="true" />
+
+            <h:outputLabel for="age" value="Age:"/>
+            <h:inputText id="age" value="#{editAuthorBean.author.age}" required="true" />
+
+            <h:outputLabel for="phone" value="Phone:"/>
+            <h:inputText id="phone" value="#{editAuthorBean.author.phone}" required="true" />
+
+            <h:outputLabel for="gender" value="Gender:"/>
+            <h:inputText id="gender" value="#{editAuthorBean.author.gender}" required="true" />
+        </h:panelGrid>
+
+        <br />
+        <h:commandButton value="Save Changes" action="#{editAuthorBean.saveAuthor}" />
+        <h:messages />
+    </h:form>
+</h:body>
+</html>

@@ -30,7 +30,7 @@ public class StockRepository {
 
     public List<BookStockDTO> getStock(){
         List<BookStockDTO> results = entityManager
-                .createQuery("select new org.example.dto.BookStockDTO(s.quantity , s.book.id)" +
+                .createQuery("select new org.example.dto.BookStockDTO(s.book.id , s.quantity)" +
                         "from Stock s", BookStockDTO.class)
                 .getResultList();
         return results;

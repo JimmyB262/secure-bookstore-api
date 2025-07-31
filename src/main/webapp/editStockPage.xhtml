@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Edit Book</title>
+    <h:outputStylesheet library="styles" name="styles.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</h:head>
+<h:body>
+    <h:form>
+        <h2>Edit Book</h2>
+
+        <h:panelGrid columns="2" cellpadding="5">
+
+            <h:outputLabel for="id" value="Id:"/>
+            <h:inputText id="id" value="#{editStockBean.stock.id}" required="true" />
+
+            <h:outputLabel for="quantity" value="Quantity:"/>
+            <h:inputText id="quantity" value="#{editStockBean.stock.quantity}" required="true" />
+
+        </h:panelGrid>
+
+        <br />
+        <h:commandButton value="Save Changes" action="#{editStockBean.saveStock}" />
+        <h:messages />
+
+    </h:form>
+</h:body>
+</html>

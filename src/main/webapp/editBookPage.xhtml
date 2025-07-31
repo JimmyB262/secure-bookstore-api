@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Edit Book</title>
+    <h:outputStylesheet library="styles" name="styles.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</h:head>
+<h:body>
+    <h:form>
+        <h2>Edit Book</h2>
+
+        <h:panelGrid columns="2" cellpadding="5">
+
+            <h:outputLabel for="id" value="Book Id:"/>
+            <h:inputText id="id" value="#{editBookBean.book.id}" required="true" />
+
+            <h:outputLabel for="title" value="Title:"/>
+            <h:inputText id="title" value="#{editBookBean.book.title}" required="true" />
+
+            <h:outputLabel for="isbn" value="Isbn:"/>
+            <h:inputText id="isbn" value="#{editBookBean.book.isbn}" required="true" />
+
+            <h:outputLabel for="price" value="Price:"/>
+            <h:inputText id="price" value="#{editBookBean.book.price}" required="true" />
+
+            <h:outputLabel for="author_id" value="Author:"/>
+            <h:inputText id="author_id" value="#{editBookBean.book.author_id}" required="true" />
+
+        </h:panelGrid>
+
+        <br />
+        <h:commandButton value="Save Changes" action="#{editBookBean.saveBook}" />
+        <h:messages />
+
+    </h:form>
+</h:body>
+</html>

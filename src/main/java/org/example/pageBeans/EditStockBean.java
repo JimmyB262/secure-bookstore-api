@@ -28,10 +28,14 @@ import org.example.repository.StockRepository;
 public class EditStockBean implements Serializable {
 
     private BookStockDTO stock;
+    private BookAuthorDTO book;
     private Integer id;
 
     @Inject
     private StockRepository stockService;
+
+    @Inject
+    private BookRepository bookService;
 
     @PostConstruct
     public void init() {
@@ -40,6 +44,7 @@ public class EditStockBean implements Serializable {
             try {
                 id = Integer.parseInt(param);
                 stock = stockService.getStockById(id);
+                book = bookService.getBookById(id);
             } catch (NumberFormatException e) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Invalid stock ID"));
             }
@@ -126,5 +131,13 @@ public class EditStockBean implements Serializable {
 
     public void setStock(BookStockDTO stock) {
         this.stock = stock;
+    }
+
+    public BookAuthorDTO getBook() {
+        return book;
+    }
+
+    public void setBook(BookAuthorDTO book) {
+        this.book = book;
     }
 }

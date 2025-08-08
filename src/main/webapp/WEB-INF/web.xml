@@ -13,5 +13,16 @@
         <param-value>client</param-value>
     </context-param>
 
+    <filter>
+        <filter-name>AuthServletFilter</filter-name>
+        <filter-class>org.example.filter.JwtAuthFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>AuthServletFilter</filter-name>
+        <url-pattern>*.xhtml</url-pattern>
+    </filter-mapping>
+
+
 </web-app>
 

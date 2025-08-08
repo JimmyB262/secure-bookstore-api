@@ -1,6 +1,8 @@
 package org.example.pageBeans;
 
+import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.inject.Inject;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.client.Entity;
@@ -15,6 +17,7 @@ import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 import org.example.dto.BookAuthorDTO;
 import org.example.entity.Book;
+import org.example.repository.AuthorRepository;
 
 
 import java.util.Collections;
@@ -27,6 +30,11 @@ public class BookBean {
     private List<BookAuthorDTO> books;
     private BookAuthorDTO bookById;
     private Integer searchBookId;
+    private Integer selectedAuthorId;
+
+
+    @Inject
+    AuthorRepository authorRepository;
 
     private BookAuthorDTO newBook = new BookAuthorDTO();
 
@@ -34,9 +42,13 @@ public class BookBean {
         this.newBook = newBook;
     }
 
+    private List<Author> authors;
+
     @PostConstruct
     public void init() {
+
         loadAllBooks();
+        authors = authorRepository.getAuthors();
     }
 
     public void loadAllBooks() {
@@ -110,6 +122,12 @@ public class BookBean {
             String jwt = getJwtFromCookie();
             if (jwt == null || jwt.isBlank()) {
                 System.err.println("JWT token not found.");
+                return null;
+            }
+
+            if (!authorExists(newBook.getAuthor_id())){
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Author ID does not exist", null));
                 return null;
             }
 
@@ -214,6 +232,16 @@ public class BookBean {
         return null;
     }
 
+    public String getAuthorNameById(int authorId) {
+        Author a = authorRepository.getAuthorById(authorId);
+        return a != null ? a.getFull_name() : "Unknown";
+    }
+
+    public Boolean authorExists(int id){
+        Author author = authorRepository.getAuthorById(id);
+        return author != null;
+    }
+
     public String getJwtFromCookie() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         if (facesContext == null) return null;
@@ -256,5 +284,21 @@ public class BookBean {
 
     public void setSearchBookId(Integer searchBookId) {
         this.searchBookId = searchBookId;
+    }
+
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
+    }
+
+    public Integer getSelectedAuthorId() {
+        return selectedAuthorId;
+    }
+
+    public void setSelectedAuthorId(Integer selectedAuthorId) {
+        this.selectedAuthorId = selectedAuthorId;
     }
 }

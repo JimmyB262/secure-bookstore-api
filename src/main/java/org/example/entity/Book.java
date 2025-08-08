@@ -3,11 +3,16 @@ package org.example.entity;
 import jakarta.json.bind.annotation.JsonbPropertyOrder;
 import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 
 import java.math.BigDecimal;
 
 
 @Entity
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +26,10 @@ public class Book {
     @JoinColumn(name = "author_id")
     @JsonbTransient
     private Author author; //TODO thelw na deixnei to id sto json
+
+    @OneToOne(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Stock stock;
+
 
     public Book(Integer id, String title, String isbn, BigDecimal price, Author author) {
         this.id = id;
@@ -78,5 +87,16 @@ public class Book {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Stock getStock() {
+        return stock;
+    }
+
+    public void setStock(Stock stock) {
+        this.stock = stock;
+        if (stock != null && stock.getBook() != this) {
+            stock.setBook(this);  // Ensure bidirectional sync
+        }
     }
 }

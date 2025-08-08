@@ -57,6 +57,8 @@ public class BookRepository {
         Book book = new Book(bookAuthorDTO.getId(), bookAuthorDTO.getTitle(), bookAuthorDTO.getIsbn(),
                 bookAuthorDTO.getPrice() , author);
 
+        author.addBook(book);
+
         entityManager.persist(book);
         entityManager.flush();
 
@@ -81,6 +83,9 @@ public class BookRepository {
                 book.getIsbn(),
                 book.getPrice(),
                 book.getAuthorId()));
+
+        Author author = authorRepository.getAuthorById(book.getAuthorId());
+        author.removeBook(book);
 
         entityManager.remove(book);
 
@@ -116,5 +121,16 @@ public class BookRepository {
 
     }
 
+    public List<BookAuthorDTO> findBooksWithoutStock() {
+        String jpql = "SELECT b FROM Book b WHERE b.id NOT IN (SELECT s.book.id FROM Stock s)";
+        return entityManager.createQuery(jpql, BookAuthorDTO.class).getResultList();
 
+    }
+
+    public List<BookAuthorDTO> getMatchingBooks(String name){
+        return entityManager
+                .createQuery("SELECT a FROM Book a WHERE LOWER(a.title) LIKE :name", BookAuthorDTO.class)
+                .setParameter("name", "%" + name.toLowerCase() + "%")
+                .getResultList();
+    }
 }

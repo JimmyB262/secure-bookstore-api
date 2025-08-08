@@ -3,6 +3,7 @@ package org.example.pageBeans;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.context.FacesContext;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +18,8 @@ import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.ws.rs.client.*;
 import jakarta.ws.rs.core.*;
+import org.example.repository.BookRepository;
+
 import java.util.List;
 
 import java.util.List;
@@ -32,9 +35,13 @@ public class StockBean {
     private List<BookStockDTO> sortedStock;
     private BookStockDTO stockById;
     private Integer bookIdToSearch;
+    private Integer selectedBookId;
     private Integer authorIdToSearch;
     private Integer authorBookSum;
     private Double avgStock;
+
+    @Inject
+    BookRepository bookRepo;
 
     private BookStockDTO newStock = new BookStockDTO();
 
@@ -42,9 +49,12 @@ public class StockBean {
         this.newStock = newStock;
     }
 
+    private List<BookAuthorDTO> books ;
+
     @PostConstruct
     public void init() {
         loadAll();
+        books = bookRepo.findBooksWithoutStock();
     }
 
     public void loadAll() {
@@ -227,6 +237,17 @@ public class StockBean {
         return null;
     }
 
+    public List<BookAuthorDTO> getBooksWithNoStock() {
+        books = bookRepo.findBooksWithoutStock();
+        return books;
+    }
+
+    public String getBookTitleById(int id) {
+        BookAuthorDTO book = bookRepo.getBookById(id);
+        return book != null ? book.getTitle(): "Unknown";
+    }
+
+
     public void setStockList(List<BookStockDTO> stockList) {
         this.stockList = stockList;
     }
@@ -303,6 +324,21 @@ public class StockBean {
         return avgStock;
     }
 
+    public List<BookAuthorDTO> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<BookAuthorDTO> books) {
+        this.books = books;
+    }
+
+    public Integer getSelectedBookId() {
+        return selectedBookId;
+    }
+
+    public void setSelectedBookId(Integer selectedBookId) {
+        this.selectedBookId = selectedBookId;
+    }
 
     public String getJwtFromCookie() {
         FacesContext facesContext = FacesContext.getCurrentInstance();

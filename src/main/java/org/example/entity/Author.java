@@ -2,17 +2,30 @@ package org.example.entity;
 
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+
+import java.util.List;
 
 @Entity
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Author {
 
-@Id
-    private Integer author_id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer  author_id;
     private String full_name;
     private String email;
     private Integer age;
     private String phone;
     private char gender;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Book> books;
+
 
     public Author(Integer age, Integer author_id, String email, String full_name, char gender, String phone) {
         this.age = age;
@@ -73,5 +86,23 @@ public class Author {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public void addBook(Book book) {
+        books.add(book);
+        book.setAuthor_id(this);
+    }
+
+    public void removeBook(Book book) {
+        books.remove(book);
+        book.setAuthor_id(null);
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
     }
 }

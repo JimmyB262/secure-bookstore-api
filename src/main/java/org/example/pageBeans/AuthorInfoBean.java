@@ -16,6 +16,7 @@ import org.example.dto.BookAuthorDTO;
 import org.example.entity.Author;
 import org.example.entity.Book;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
@@ -47,18 +48,36 @@ public class AuthorInfoBean implements Serializable {
     }
 
 
-    private Author fetchAuthor(int id) {
+    private Author fetchAuthor(int id) throws IOException {
         Client client = ClientBuilder.newClient();
         String jwt = getJwtFromCookie();
+        Author author;
         if (jwt == null || jwt.isBlank()) {
             System.err.println("JWT token not found.");
+            FacesContext.getCurrentInstance().getExternalContext()
+                    .redirect("/Helloworld-1.0-SNAPSHOT/login.xhtml");
             return null;
         }
         String endpoint = "http://localhost:8080/Helloworld-1.0-SNAPSHOT/api/author/" + id;
-        return client.target(endpoint)
+
+        Response response = client.target(endpoint)
                 .request(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Bearer " + jwt)
-                .get(Author.class);
+                .get();
+
+        if (response.getStatus() == 200) {
+            author = response.readEntity(Author.class);
+        } else if (response.getStatus() == 401 || response.getStatus() == 403) {
+            System.err.println("Unauthorized access: token may be expired or invalid.");
+            author = new Author();
+            FacesContext.getCurrentInstance().getExternalContext()
+                    .redirect("/Helloworld-1.0-SNAPSHOT/login.xhtml");
+
+        } else {
+            System.err.println("Unexpected error while fetching author: HTTP " + response.getStatus());
+            author = new Author();
+        }
+        return author;
     }
 
     public String getAuthorBooks(int id){
@@ -67,6 +86,8 @@ public class AuthorInfoBean implements Serializable {
             String jwt = getJwtFromCookie();
             if (jwt == null || jwt.isBlank()) {
                 System.err.println("JWT token not found.");
+                FacesContext.getCurrentInstance().getExternalContext()
+                        .redirect("/Helloworld-1.0-SNAPSHOT/login.xhtml");
                 return null;
             }
 

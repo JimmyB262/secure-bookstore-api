@@ -17,9 +17,11 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.example.dto.BookAuthorDTO;
+import org.example.dto.BookStockDTO;
 import org.example.entity.Author;
 import org.example.repository.AuthorRepository;
 import org.example.repository.BookRepository;
+import org.example.repository.StockRepository;
 
 @Named
 @ViewScoped
@@ -27,10 +29,14 @@ public class EditBookBean implements Serializable {
 
     private BookAuthorDTO book;
     private Integer id;
+    private BookStockDTO stock;
 
 
     @Inject
     private BookRepository bookService;
+
+    @Inject
+    private StockRepository stockService;
 
     @PostConstruct
     public void init() {
@@ -39,6 +45,7 @@ public class EditBookBean implements Serializable {
             try {
                 id = Integer.parseInt(param);
                 book = bookService.getBookById(id);
+                stock = stockService.getStockById(id);
             } catch (NumberFormatException e) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Invalid book ID"));
             }
@@ -47,8 +54,9 @@ public class EditBookBean implements Serializable {
 
     public String saveBook() {
         try {
-            boolean success = updateBookViaApi(book);
-            if (success) {
+            boolean successBookSave = updateBookViaApi(book);
+            boolean successStockSave = updateStockViaApi(stock);
+            if (successBookSave & successStockSave ) {
                 FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage("Book updated successfully."));
                 return "books?faces-redirect=true";
@@ -102,6 +110,44 @@ public class EditBookBean implements Serializable {
         return false;
     }
 
+    private boolean updateStockViaApi(BookStockDTO updatedStock) {
+        Client client = ClientBuilder.newClient();
+        try {
+            String jwt = getJwtFromCookie();
+            if (jwt == null || jwt.isBlank()) {
+                System.err.println("JWT token not found.");
+                return false;
+            }
+
+            if (updatedStock == null || updatedStock.getId() == null) {
+                System.err.println("Stock or Stock ID is null.");
+                return false;
+            }
+
+            Response response = client
+                    .target("http://localhost:8080/Helloworld-1.0-SNAPSHOT/api/stock")
+                    .request(MediaType.APPLICATION_JSON)
+                    .header("Authorization", "Bearer " + jwt)
+                    .put(Entity.entity(updatedStock, MediaType.APPLICATION_JSON));
+
+            if (response.getStatus() == 200) {
+                System.out.println("Stock updated successfully.");
+                return true;
+            } else if (response.getStatus() == 404) {
+                System.err.println("Stock not found.");
+            } else {
+                System.err.println("Failed to update Stock: " + response.getStatus());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            client.close();
+        }
+
+        return false;
+    }
+
     public String getJwtFromCookie() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         if (facesContext == null) {
@@ -126,5 +172,13 @@ public class EditBookBean implements Serializable {
 
     public void setBook(BookAuthorDTO book) {
         this.book = book;
+    }
+
+    public BookStockDTO getStock() {
+        return stock;
+    }
+
+    public void setStock(BookStockDTO stock) {
+        this.stock = stock;
     }
 }

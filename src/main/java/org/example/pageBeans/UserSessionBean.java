@@ -8,6 +8,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import jakarta.servlet.http.HttpServletResponse;
 import org.example.util.JwtUtil;
 
 import java.io.Serializable;
@@ -68,6 +69,32 @@ public class UserSessionBean implements Serializable {
         }
         return null;
     }
+
+    public String logout() {
+        // Invalidate session
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        facesContext.getExternalContext().invalidateSession();
+
+        // Delete specific cookie (e.g., "user" or your custom one)
+        HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+        HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
+
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("token".equals(cookie.getName())) {
+                    cookie.setValue("");
+                    cookie.setPath("/");
+                    cookie.setMaxAge(0);
+                    response.addCookie(cookie);
+                }
+            }
+        }
+
+        // Redirect to login page
+        return "/login.xhtml?faces-redirect=true";
+    }
+
 }
 
 

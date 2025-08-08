@@ -2,115 +2,138 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
 <h:head>
     <title>Books Page</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
-
-    <h:outputStylesheet library="styles" name="styles.css"/>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </h:head>
+
 <h:body>
-    <div class="center-container">
-        <div class="content">
-            <div class="button-container">
-                <h:form styleClass="button-form">
-                    <h:commandButton styleClass="btn btn-primary" value="Authors" action="authors.xhtml"/>
-                    <h:commandButton styleClass="btn btn-primary" value="Stock" action="stock.xhtml" />
-                </h:form>
+    <nav class="navbar navbar-expand-lg" style="background-color: #0d6efd;">
+        <div class="container-fluid justify-content-between">
+            <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item mx-2">
+                        <h:link outcome="authors.xhtml" styleClass="nav-link text-white">Authors</h:link>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <h:link outcome="stock.xhtml" styleClass="nav-link text-white">Stock</h:link>
+                    </li>
+                </ul>
             </div>
-            <h3>Find Book by ID</h3>
-            <h:form>
-                <h:inputText value="#{bookBean.searchBookId}" label="Book ID" />
-                <h:commandButton styleClass="btn btn-primary ms-3" value="Search" action="#{bookBean.loadBookById}" />
+
+            <!-- Logout icon on the right -->
+            <h:form styleClass="d-flex align-items-center ms-3">
+                <h:commandLink action="#{userSessionBean.logout}" styleClass="nav-link text-white" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </h:commandLink>
             </h:form>
-
-            <h:panelGroup rendered="#{not empty bookBean.bookById}">
-                <h:outputText value="Book found:" /><br/>
-                <p>Book ID: #{bookBean.bookById.id}</p>
-                <p>Title: #{bookBean.bookById.title}</p>
-                <p>Isbn: #{bookBean.bookById.isbn}</p>
-                <p>Price: #{bookBean.bookById.price}</p>
-                <p>Author ID: #{bookBean.bookById.author_id}</p>
-            </h:panelGroup>
-
-            <h:panelGroup rendered="#{empty bookBean.bookById and not empty bookBean.searchBookId}">
-                <p style="color:red;">No book found with the given ID.</p>
-            </h:panelGroup>
-
-            <h:panelGroup rendered="#{userSessionBean.admin}">
-                <hr/>
-                <h3>Add New Book</h3>
-                <h:form>
-                    <h:panelGrid columns="2" cellpadding="5">
-
-                        <h:outputLabel for="title" value="Title:"/>
-                        <h:inputText id="title" value="#{bookBean.newBook.title}" />
-
-                        <h:outputLabel for="isbn" value="Isbn:"/>
-                        <h:inputText id="isbn" value="#{bookBean.newBook.isbn}" />
-
-                        <h:outputLabel for="price" value="Price:"/>
-                        <h:inputText id="price" value="#{bookBean.newBook.price}" />
-
-                        <h:outputLabel for="author_id" value="Author:"/>
-                        <h:inputText id="author_id" value="#{bookBean.newBook.author_id}" />
-
-                    </h:panelGrid>
-
-                    <h:commandButton styleClass="btn btn-primary" value="Add Book" action="#{bookBean.addBook}" />
+        </div>
+    </nav>
+    <div class="container d-flex justify-content-center mt-5">
+        <div class="w-100" style="max-width: 900px;">
+            <!-- Find Book by ID -->
+            <div class="card p-4 mb-4">
+                <h5>Find Book by ID</h5>
+                <h:form class="d-flex gap-2 align-items-center">
+                    <h:inputText value="#{bookBean.searchBookId}" label="Book ID" styleClass="form-control w-50" />
+                    <h:commandButton styleClass="btn btn-primary" value="Search" action="#{bookBean.loadBookById}" />
                 </h:form>
-            </h:panelGroup>
 
+                <h:panelGroup rendered="#{not empty bookBean.bookById}" class="mt-3">
+                    <p><strong>Book found:</strong></p>
+                    <p>Book ID: #{bookBean.bookById.id}</p>
+                    <p>Title: #{bookBean.bookById.title}</p>
+                    <p>ISBN: #{bookBean.bookById.isbn}</p>
+                    <p>Price: #{bookBean.bookById.price}</p>
+                    <p>Author ID: #{bookBean.bookById.author_id}</p>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{empty bookBean.bookById and not empty bookBean.searchBookId}" class="mt-3 text-danger">
+                    No book found with the given ID.
+                </h:panelGroup>
+            </div>
+
+            <!-- Admin: Add New Book -->
             <h:panelGroup rendered="#{userSessionBean.admin}">
-                <hr/>
-                <h3>Delete Book</h3>
-                <h:form>
-                    <h:panelGrid columns="2" cellpadding="5">
+                <div class="card p-4 mb-4">
+                    <h5>Add New Book</h5>
+                    <h:form>
+                        <h:panelGrid columns="2" cellpadding="5" styleClass="table table-borderless">
 
-                        <h:outputLabel for="id" value="Book Id:"/>
-                        <h:inputText id="id" value="#{bookBean.newBook.id}" />
+                            <h:outputLabel for="title" value="Title:" />
+                            <h:inputText id="title" value="#{bookBean.newBook.title}" required="true" styleClass="form-control" pt:type="text" />
 
-                    </h:panelGrid>
+                            <h:outputLabel for="isbn" value="ISBN:" />
+                            <h:inputText id="isbn" value="#{bookBean.newBook.isbn}" styleClass="form-control" pt:type="text" pt:pattern="^\d{10}|\d{13}$" pt:title="Enter a 10 or 13-digit ISBN" />
 
-                    <h:commandButton styleClass="btn btn-primary" value="Delete Book" action="#{bookBean.deleteBook}" />
-                </h:form>
+                            <h:outputLabel for="price" value="Price:" />
+                            <h:inputText id="price" value="#{bookBean.newBook.price}" required="true" styleClass="form-control" pt:type="number" pt:step="0.01" pt:min="0" />
+
+                            <h:outputLabel for="author" value="Author:" />
+                            <h:selectOneMenu id="author" value="#{bookBean.newBook.author_id}" required="true" styleClass="form-select">
+                                <f:selectItem itemLabel="-- Select Author --" itemValue="#{null}" />
+                                <f:selectItems value="#{bookBean.authors}" var="author" itemValue="#{author.author_id}" itemLabel="#{author.full_name}" />
+                            </h:selectOneMenu>
+
+                        </h:panelGrid>
+
+                        <h:commandButton styleClass="btn btn-primary mt-3" value="Add Book" action="#{bookBean.addBook}" />
+                    </h:form>
+                </div>
             </h:panelGroup>
 
+            <!-- Admin: Delete Book -->
             <h:panelGroup rendered="#{userSessionBean.admin}">
-                <hr/>
-                <h3>Update Book</h3>
-                <h:form>
-                    <h:panelGrid columns="2" cellpadding="5">
-
-                        <h:outputLabel for="id" value="Book Id:"/>
-                        <h:inputText id="id" value="#{bookBean.newBook.id}" />
-
-                        <h:outputLabel for="title" value="Title:"/>
-                        <h:inputText id="title" value="#{bookBean.newBook.title}" />
-
-                        <h:outputLabel for="isbn" value="Isbn:"/>
-                        <h:inputText id="isbn" value="#{bookBean.newBook.isbn}" />
-
-                        <h:outputLabel for="price" value="Price:"/>
-                        <h:inputText id="price" value="#{bookBean.newBook.price}" />
-
-                        <h:outputLabel for="author_id" value="Author:"/>
-                        <h:inputText id="author_id" value="#{bookBean.newBook.author_id}" />
-                    </h:panelGrid>
-
-                    <h:commandButton styleClass="btn btn-primary" value="Update Book" action="#{bookBean.updateBook}" />
-                </h:form>
+                <div class="card p-4 mb-4">
+                    <h5>Delete Book</h5>
+                    <h:form>
+                        <h:panelGrid columns="2" cellpadding="5" styleClass="table table-borderless">
+                            <h:outputLabel for="deleteId" value="Book ID:" />
+                            <h:inputText id="deleteId" value="#{bookBean.newBook.id}" styleClass="form-control" />
+                        </h:panelGrid>
+                        <h:commandButton styleClass="btn btn-danger" value="Delete Book" action="#{bookBean.deleteBook}" />
+                    </h:form>
+                </div>
             </h:panelGroup>
 
-            <h2>All Books</h2>
-            <h:dataTable value="#{bookBean.books}" var="book" border="1">
-                <h:column>
-                    <f:facet name="header">Book ID</f:facet>
-                    #{book.id}
-                </h:column>
+            <!-- Admin: Update Book -->
+            <h:panelGroup rendered="#{userSessionBean.admin}">
+                <div class="card p-4 mb-4">
+                    <h5>Update Book</h5>
+                    <h:form>
+                        <h:panelGrid columns="2" cellpadding="5" styleClass="table table-borderless">
+
+                            <h:outputLabel for="updateId" value="Book ID:" />
+                            <h:inputText id="updateId" value="#{bookBean.newBook.id}" styleClass="form-control" />
+
+                            <h:outputLabel for="updateTitle" value="Title:" />
+                            <h:inputText id="updateTitle" value="#{bookBean.newBook.title}" styleClass="form-control" />
+
+                            <h:outputLabel for="updateIsbn" value="ISBN:" />
+                            <h:inputText id="updateIsbn" value="#{bookBean.newBook.isbn}" styleClass="form-control" />
+
+                            <h:outputLabel for="updatePrice" value="Price:" />
+                            <h:inputText id="updatePrice" value="#{bookBean.newBook.price}" styleClass="form-control" />
+
+                            <h:outputLabel for="updateAuthor" value="Author:" />
+                            <h:inputText id="updateAuthor" value="#{bookBean.newBook.author_id}" styleClass="form-control" />
+                        </h:panelGrid>
+
+                        <h:commandButton styleClass="btn btn-primary mt-3" value="Update Book" action="#{bookBean.updateBook}" />
+                    </h:form>
+                </div>
+            </h:panelGroup>
+
+            <hr />
+
+            <!-- All Books List -->
+            <h2 class="mb-3 text-center">All Books</h2>
+            <h:dataTable value="#{bookBean.books}" var="book" styleClass="table table-bordered">
                 <h:column>
                     <f:facet name="header">Title</f:facet>
                     <h:link value="#{book.title}" outcome="bookDetails">
@@ -118,7 +141,7 @@
                     </h:link>
                 </h:column>
                 <h:column>
-                    <f:facet name="header">Isbn</f:facet>
+                    <f:facet name="header">ISBN</f:facet>
                     #{book.isbn}
                 </h:column>
                 <h:column>
@@ -126,17 +149,11 @@
                     #{book.price}
                 </h:column>
                 <h:column>
-                    <f:facet name="header">Author ID</f:facet>
-                    #{book.author_id}
-                </h:column>
-                <h:column rendered="#{userSessionBean.admin}">
-                    <f:facet name="header">Delete</f:facet>
-                        <h:form>
-                            <h:commandButton value="X" style="color: red;"
-                                             styleClass="no-bootstrap"
-                                             action="#{bookBean.deleteBook(book.id)}"
-                                             onclick="return confirm('Are you sure you want to delete this book?');" />
-                        </h:form>
+                    <f:facet name="header">Author</f:facet>
+                    <h:link outcome="authorDetails">
+                        <f:param name="id" value="#{book.author_id}" />
+                        #{bookBean.getAuthorNameById(book.author_id)}
+                    </h:link>
                 </h:column>
                 <h:column rendered="#{userSessionBean.admin}">
                     <f:facet name="header">Edit</f:facet>
@@ -145,8 +162,18 @@
                         <i class="fas fa-pen" style="color: blue;"></i>
                     </h:link>
                 </h:column>
+                <h:column rendered="#{userSessionBean.admin}">
+                    <f:facet name="header">Delete</f:facet>
+                    <h:form>
+                        <h:commandButton value="X" style="color: red;" styleClass="btn btn-link p-0"
+                                         action="#{bookBean.deleteBook(book.id)}"
+                                         onclick="return confirm('Are you sure you want to delete this book?');" />
+                    </h:form>
+                </h:column>
             </h:dataTable>
+
         </div>
     </div>
 </h:body>
 </html>
+

@@ -9,6 +9,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </h:head>
 <h:body>
+    <nav class="navbar navbar-expand-lg" style="background-color: #0d6efd;">
+        <div class="container-fluid justify-content-between">
+            <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item mx-2">
+                        <h:link outcome="authors.xhtml" styleClass="nav-link text-white">Authors</h:link>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <h:link outcome="stock.xhtml" styleClass="nav-link text-white">Stock</h:link>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Logout icon on the right -->
+            <h:form styleClass="d-flex align-items-center ms-3">
+                <h:commandLink action="#{userSessionBean.logout}" styleClass="nav-link text-white" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </h:commandLink>
+            </h:form>
+        </div>
+    </nav>
     <div class="container mt-5">
         <h:form>
             <h2 class="mb-4">Edit Book</h2>
@@ -29,6 +50,9 @@
 
                 <h:outputLabel for="author_id" value="Author:" />
                 <h:inputText id="author_id" value="#{editBookBean.book.author_id}" required="true" styleClass="form-control" />
+
+                <h:outputLabel for="quantity" value="Quantity:" />
+                <h:inputText id="quantity" value="#{editBookBean.stock.quantity}" required="true" styleClass="form-control" />
 
             </h:panelGrid>
 

@@ -151,31 +151,32 @@
                 </h:form>
             </div>
 
+            <ui:remove>
+                <div class="card p-4 mb-4">
+                    <h3>Delete Stock</h3>
+                    <h:form>
+                        <h:panelGrid columns="2" cellpadding="5" styleClass="table table-borderless">
+                            <h:outputLabel for="id" value="Stock Id:" />
+                            <h:inputText id="id" value="#{stockBean.newStock.id}" />
+                        </h:panelGrid>
+                        <h:commandButton styleClass="btn btn-primary" value="Delete Stock" action="#{stockBean.deleteStock}" />
+                    </h:form>
+                </div>
 
-            <div class="card p-4 mb-4">
-                <h3>Delete Stock</h3>
-                <h:form>
-                    <h:panelGrid columns="2" cellpadding="5" styleClass="table table-borderless">
-                        <h:outputLabel for="id" value="Stock Id:" />
-                        <h:inputText id="id" value="#{stockBean.newStock.id}" />
-                    </h:panelGrid>
-                    <h:commandButton styleClass="btn btn-primary" value="Delete Stock" action="#{stockBean.deleteStock}" />
-                </h:form>
-            </div>
+                <div class="card p-4 mb-4">
+                    <h5>Update Stock</h5>
+                    <h:form>
+                        <h:panelGrid columns="2" cellpadding="5" styleClass="table table-borderless">
+                            <h:outputLabel for="id" value="Stock Id:" />
+                            <h:inputText id="id" value="#{stockBean.newStock.id}" />
 
-            <div class="card p-4 mb-4">
-                <h5>Update Stock</h5>
-                <h:form>
-                    <h:panelGrid columns="2" cellpadding="5" styleClass="table table-borderless">
-                        <h:outputLabel for="id" value="Stock Id:" />
-                        <h:inputText id="id" value="#{stockBean.newStock.id}" />
-
-                        <h:outputLabel for="quantity" value="Quantity:" />
-                        <h:inputText id="quantity" value="#{stockBean.newStock.quantity}" />
-                    </h:panelGrid>
-                    <h:commandButton styleClass="btn btn-primary" value="Update Stock" action="#{stockBean.updateStock}" />
-                </h:form>
-            </div>
+                            <h:outputLabel for="quantity" value="Quantity:" />
+                            <h:inputText id="quantity" value="#{stockBean.newStock.quantity}" />
+                        </h:panelGrid>
+                        <h:commandButton styleClass="btn btn-primary" value="Update Stock" action="#{stockBean.updateStock}" />
+                    </h:form>
+                </div>
+            </ui:remove>
         </h:panelGroup>
     </div>
 </h:body>

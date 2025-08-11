@@ -2,6 +2,7 @@ package org.example.pageBeans;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.faces.context.FacesContext;
 import jakarta.servlet.http.Cookie;
@@ -15,6 +16,7 @@ import jakarta.ws.rs.core.Response;
 import org.example.dto.BookAuthorDTO;
 import org.example.entity.Author;
 import org.example.entity.Book;
+import org.example.repository.AuthorRepository;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -27,6 +29,9 @@ public class BookInfoBean implements Serializable {
 
     private BookAuthorDTO selectedBook;
     private List<BookAuthorDTO> matchingBooks;
+
+    @Inject
+    AuthorRepository authorRepository;
 
     @PostConstruct
     public void init() {
@@ -58,6 +63,11 @@ public class BookInfoBean implements Serializable {
                 .request(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Bearer " + jwt)
                 .get(BookAuthorDTO.class);
+    }
+
+    public String getAuthorNameById(int authorId) {
+        Author a = authorRepository.getAuthorById(authorId);
+        return a != null ? a.getFull_name() : "Unknown";
     }
 
 

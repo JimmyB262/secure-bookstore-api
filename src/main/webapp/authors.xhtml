@@ -134,36 +134,37 @@
                 </div>
             </h:panelGroup>
 
-            <!-- Admin: Update Author -->
-            <h:panelGroup rendered="#{userSessionBean.admin}">
-                <div class="card p-4 mb-4">
-                    <h5>Update Author</h5>
-                    <h:form>
-                        <h:panelGrid columns="2" cellpadding="5" styleClass="table table-borderless">
+            <ui:remove>
+                <h:panelGroup rendered="#{userSessionBean.admin}">
+                    <div class="card p-4 mb-4">
+                        <h5>Update Author</h5>
+                        <h:form>
+                            <h:panelGrid columns="2" cellpadding="5" styleClass="table table-borderless">
 
-                            <h:outputLabel for="author_id" value="Author Id:" />
-                            <h:inputText id="author_id" value="#{authorBean.newAuthor.author_id}" styleClass="form-control" />
+                                <h:outputLabel for="author_id" value="Author Id:" />
+                                <h:inputText id="author_id" value="#{authorBean.newAuthor.author_id}" styleClass="form-control" />
 
-                            <h:outputLabel for="fullName" value="Full Name:" />
-                            <h:inputText id="fullName" value="#{authorBean.newAuthor.full_name}" styleClass="form-control" />
+                                <h:outputLabel for="fullName" value="Full Name:" />
+                                <h:inputText id="fullName" value="#{authorBean.newAuthor.full_name}" styleClass="form-control" />
 
-                            <h:outputLabel for="email" value="Email:" />
-                            <h:inputText id="email" value="#{authorBean.newAuthor.email}" styleClass="form-control" />
+                                <h:outputLabel for="email" value="Email:" />
+                                <h:inputText id="email" value="#{authorBean.newAuthor.email}" styleClass="form-control" />
 
-                            <h:outputLabel for="age" value="Age:" />
-                            <h:inputText id="age" value="#{authorBean.newAuthor.age}" styleClass="form-control" />
+                                <h:outputLabel for="age" value="Age:" />
+                                <h:inputText id="age" value="#{authorBean.newAuthor.age}" styleClass="form-control" />
 
-                            <h:outputLabel for="phone" value="Phone:" />
-                            <h:inputText id="phone" value="#{authorBean.newAuthor.phone}" styleClass="form-control" />
+                                <h:outputLabel for="phone" value="Phone:" />
+                                <h:inputText id="phone" value="#{authorBean.newAuthor.phone}" styleClass="form-control" />
 
-                            <h:outputLabel for="gender" value="Gender:" />
-                            <h:inputText id="gender" value="#{authorBean.newAuthor.gender}" styleClass="form-control" />
-                        </h:panelGrid>
+                                <h:outputLabel for="gender" value="Gender:" />
+                                <h:inputText id="gender" value="#{authorBean.newAuthor.gender}" styleClass="form-control" />
+                            </h:panelGrid>
 
-                        <h:commandButton styleClass="btn btn-primary mt-3" value="Update Author" action="#{authorBean.updateAuthor}" />
-                    </h:form>
-                </div>
-            </h:panelGroup>
+                            <h:commandButton styleClass="btn btn-primary mt-3" value="Update Author" action="#{authorBean.updateAuthor}" />
+                        </h:form>
+                    </div>
+                </h:panelGroup>
+            </ui:remove>
 
             <hr />
 
@@ -194,7 +195,7 @@
                 </h:column>
                 <h:column rendered="#{userSessionBean.admin}">
                     <f:facet name="header">Edit</f:facet>
-                    <h:link outcome="editAuthor">
+                    <h:link outcome="editAuthorPage.xhtml">
                         <f:param name="id" value="#{author.author_id}" />
                         <i class="fas fa-pen" style="color: blue;"></i>
                     </h:link>

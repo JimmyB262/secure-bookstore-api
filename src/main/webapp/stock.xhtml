@@ -82,24 +82,34 @@
         <div class="card p-4 mb-4">
             <h5>👤 Total Books by Author</h5>
             <h:form styleClass="d-flex gap-2 align-items-center">
-                <h:inputText value="#{stockBean.authorIdToSearch}" styleClass="form-control w-25" />
-                <h:commandButton styleClass="btn btn-primary" value="Get Total" action="#{stockBean.searchAuthorBookSum}" />
+
+                <!-- Dropdown for selecting an author -->
+                <h:selectOneMenu value="#{stockBean.authorIdToSearch}" styleClass="form-select w-25">
+                    <f:selectItem itemLabel="Select Author" itemValue="" noSelectionOption="true" />
+                    <f:selectItems value="#{stockBean.authors}" var="author"
+                                   itemValue="#{author.author_id}" itemLabel="#{author.full_name}" />
+                </h:selectOneMenu>
+
+                <h:commandButton styleClass="btn btn-primary" value="Get Total"
+                                 action="#{stockBean.searchAuthorBookSum}" />
             </h:form>
+
             <h:panelGroup rendered="#{not empty stockBean.authorBookSum}" class="mt-3">
                 <p>Total books by author: #{stockBean.authorBookSum}</p>
             </h:panelGroup>
         </div>
 
+
         <div class="card p-4 mb-4">
             <h5>📈 Book(s) with Max Stock</h5>
             <ui:repeat value="#{stockBean.maxStock}" var="m">
-                <p>Book ID: #{m.id}, Quantity: #{m.quantity}</p>
+                <p>Book Title: #{stockBean.getBookTitleById(m.id)}, Quantity: #{m.quantity}</p>
             </ui:repeat>
 
             <hr />
             <h5>📉 Book(s) with Min Stock</h5>
             <ui:repeat value="#{stockBean.minStock}" var="n">
-                <p>Book ID: #{n.id}, Quantity: #{n.quantity}</p>
+                <p>Book Title: #{stockBean.getBookTitleById(n.id)}, Quantity: #{n.quantity}</p>
             </ui:repeat>
         </div>
 

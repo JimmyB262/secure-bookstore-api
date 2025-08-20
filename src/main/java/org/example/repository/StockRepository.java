@@ -5,6 +5,7 @@ import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import org.example.dto.BookAuthorDTO;
 import org.example.dto.BookStockDTO;
 import org.example.entity.Book;
@@ -83,11 +84,16 @@ public class StockRepository {
 
 
         Optional<BookStockDTO> opt = Optional.of(new BookStockDTO(
-                stock.getQuantity(),
-                stock.getBookId()
+                stock.getBookId(),
+                stock.getQuantity()
         ));
-
+        Book book = stock.getBook();
+        if (book != null) {
+            book.setStock(null);
+        }
         entityManager.remove(stock);
+        entityManager.flush();
+        entityManager.clear();
 
 
         return opt;
@@ -95,12 +101,14 @@ public class StockRepository {
 
     public BookStockDTO getStockById(Integer id){
 
-        return entityManager.createQuery(
-                        "select new org.example.dto.BookStockDTO(s.book.id, s.quantity) " +
-                                "from Stock s where s.book.id = :id",
-                        BookStockDTO.class)
-                .setParameter("id", id)
-                .getSingleResult();
+        TypedQuery<BookStockDTO> query = entityManager.createQuery(
+                "SELECT new org.example.dto.BookStockDTO(s.book.id, s.quantity) FROM Stock s WHERE s.book.id = :id",
+                BookStockDTO.class
+        );
+        query.setParameter("id", id);
+
+        List<BookStockDTO> result = query.getResultList();
+        return result.isEmpty() ? null : result.get(0);
 
     }
 

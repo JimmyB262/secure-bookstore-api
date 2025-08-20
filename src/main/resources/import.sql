@@ -10,7 +10,7 @@ INSERT INTO Book (title, isbn, price, author_id) VALUES ('Syntages me ton Akh', 
 INSERT INTO Book (title, isbn, price, author_id) VALUES ('Dokimio', '12342436', 45.99, 2);
 INSERT INTO Book (title, isbn, price, author_id) VALUES ('Poihmata', '12313436', 39.99, 3);
 INSERT INTO Book (title, isbn, price, author_id) VALUES ('Anthologio', '12341436', 41.99, 4);
-INSERT INTO Book (title, isbn, price, author_id) VALUES ('Eteros egw', '12391436', 1.99, 1);
+INSERT INTO Book (title, isbn, price, author_id) VALUES ('Eteros egw', '15391436', 1.99, 1);
 
 INSERT INTO Stock (id , quantity) VALUES (1, 5);
 INSERT INTO Stock (id , quantity) VALUES (2, 2);

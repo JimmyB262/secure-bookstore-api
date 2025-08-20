@@ -90,6 +90,7 @@ public class UserSessionBean implements Serializable {
                 }
             }
         }
+        facesContext.getExternalContext().getSession(true);
 
         // Redirect to login page
         return "/login.xhtml?faces-redirect=true";

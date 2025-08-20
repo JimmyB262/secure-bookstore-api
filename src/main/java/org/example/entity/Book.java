@@ -27,7 +27,7 @@ public class Book {
     @JsonbTransient
     private Author author; //TODO thelw na deixnei to id sto json
 
-    @OneToOne(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "book", cascade = CascadeType.ALL)
     private Stock stock;
 
 

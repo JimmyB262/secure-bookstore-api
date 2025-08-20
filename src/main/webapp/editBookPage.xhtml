@@ -51,8 +51,10 @@
                 <h:outputLabel for="author_id" value="Author:" />
                 <h:inputText id="author_id" value="#{editBookBean.book.author_id}" required="true" styleClass="form-control" />
 
-                <h:outputLabel for="quantity" value="Quantity:" />
-                <h:inputText id="quantity" value="#{editBookBean.stock.quantity}" required="true" styleClass="form-control" />
+                <h:outputLabel for="quantity" value="Quantity:"
+                               rendered="#{not empty editBookBean.stock.quantity}" />
+                <h:inputText id="quantity" value="#{editBookBean.stock.quantity}" required="true"
+                             styleClass="form-control" rendered="#{not empty editBookBean.stock.quantity}" />
 
             </h:panelGrid>
 

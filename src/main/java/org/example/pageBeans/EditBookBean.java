@@ -46,11 +46,15 @@ public class EditBookBean implements Serializable {
                 id = Integer.parseInt(param);
                 book = bookService.getBookById(id);
                 stock = stockService.getStockById(id);
-            } catch (NumberFormatException e) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Invalid book ID"));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed to load book data: " + e.getMessage(), null));
             }
         }
     }
+
 
     public String saveBook() {
         try {

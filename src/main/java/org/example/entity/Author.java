@@ -1,6 +1,7 @@
 package org.example.entity;
 
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -23,6 +24,7 @@ public class Author {
     private char gender;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonbTransient
     @JsonIgnore
     private List<Book> books;
 

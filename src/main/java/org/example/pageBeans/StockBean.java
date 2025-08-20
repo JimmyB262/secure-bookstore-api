@@ -18,6 +18,8 @@ import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.ws.rs.client.*;
 import jakarta.ws.rs.core.*;
+import org.example.entity.Author;
+import org.example.repository.AuthorRepository;
 import org.example.repository.BookRepository;
 
 import java.util.List;
@@ -39,9 +41,15 @@ public class StockBean {
     private Integer authorIdToSearch;
     private Integer authorBookSum;
     private Double avgStock;
+    private String authorSearchTerm;
+    private List<Author> authors;
+
 
     @Inject
     BookRepository bookRepo;
+
+    @Inject
+    AuthorRepository authorRepo;
 
     private BookStockDTO newStock = new BookStockDTO();
 
@@ -54,7 +62,8 @@ public class StockBean {
     @PostConstruct
     public void init() {
         loadAll();
-        books = bookRepo.findBooksWithoutStock();
+        getBooksWithNoStock();
+        getAuthors();
     }
 
     public void loadAll() {
@@ -160,28 +169,28 @@ public class StockBean {
         return null;
     }
 
-    public void deleteStock(Integer stockId) {
+    public String deleteStock(Integer stockId) {
         Client client = ClientBuilder.newClient();
         try {
             String jwt = getJwtFromCookie();
             if (jwt == null || jwt.isBlank()) {
                 System.err.println("JWT token not found.");
-                return;
+                return null;
             }
 
             if (stockId == null) {
                 System.err.println("Stock ID is null.");
-                return;
+                return null;
             }
-
             Response response = client
                     .target("http://localhost:8080/Helloworld-1.0-SNAPSHOT/api/stock/" + stockId)
                     .request()
                     .header("Authorization", "Bearer " + jwt)
                     .delete();
 
-            if (response.getStatus() == 201) {
-                System.out.println("Stock deleted successfully.");
+            BookStockDTO deletedStock = response.readEntity(BookStockDTO.class);
+            if (response.getStatus() == 200) {
+                System.out.println("Delete response status: " + response.getStatus() + deletedStock);
             } else {
                 System.err.println("Failed to delete stock: " + response.getStatus());
             }
@@ -193,6 +202,7 @@ public class StockBean {
         }
 
         loadAll();
+        return "stock.xhtml?faces-redirect=true";
     }
 
 
@@ -240,6 +250,11 @@ public class StockBean {
     public List<BookAuthorDTO> getBooksWithNoStock() {
         books = bookRepo.findBooksWithoutStock();
         return books;
+    }
+
+    public List<Author> getAuthors(){
+        authors = authorRepo.getAuthors();
+        return authors;
     }
 
     public String getBookTitleById(int id) {

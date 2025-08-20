@@ -156,18 +156,18 @@ public class BookBean {
     }
 
 
-    public void deleteBook(Integer bookId) {
+    public String deleteBook(Integer bookId) {
         Client client = ClientBuilder.newClient();
         try {
             String jwt = getJwtFromCookie();
             if (jwt == null || jwt.isBlank()) {
                 System.err.println("JWT token not found.");
-                return;
+                return null;
             }
 
             if (bookId == null) {
                 System.err.println("Book ID is null.");
-                return;
+                return null;
             }
 
             Response response = client
@@ -176,7 +176,7 @@ public class BookBean {
                     .header("Authorization", "Bearer " + jwt)
                     .delete();
 
-            if (response.getStatus() == 201) {
+            if (response.getStatus() == 200) {
                 System.out.println("Book deleted successfully.");
             } else {
                 System.err.println("Failed to delete book: " + response.getStatus());
@@ -189,6 +189,7 @@ public class BookBean {
         }
 
         loadAllBooks();
+        return "books.xhtml?faces-redirect=true";
     }
 
 

@@ -34,4 +34,9 @@ public class BookStockDTO {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
+    @Override
+    public String toString() {
+        return "Stock{id=" + id + ", quantity='" + quantity + "}";
+    }
 }

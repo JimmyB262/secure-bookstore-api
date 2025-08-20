@@ -204,7 +204,7 @@
                     <f:facet name="header">Delete</f:facet>
                     <h:form>
                         <h:commandButton value="X" style="color: red;" styleClass="btn btn-link p-0"
-                                         action="#{authorBean.deleteAuthor(author.author_id)}"
+                                         action="#{authorBean.deleteAuthorById(author.author_id)}"
                                          onclick="return confirm('Are you sure you want to delete this author?');" />
                     </h:form>
                 </h:column>

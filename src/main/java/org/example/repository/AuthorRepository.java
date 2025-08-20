@@ -59,6 +59,8 @@ public class AuthorRepository {
         }
 
         entityManager.remove(author);
+        entityManager.flush();
+        entityManager.clear();
         return Optional.of(author);
 
     }

@@ -190,18 +190,18 @@ public class AuthorBean {
     }
 
 
-    public void deleteAuthorById(Integer authorId) {
+    public String deleteAuthorById(Integer authorId) {
         Client client = ClientBuilder.newClient();
         try {
             String jwt = getJwtFromCookie();
             if (jwt == null || jwt.isBlank()) {
                 System.err.println("JWT token not found.");
-                return;
+                return null;
             }
 
             if (authorId == null) {
                 System.err.println("Author ID is null.");
-                return;
+                 return null;
             }
 
             Response response = client
@@ -210,7 +210,7 @@ public class AuthorBean {
                     .header("Authorization", "Bearer " + jwt)
                     .delete();
 
-            if (response.getStatus() == 201) {
+            if (response.getStatus() == 200) {
                 System.out.println("Author deleted successfully.");
             } else {
                 System.err.println("Failed to delete author: " + response.getStatus());
@@ -223,6 +223,7 @@ public class AuthorBean {
         }
 
         loadAllAuthors();
+        return "authors.xhtml?faces-redirect=true";
     }
 
     public String updateAuthor() {

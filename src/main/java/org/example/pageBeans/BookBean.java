@@ -138,7 +138,7 @@ public class BookBean {
                     .post(Entity.entity(newBook, MediaType.APPLICATION_JSON));
 
 
-            if (response.getStatus() == 201) {
+            if (response.getStatus() == 200) {
                 System.out.println("Book added successfully.");
                 loadAllBooks();
                 newBook = new BookAuthorDTO();

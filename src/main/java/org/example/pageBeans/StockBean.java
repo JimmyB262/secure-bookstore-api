@@ -152,7 +152,7 @@ public class StockBean {
                     .post(Entity.entity(newStock, MediaType.APPLICATION_JSON));
 
 
-            if (response.getStatus() == 201) {
+            if (response.getStatus() == 200) {
                 System.out.println("Stock added successfully.");
                 loadAll();
                 newStock = new BookStockDTO();

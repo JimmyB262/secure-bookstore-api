@@ -172,7 +172,7 @@ public class AuthorBean {
                     .header("Authorization", "Bearer " + jwt)
                     .post(Entity.entity(newAuthor, MediaType.APPLICATION_JSON));
 
-            if (response.getStatus() == 201) {
+            if (response.getStatus() == 200) {
                 System.out.println("Author added successfully.");
                 loadAllAuthors();
                 newAuthor = new Author();

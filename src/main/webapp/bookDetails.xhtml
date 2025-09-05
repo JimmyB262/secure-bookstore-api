@@ -35,28 +35,43 @@
 
         <div class="card p-4">
             <h2 class="mb-3">Book Details</h2>
-            <h:panelGrid columns="2" cellpadding="5" styleClass="table table-borderless">
-                <h:outputText value="Book Id:" />
-                <h:outputText value="#{bookInfoBean.selectedBook.id}" />
 
-                <h:outputText value="Title:" />
-                <h:outputText value="#{bookInfoBean.selectedBook.title}" />
+            <div class="row">
+                <!-- Left column for details -->
+                <div class="col-md-8">
+                    <h:panelGrid columns="2" cellpadding="5" styleClass="table table-borderless">
+                        <h:outputText value="Book Id:" />
+                        <h:outputText value="#{bookInfoBean.selectedBook.id}" />
 
-                <h:outputText value="Isbn:" />
-                <h:outputText value="#{bookInfoBean.selectedBook.isbn}" />
+                        <h:outputText value="Title:" />
+                        <h:outputText value="#{bookInfoBean.selectedBook.title}" />
 
-                <h:outputText value="Price:" />
-                <h:outputText value="#{bookInfoBean.selectedBook.price}" />
+                        <h:outputText value="Isbn:" />
+                        <h:outputText value="#{bookInfoBean.selectedBook.isbn}" />
 
-                <h:outputText value="Author:" />
-                <h:link outcome="authorDetails">
-                    <f:param name="id" value="#{bookInfoBean.selectedBook.author_id}" />
-                    #{bookInfoBean.getAuthorNameById(bookInfoBean.selectedBook.author_id)}
-                </h:link>
-            </h:panelGrid>
+                        <h:outputText value="Price:" />
+                        <h:outputText value="#{bookInfoBean.selectedBook.price}" />
+
+                        <h:outputText value="Author:" />
+                        <h:link outcome="authorDetails">
+                            <f:param name="id" value="#{bookInfoBean.selectedBook.author_id}" />
+                            #{bookInfoBean.getAuthorNameById(bookInfoBean.selectedBook.author_id)}
+                        </h:link>
+                    </h:panelGrid>
+                </div>
+
+                <h:panelGroup rendered="#{not empty bookInfoBean.selectedBook}">
+                    <div class="col-md-4 d-flex align-items-center justify-content-center" style="margin-top: -40px;">
+                        <img src="http://localhost:8080/Helloworld-1.0-SNAPSHOT/api/book/#{bookInfoBean.selectedBook.id}/cover"
+                             style="max-width:200px; max-height:300px;" alt="Book Cover" />
+                    </div>
+                </h:panelGroup>
+            </div>
 
             <h:button value="Back to Books" outcome="books.xhtml" styleClass="btn btn-secondary mt-3" />
         </div>
+
     </div>
+
 </h:body>
 </html>

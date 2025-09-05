@@ -12,13 +12,14 @@ public class BookAuthorDTO {
     private String isbn;
     private BigDecimal price;
     private Integer author_id;
+    private String coverImageUrl;
 
     public BookAuthorDTO(Integer id, String title, String isbn, BigDecimal price, Integer author_id) {
-        this.author_id = author_id;
         this.id = id;
+        this.title = title;
         this.isbn = isbn;
         this.price = price;
-        this.title = title;
+        this.author_id = author_id;
     }
 
     public BookAuthorDTO() {
@@ -62,5 +63,13 @@ public class BookAuthorDTO {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getCoverImageUrl() {
+        return coverImageUrl;
+    }
+
+    public void setCoverImageUrl(String coverImageUrl) {
+        this.coverImageUrl = coverImageUrl;
     }
 }

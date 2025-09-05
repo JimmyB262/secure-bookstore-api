@@ -27,16 +27,24 @@ public class Book {
     @JsonbTransient
     private Author author; //TODO thelw na deixnei to id sto json
 
+    @Lob
+    @Column(name = "cover_image", columnDefinition = "LONGBLOB")
+    private byte[] coverImage;
+
+    private String imageContentType;
+
     @OneToOne(mappedBy = "book", cascade = CascadeType.ALL)
     private Stock stock;
 
 
-    public Book(Integer id, String title, String isbn, BigDecimal price, Author author) {
+    public Book(Integer id, String title, String isbn, BigDecimal price, Author author, byte[] coverImage, String imageContentType) {
         this.id = id;
         this.title = title;
         this.isbn = isbn;
         this.price = price;
         this.author = author;
+        this.coverImage = coverImage;
+        this.imageContentType = imageContentType;
     }
 
     public Integer getAuthorId() {
@@ -98,5 +106,21 @@ public class Book {
         if (stock != null && stock.getBook() != this) {
             stock.setBook(this);  // Ensure bidirectional sync
         }
+    }
+
+    public byte[] getCoverImage() {
+        return coverImage;
+    }
+
+    public void setCoverImage(byte[] coverImage) {
+        this.coverImage = coverImage;
+    }
+
+    public String getImageContentType() {
+        return imageContentType;
+    }
+
+    public void setImageContentType(String imageContentType) {
+        this.imageContentType = imageContentType;
     }
 }

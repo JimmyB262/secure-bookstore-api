@@ -117,6 +117,17 @@ public class BookControler {
 
     }
 
+    @GET
+    @Path("/{id}/cover")
+    @Produces("image/jpeg")
+    public Response getBookCover(@PathParam("id") Integer id) {
+        Book book = bookRepo.findById(id);
+        if (book == null || book.getCoverImage() == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(book.getCoverImage()).type(book.getImageContentType()).build();
+    }
+
 
     //get /book/{id}
     //put id in json

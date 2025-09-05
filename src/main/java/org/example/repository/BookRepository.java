@@ -9,6 +9,9 @@ import org.example.dto.BookStockDTO;
 import org.example.entity.Author;
 import org.example.entity.Book;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,7 +58,7 @@ public class BookRepository {
         Author author = authorRepository.getAuthorById(bookAuthorDTO.getAuthor_id());
 
         Book book = new Book(bookAuthorDTO.getId(), bookAuthorDTO.getTitle(), bookAuthorDTO.getIsbn(),
-                bookAuthorDTO.getPrice() , author);
+                bookAuthorDTO.getPrice() , author, null, null);
 
         author.addBook(book);
 
@@ -99,7 +102,7 @@ public class BookRepository {
         Author author = authorRepository.getAuthorById(bookAuthorDTO.getAuthor_id());
 
         Book book = new Book(bookAuthorDTO.getId(), bookAuthorDTO.getTitle(), bookAuthorDTO.getIsbn(),
-                bookAuthorDTO.getPrice() , author);
+                bookAuthorDTO.getPrice() , author, null, null);
 
         Integer id = book.getId();
 
@@ -133,4 +136,20 @@ public class BookRepository {
                 .setParameter("name", "%" + name.toLowerCase() + "%")
                 .getResultList();
     }
+
+    public void setBookCoverImage(Integer bookId, String imagePath, String contentType) throws IOException {
+        Book book = entityManager.find(Book.class, bookId);
+        if (book == null) {
+            throw new IllegalArgumentException("Book not found: ID " + bookId);
+        }
+
+        byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
+        book.setCoverImage(imageBytes);
+        book.setImageContentType(contentType);
+    }
+
+    public Book findById(Integer id) {
+        return entityManager.find(Book.class, id);
+    }
+
 }

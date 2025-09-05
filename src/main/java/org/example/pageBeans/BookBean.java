@@ -5,6 +5,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Part;
 import jakarta.ws.rs.client.Entity;
 import org.example.entity.Author;
 import jakarta.annotation.PostConstruct;
@@ -18,6 +19,7 @@ import jakarta.ws.rs.core.MediaType;
 import org.example.dto.BookAuthorDTO;
 import org.example.entity.Book;
 import org.example.repository.AuthorRepository;
+import org.example.repository.BookRepository;
 
 
 import java.util.Collections;
@@ -36,6 +38,9 @@ public class BookBean {
     @Inject
     AuthorRepository authorRepository;
 
+    @Inject
+    BookRepository bookRepository;
+
     private BookAuthorDTO newBook = new BookAuthorDTO();
 
     public void setNewBook(BookAuthorDTO newBook) {
@@ -43,6 +48,8 @@ public class BookBean {
     }
 
     private List<Author> authors;
+
+    private Part uploadedFile;
 
     @PostConstruct
     public void init() {
@@ -138,10 +145,22 @@ public class BookBean {
                     .post(Entity.entity(newBook, MediaType.APPLICATION_JSON));
 
 
+            System.out.println(newBook.getId());
+            Book book = bookRepository.findById(newBook.getId());
+            if (uploadedFile != null && uploadedFile.getSize() > 0) {
+                byte[] imageBytes = uploadedFile.getInputStream().readAllBytes();
+                book.setCoverImage(imageBytes);
+                book.setImageContentType(uploadedFile.getContentType());
+            } else {
+                book.setCoverImage(null);
+                book.setImageContentType(null);
+            }
+
             if (response.getStatus() == 200) {
                 System.out.println("Book added successfully.");
                 loadAllBooks();
                 newBook = new BookAuthorDTO();
+                uploadedFile = null;
             } else {
                 System.err.println("Failed to add book: " + response.getStatus());
             }
@@ -301,5 +320,13 @@ public class BookBean {
 
     public void setSelectedAuthorId(Integer selectedAuthorId) {
         this.selectedAuthorId = selectedAuthorId;
+    }
+
+    public Part getUploadedFile() {
+        return uploadedFile;
+    }
+
+    public void setUploadedFile(Part uploadedFile) {
+        this.uploadedFile = uploadedFile;
     }
 }

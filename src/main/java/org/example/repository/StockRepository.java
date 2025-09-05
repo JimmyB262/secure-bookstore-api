@@ -42,7 +42,7 @@ public class StockRepository {
         BookAuthorDTO bookAuthorDTO = bookRepository.getBookById(bookStockDTO.getId());
         Author author = authorRepository.getAuthorById(bookAuthorDTO.getAuthor_id());
 
-        Book book = new Book(bookAuthorDTO.getId() , bookAuthorDTO.getTitle() , bookAuthorDTO.getIsbn() , bookAuthorDTO.getPrice() , author  );
+        Book book = new Book(bookAuthorDTO.getId() , bookAuthorDTO.getTitle() , bookAuthorDTO.getIsbn() , bookAuthorDTO.getPrice() , author, null , null  );
 
         Stock stock= new Stock(book , bookStockDTO.getQuantity());
 
@@ -59,7 +59,7 @@ public class StockRepository {
         BookAuthorDTO bookAuthorDTO = bookRepository.getBookById(bookStockDTO.getId());
         Author author = authorRepository.getAuthorById(bookAuthorDTO.getAuthor_id());
         Book book = new Book(bookAuthorDTO.getId(), bookAuthorDTO.getTitle(), bookAuthorDTO.getIsbn(),
-                bookAuthorDTO.getPrice() , author);
+                bookAuthorDTO.getPrice() , author, null, null);
         Stock stock = new Stock(book , bookStockDTO.getQuantity());
         Integer id = stock.getBookId();
         Stock stock1 = entityManager.find(Stock.class , id);

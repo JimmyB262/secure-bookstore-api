@@ -61,7 +61,7 @@
             <h:panelGroup rendered="#{userSessionBean.admin}">
                 <div class="card p-4 mb-4">
                     <h5>Add New Book</h5>
-                    <h:form>
+                    <h:form enctype="multipart/form-data">
                         <h:panelGrid columns="2" cellpadding="5" styleClass="table table-borderless">
 
                             <h:outputLabel for="title" value="Title:" />
@@ -78,6 +78,9 @@
                                 <f:selectItem itemLabel="-- Select Author --" itemValue="#{null}" />
                                 <f:selectItems value="#{bookBean.authors}" var="author" itemValue="#{author.author_id}" itemLabel="#{author.full_name}" />
                             </h:selectOneMenu>
+
+                            <h:outputLabel for="bookImage" value="Book Image:" />
+                            <h:inputFile id="bookImage" value="#{bookBean.uploadedFile}" />
 
                         </h:panelGrid>
 

@@ -34,7 +34,7 @@ public class BookRepository {
 
     public List<BookAuthorDTO> getBooksByAuthorId(Integer authorId) {
         return entityManager
-                .createQuery("SELECT new org.example.dto.BookAuthorDTO(b.id, b.title, b.isbn, b.price, b.author.author_id) " +
+                .createQuery("SELECT new org.example.dto.BookAuthorDTO(b.id, b.title, b.isbn, b.price, b.author.author_id, b.coverImage, b.imageContentType) " +
                         "FROM Book b WHERE b.author.author_id = :authorId", BookAuthorDTO.class)
                 .setParameter("authorId", authorId)
                 .getResultList();
@@ -65,6 +65,7 @@ public class BookRepository {
         entityManager.persist(book);
         entityManager.flush();
 
+        bookAuthorDTO.setId(book.getId());
 
         return bookAuthorDTO;
 
@@ -85,7 +86,10 @@ public class BookRepository {
                 book.getTitle(),
                 book.getIsbn(),
                 book.getPrice(),
-                book.getAuthorId()));
+                book.getAuthorId(),
+                book.getCoverImage(),
+                book.getImageContentType()
+                ));
 
         Author author = authorRepository.getAuthorById(book.getAuthorId());
         author.removeBook(book);
@@ -137,15 +141,30 @@ public class BookRepository {
                 .getResultList();
     }
 
-    public void setBookCoverImage(Integer bookId, String imagePath, String contentType) throws IOException {
+    public void setBookCoverImage(Integer bookId, byte[] imageBytes, String imagePath, String contentType) throws IOException {
         Book book = entityManager.find(Book.class, bookId);
         if (book == null) {
             throw new IllegalArgumentException("Book not found: ID " + bookId);
         }
 
-        byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
+        if (imageBytes == null && imagePath != null) {
+            imageBytes = Files.readAllBytes(Paths.get(imagePath));
+        }
+
+        if (imageBytes == null || imageBytes.length == 0) {
+            throw new IllegalArgumentException("No image data provided.");
+        }
+
         book.setCoverImage(imageBytes);
         book.setImageContentType(contentType);
+    }
+
+
+    public byte[] getCoverImageByBookId(Integer id) {
+        return entityManager.createQuery(
+                        "SELECT b.coverImage FROM Book b WHERE b.id = :id", byte[].class)
+                .setParameter("id", id)
+                .getSingleResult();
     }
 
     public Book findById(Integer id) {

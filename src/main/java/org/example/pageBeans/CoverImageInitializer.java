@@ -11,16 +11,16 @@ import org.example.repository.BookRepository;
 public class CoverImageInitializer {
 
     @Inject
-    private BookRepository bookService;
+    private BookRepository bookRepository;
 
     @PostConstruct
     public void loadCoverImages() {
         try {
-            bookService.setBookCoverImage(1, "C:/Users/d_mpallas/Desktop/wildfly-32.0.1.Final/standalone/data/book-covers/1.jpg", "image/jpeg");
-            bookService.setBookCoverImage(2, "C:/Users/d_mpallas/Desktop/wildfly-32.0.1.Final/standalone/data/book-covers/2.jpg", "image/jpeg");
-            bookService.setBookCoverImage(3, "C:/Users/d_mpallas/Desktop/wildfly-32.0.1.Final/standalone/data/book-covers/3.jpg", "image/jpeg");
-            bookService.setBookCoverImage(4, "C:/Users/d_mpallas/Desktop/wildfly-32.0.1.Final/standalone/data/book-covers/4.jpg", "image/jpeg");
-            bookService.setBookCoverImage(5, "C:/Users/d_mpallas/Desktop/wildfly-32.0.1.Final/standalone/data/book-covers/5.jpg", "image/jpeg");
+            bookRepository.setBookCoverImage(1,null , "C:/Users/d_mpallas/Desktop/wildfly-32.0.1.Final/standalone/data/book-covers/1.jpg", "image/jpeg");
+            bookRepository.setBookCoverImage(2,null , "C:/Users/d_mpallas/Desktop/wildfly-32.0.1.Final/standalone/data/book-covers/2.jpg", "image/jpeg");
+            bookRepository.setBookCoverImage(3,null , "C:/Users/d_mpallas/Desktop/wildfly-32.0.1.Final/standalone/data/book-covers/3.jpg", "image/jpeg");
+            bookRepository.setBookCoverImage(4,null , "C:/Users/d_mpallas/Desktop/wildfly-32.0.1.Final/standalone/data/book-covers/4.jpg", "image/jpeg");
+            bookRepository.setBookCoverImage(5, null , "C:/Users/d_mpallas/Desktop/wildfly-32.0.1.Final/standalone/data/book-covers/5.jpg", "image/jpeg");
 
             System.out.println("✅ Cover images successfully loaded");
 

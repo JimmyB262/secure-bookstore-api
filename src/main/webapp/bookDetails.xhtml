@@ -60,9 +60,9 @@
                     </h:panelGrid>
                 </div>
 
-                <h:panelGroup rendered="#{not empty bookInfoBean.selectedBook}">
+                <h:panelGroup rendered="#{bookInfoBean.coverImageAvailable}">
                     <div class="col-md-4 d-flex align-items-center justify-content-center" style="margin-top: -40px;">
-                        <img src="http://localhost:8080/Helloworld-1.0-SNAPSHOT/api/book/#{bookInfoBean.selectedBook.id}/cover"
+                        <img src="data:image/jpeg;base64,#{bookInfoBean.selectedBook.coverImage}"
                              style="max-width:200px; max-height:300px;" alt="Book Cover" />
                     </div>
                 </h:panelGroup>

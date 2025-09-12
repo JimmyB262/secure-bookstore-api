@@ -87,6 +87,13 @@ public class BookInfoBean implements Serializable {
         }
         return null;
     }
+
+    public boolean isCoverImageAvailable() {
+        return selectedBook != null &&
+                selectedBook.getCoverImage() != null &&
+                !selectedBook.getCoverImage().isEmpty();
+    }
+
     public BookAuthorDTO getSelectedBook() {
         return selectedBook;
     }

@@ -5,7 +5,6 @@ import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.io.Serializable;
-import java.util.Map;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.application.FacesMessage;
@@ -28,7 +27,7 @@ public class EditAuthorBean implements Serializable {
 
 
     @Inject
-    private AuthorRepository authorService;
+    private AuthorRepository authorRepository;
 
     @PostConstruct
     public void init() {
@@ -36,7 +35,7 @@ public class EditAuthorBean implements Serializable {
         if (param != null) {
             try {
                 id = Integer.parseInt(param);
-                author = authorService.getAuthorById(id);
+                author = authorRepository.getAuthorById(id);
             } catch (NumberFormatException e) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Invalid author ID"));
             }

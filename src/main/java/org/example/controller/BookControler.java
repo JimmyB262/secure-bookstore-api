@@ -14,6 +14,7 @@ import org.example.dto.BookAuthorDTO;
 import org.example.entity.Book;
 import org.example.repository.BookRepository;
 
+import java.util.Base64;
 import java.util.Optional;
 import java.util.List;
 
@@ -54,7 +55,15 @@ public class BookControler {
 
         BookAuthorDTO bookAuthorDTO = bookRepo.getBookById(id);
 
-        if (bookAuthorDTO == null){
+        if (bookAuthorDTO != null) {
+            byte[] imageBytes = bookRepo.getCoverImageByBookId(id);
+
+            if (imageBytes != null) {
+                bookAuthorDTO.setCoverImage(Base64.getEncoder().encodeToString(imageBytes));
+            } else {
+                bookAuthorDTO.setCoverImage(null);
+            }
+        } else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 

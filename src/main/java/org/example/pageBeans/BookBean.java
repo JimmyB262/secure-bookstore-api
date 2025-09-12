@@ -145,12 +145,11 @@ public class BookBean {
                     .post(Entity.entity(newBook, MediaType.APPLICATION_JSON));
 
 
-            System.out.println(newBook.getId());
-            Book book = bookRepository.findById(newBook.getId());
+            BookAuthorDTO createdBook = response.readEntity(BookAuthorDTO.class);
+            Book book = bookRepository.findById(createdBook.getId());
             if (uploadedFile != null && uploadedFile.getSize() > 0) {
                 byte[] imageBytes = uploadedFile.getInputStream().readAllBytes();
-                book.setCoverImage(imageBytes);
-                book.setImageContentType(uploadedFile.getContentType());
+                bookRepository.setBookCoverImage(createdBook.getId(), imageBytes, null, uploadedFile.getContentType());
             } else {
                 book.setCoverImage(null);
                 book.setImageContentType(null);

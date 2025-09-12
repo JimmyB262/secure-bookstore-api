@@ -5,7 +5,6 @@ import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.io.Serializable;
-import java.util.Map;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.application.FacesMessage;
@@ -18,8 +17,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.example.dto.BookAuthorDTO;
 import org.example.dto.BookStockDTO;
-import org.example.entity.Author;
-import org.example.repository.AuthorRepository;
 import org.example.repository.BookRepository;
 import org.example.repository.StockRepository;
 
@@ -32,10 +29,10 @@ public class EditStockBean implements Serializable {
     private Integer id;
 
     @Inject
-    private StockRepository stockService;
+    private StockRepository stockRepository;
 
     @Inject
-    private BookRepository bookService;
+    private BookRepository bookRepository;
 
     @PostConstruct
     public void init() {
@@ -43,8 +40,8 @@ public class EditStockBean implements Serializable {
         if (param != null) {
             try {
                 id = Integer.parseInt(param);
-                stock = stockService.getStockById(id);
-                book = bookService.getBookById(id);
+                stock = stockRepository.getStockById(id);
+                book = bookRepository.getBookById(id);
             } catch (NumberFormatException e) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Invalid stock ID"));
             }

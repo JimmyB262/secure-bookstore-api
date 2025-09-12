@@ -34,7 +34,7 @@ public class BookRepository {
 
     public List<BookAuthorDTO> getBooksByAuthorId(Integer authorId) {
         return entityManager
-                .createQuery("SELECT new org.example.dto.BookAuthorDTO(b.id, b.title, b.isbn, b.price, b.author.author_id, b.coverImage, b.imageContentType) " +
+                .createQuery("SELECT new org.example.dto.BookAuthorDTO(b.id, b.title, b.isbn, b.price, b.author.author_id) " +
                         "FROM Book b WHERE b.author.author_id = :authorId", BookAuthorDTO.class)
                 .setParameter("authorId", authorId)
                 .getResultList();
@@ -86,9 +86,7 @@ public class BookRepository {
                 book.getTitle(),
                 book.getIsbn(),
                 book.getPrice(),
-                book.getAuthorId(),
-                book.getCoverImage(),
-                book.getImageContentType()
+                book.getAuthorId()
                 ));
 
         Author author = authorRepository.getAuthorById(book.getAuthorId());

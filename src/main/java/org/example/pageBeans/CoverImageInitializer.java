@@ -7,6 +7,8 @@ import jakarta.inject.Inject;
 import org.example.repository.BookRepository;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 
 @Singleton
@@ -19,27 +21,31 @@ public class CoverImageInitializer {
     @PostConstruct
     public void loadCoverImages() {
         try {
-            bookRepository.setBookCoverImage(1, null,
-                    new File(getClass().getClassLoader().getResource("book-covers/1.jpg").toURI()).getAbsolutePath(),
-                    "image/jpg");
-            bookRepository.setBookCoverImage(2, null,
-                    new File(getClass().getClassLoader().getResource("book-covers/2.jpg").toURI()).getAbsolutePath(),
-                    "image/jpg");
-            bookRepository.setBookCoverImage(3, null,
-                    new File(getClass().getClassLoader().getResource("book-covers/3.jpg").toURI()).getAbsolutePath(),
-                    "image/jpg");
-            bookRepository.setBookCoverImage(4, null,
-                    new File(getClass().getClassLoader().getResource("book-covers/4.jpg").toURI()).getAbsolutePath(),
-                    "image/jpg");
-            bookRepository.setBookCoverImage(5, null,
-                    new File(getClass().getClassLoader().getResource("book-covers/5.jpg").toURI()).getAbsolutePath(),
-                    "image/jpg");
+            loadCoverImage(1, "book-covers/1.jpg", "image/jpg");
+            loadCoverImage(2, "book-covers/2.jpg", "image/jpg");
+            loadCoverImage(3, "book-covers/3.jpg", "image/jpg");
+            loadCoverImage(4, "book-covers/4.jpg", "image/jpg");
+            loadCoverImage(5, "book-covers/5.jpg", "image/jpg");
 
-            System.out.println(" Cover images successfully loaded");
+            System.out.println("Cover images successfully loaded");
 
         } catch (Exception e) {
-            System.err.println(" Error loading cover images: " + e.getMessage());
+            System.err.println("Error loading cover images: " + e.getMessage());
             e.printStackTrace();
         }
     }
+
+    /**
+     * Helper method to load a single cover image from classpath
+     */
+    private void loadCoverImage(int bookId, String resourcePath, String contentType) throws IOException {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
+            if (is == null) {
+                throw new RuntimeException("Resource not found: " + resourcePath);
+            }
+            byte[] imageBytes = is.readAllBytes();
+            bookRepository.setBookCoverImage(bookId, imageBytes, contentType, null);
+        }
+    }
+
 }

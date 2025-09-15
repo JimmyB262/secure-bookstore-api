@@ -73,10 +73,6 @@ public class BookControler {
 
 
 
-    // GET /book/{id}   για να διαβαστεί ένα βιβλίο:   να επιστρέφει JSON (status 200: ή 404 για not found)
-
-
-    // GET /book  JSON list με όλα τα βιβλία
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

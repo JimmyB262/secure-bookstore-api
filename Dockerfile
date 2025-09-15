@@ -1,16 +1,17 @@
-# Use official WildFly image from Docker Hub
-FROM jboss/wildfly:35.0.1.Final
+# Use a valid WildFly image from Docker Hub
+FROM jboss/wildfly:35.0.0.Final
 
-# Set environment variables (optional)
+# Set environment variable (optional)
 ENV WILDFLY_HOME /opt/jboss/wildfly
 
-# Copy your WAR file to the deployments folder
-# Adjust the WAR file name if necessary
+# Copy your WAR file into WildFly deployments folder
+# Make sure your WAR is built with `mvn clean package`
 COPY target/Helloworld-1.0-SNAPSHOT.war $WILDFLY_HOME/standalone/deployments/
 
-# Expose WildFly default ports
+# Expose WildFly default HTTP and management ports
 EXPOSE 8080 9990
 
-# Run WildFly in standalone mode
+# Start WildFly in standalone mode
 CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0"]
+
 

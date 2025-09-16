@@ -5,8 +5,6 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
@@ -18,52 +16,69 @@ import java.util.List;
 public class JwtUtil {
 
     private static PublicKey publicKey;
-
     private static PrivateKey privateKey;
 
-static {
-    try {
-        String privateKeyPem = System.getenv("MP_JWT_PRIVATE_KEY");
-        if (privateKeyPem == null) {
-            throw new RuntimeException("MP_JWT_PRIVATE_KEY env var not set");
-        }
-        privateKeyPem = privateKeyPem.replaceAll("-----\\w+ PRIVATE KEY-----", "")
-                                   .replaceAll("\\s+", "");
-        byte[] decodedPrivate = Base64.getDecoder().decode(privateKeyPem);
-        PKCS8EncodedKeySpec privateSpec = new PKCS8EncodedKeySpec(decodedPrivate);
-        KeyFactory kf = KeyFactory.getInstance("RSA");
-        privateKey = kf.generatePrivate(privateSpec);
+    static {
+        try {
+            // Load public key from environment
+            String publicKeyPem = System.getenv("MP_JWT_PUBLIC_KEY");
+            if (publicKeyPem != null) {
+                publicKeyPem = publicKeyPem
+                        .replace("-----BEGIN PUBLIC KEY-----", "")
+                        .replace("-----END PUBLIC KEY-----", "")
+                        .replaceAll("\\s+", "");
+                byte[] decoded = Base64.getDecoder().decode(publicKeyPem);
+                X509EncodedKeySpec spec = new X509EncodedKeySpec(decoded);
+                KeyFactory kf = KeyFactory.getInstance("RSA");
+                publicKey = kf.generatePublic(spec);
+                System.out.println("✅ Public key loaded successfully");
+            } else {
+                System.err.println("⚠️ MP_JWT_PUBLIC_KEY environment variable not found.");
+            }
 
-        String publicKeyPem = System.getenv("MP_JWT_PUBLIC_KEY");
-        if (publicKeyPem == null) {
-            throw new RuntimeException("MP_JWT_PUBLIC_KEY env var not set");
+            // Load private key if needed (optional for token generation)
+            String privateKeyPem = System.getenv("MP_JWT_PRIVATE_KEY");
+            if (privateKeyPem != null) {
+                privateKeyPem = privateKeyPem
+                        .replace("-----BEGIN PRIVATE KEY-----", "")
+                        .replace("-----END PRIVATE KEY-----", "")
+                        .replaceAll("\\s+", "");
+                byte[] decoded = Base64.getDecoder().decode(privateKeyPem);
+                PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(decoded);
+                KeyFactory kf = KeyFactory.getInstance("RSA");
+                privateKey = kf.generatePrivate(spec);
+                System.out.println("✅ Private key loaded successfully");
+            } else {
+                System.out.println("ℹ️ MP_JWT_PRIVATE_KEY not set. Token generation disabled.");
+            }
+
+        } catch (Exception e) {
+            System.err.println("❌ Error loading JWT keys: " + e.getMessage());
+            e.printStackTrace();
         }
-        publicKeyPem = publicKeyPem.replaceAll("-----BEGIN PUBLIC KEY-----", "")
-                                 .replaceAll("-----END PUBLIC KEY-----", "")
-                                 .replaceAll("\\s+", "");
-        byte[] decodedPublic = Base64.getDecoder().decode(publicKeyPem);
-        X509EncodedKeySpec publicSpec = new X509EncodedKeySpec(decodedPublic);
-        publicKey = kf.generatePublic(publicSpec);
-    } catch (Exception e) {
-        throw new RuntimeException("Failed to load keys from environment variables", e);
     }
-}
-
-
 
     public static String generateToken(String username, List<String> roles) {
+        if (privateKey == null) {
+            throw new IllegalStateException("Private key not loaded. Cannot generate JWT.");
+        }
+
         Instant now = Instant.now();
         return Jwts.builder()
                 .setSubject(username)
                 .claim("groups", roles)
                 .setIssuer("my-app")
                 .setIssuedAt(Date.from(now))
-                .setExpiration(Date.from(now.plusSeconds(2400)))
+                .setExpiration(Date.from(now.plusSeconds(3600))) // 1 hour expiry
                 .signWith(privateKey, SignatureAlgorithm.RS256)
                 .compact();
     }
 
     public static Jws<Claims> validateToken(String token) {
+        if (publicKey == null) {
+            throw new IllegalStateException("Public key not loaded. Cannot validate JWT.");
+        }
+
         return Jwts.parserBuilder()
                 .setSigningKey(publicKey)
                 .requireIssuer("my-app")
@@ -71,3 +86,4 @@ static {
                 .parseClaimsJws(token);
     }
 }
+

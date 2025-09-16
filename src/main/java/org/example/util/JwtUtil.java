@@ -21,36 +21,36 @@ public class JwtUtil {
 
     private static PrivateKey privateKey;
 
-    static {
-        // Load private key from PEM file
-        try (InputStream is = JwtUtil.class.getResourceAsStream("/private_key.pem")) {
-            String key = new String(is.readAllBytes(), StandardCharsets.UTF_8)
-                    .replaceAll("-----\\w+ PRIVATE KEY-----", "")
-                    .replaceAll("\\s+", "");
-            byte[] decoded = Base64.getDecoder().decode(key);
-            PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(decoded);
-            KeyFactory kf = KeyFactory.getInstance("RSA");
-            privateKey = kf.generatePrivate(spec);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to load private key", e);
+static {
+    try {
+        // Load private key from environment variable
+        String privateKeyPem = System.getenv("JWT_PRIVATE_KEY");
+        if (privateKeyPem == null) {
+            throw new RuntimeException("JWT_PRIVATE_KEY env var not set");
         }
+        privateKeyPem = privateKeyPem.replaceAll("-----\\w+ PRIVATE KEY-----", "")
+                                   .replaceAll("\\s+", "");
+        byte[] decodedPrivate = Base64.getDecoder().decode(privateKeyPem);
+        PKCS8EncodedKeySpec privateSpec = new PKCS8EncodedKeySpec(decodedPrivate);
+        KeyFactory kf = KeyFactory.getInstance("RSA");
+        privateKey = kf.generatePrivate(privateSpec);
 
-        try (InputStream is = JwtUtil.class.getResourceAsStream("/public_key.pem")) {
-            if (is == null) {
-                throw new RuntimeException("public_key.pem not found in resources");
-            }
-            String key = new String(is.readAllBytes(), StandardCharsets.UTF_8)
-                    .replaceAll("-----BEGIN PUBLIC KEY-----", "")
-                    .replaceAll("-----END PUBLIC KEY-----", "")
-                    .replaceAll("\\s+", "");
-            byte[] decoded = Base64.getDecoder().decode(key);
-            X509EncodedKeySpec spec = new X509EncodedKeySpec(decoded);
-            KeyFactory kf = KeyFactory.getInstance("RSA");
-            publicKey = kf.generatePublic(spec);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to load public key", e);
+        // Load public key from environment variable
+        String publicKeyPem = System.getenv("JWT_PUBLIC_KEY");
+        if (publicKeyPem == null) {
+            throw new RuntimeException("JWT_PUBLIC_KEY env var not set");
         }
+        publicKeyPem = publicKeyPem.replaceAll("-----BEGIN PUBLIC KEY-----", "")
+                                 .replaceAll("-----END PUBLIC KEY-----", "")
+                                 .replaceAll("\\s+", "");
+        byte[] decodedPublic = Base64.getDecoder().decode(publicKeyPem);
+        X509EncodedKeySpec publicSpec = new X509EncodedKeySpec(decodedPublic);
+        publicKey = kf.generatePublic(publicSpec);
+    } catch (Exception e) {
+        throw new RuntimeException("Failed to load keys", e);
     }
+}
+
 
     public static String generateToken(String username, List<String> roles) {
         Instant now = Instant.now();

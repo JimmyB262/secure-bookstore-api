@@ -2,14 +2,15 @@ package org.example.filter;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
+import org.example.util.JwtUtil;
+
 import java.io.IOException;
-import org.example.util.JwtUtil;  // your JWT util class
 
 public class JwtAuthFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        // no init needed here
+        // Not used
     }
 
     @Override
@@ -21,14 +22,14 @@ public class JwtAuthFilter implements Filter {
 
         String path = request.getRequestURI();
 
-        // Allow public pages and resources (adjust these as per your app)
+        // Allow public or static pages
         if (path.endsWith("login.xhtml") || path.endsWith("register.xhtml") ||
-                path.contains("/javax.faces.resource/") || path.endsWith("logout.xhtml")) {
+                path.endsWith("logout.xhtml") || path.contains("/javax.faces.resource/")) {
             chain.doFilter(req, res);
             return;
         }
 
-        // Get token cookie
+        // Try to get JWT token from cookie
         String token = null;
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -40,14 +41,14 @@ public class JwtAuthFilter implements Filter {
             }
         }
 
-        // Check token validity
+        // If no token or invalid, redirect to login
         if (token == null || !isValidToken(token)) {
-            // No token or invalid token: redirect to login page
+            System.err.println("⛔ Invalid or missing JWT token. Redirecting to login.");
             response.sendRedirect(request.getContextPath() + "/login.xhtml");
             return;
         }
 
-        // Token valid: continue request
+        // Token is valid — continue with request
         chain.doFilter(req, res);
     }
 
@@ -56,15 +57,16 @@ public class JwtAuthFilter implements Filter {
             JwtUtil.validateToken(token);
             return true;
         } catch (Exception e) {
-            // token invalid or expired
+            System.err.println("❌ JWT validation failed: " + e.getMessage());
             return false;
         }
     }
 
     @Override
     public void destroy() {
-        // no clean up needed
+        // Not used
     }
 }
+
 
 

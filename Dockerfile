@@ -1,5 +1,5 @@
 # Use your WildFly version image
-FROM quay.io/wildfly/wildfly:32.0.1.Final
+FROM quay.io/wildfly/wildfly:32.0.1.Final-jdk17
 
 # Copy your built WAR into the deployments folder
 COPY target/Helloworld-1.0-SNAPSHOT.war /opt/jboss/wildfly/standalone/deployments/

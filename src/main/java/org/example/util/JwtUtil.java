@@ -23,10 +23,9 @@ public class JwtUtil {
 
 static {
     try {
-        // Load private key from environment variable
-        String privateKeyPem = System.getenv("JWT_PRIVATE_KEY");
+        String privateKeyPem = System.getenv("MP_JWT_PRIVATE_KEY");
         if (privateKeyPem == null) {
-            throw new RuntimeException("JWT_PRIVATE_KEY env var not set");
+            throw new RuntimeException("MP_JWT_PRIVATE_KEY env var not set");
         }
         privateKeyPem = privateKeyPem.replaceAll("-----\\w+ PRIVATE KEY-----", "")
                                    .replaceAll("\\s+", "");
@@ -35,10 +34,9 @@ static {
         KeyFactory kf = KeyFactory.getInstance("RSA");
         privateKey = kf.generatePrivate(privateSpec);
 
-        // Load public key from environment variable
-        String publicKeyPem = System.getenv("JWT_PUBLIC_KEY");
+        String publicKeyPem = System.getenv("MP_JWT_PUBLIC_KEY");
         if (publicKeyPem == null) {
-            throw new RuntimeException("JWT_PUBLIC_KEY env var not set");
+            throw new RuntimeException("MP_JWT_PUBLIC_KEY env var not set");
         }
         publicKeyPem = publicKeyPem.replaceAll("-----BEGIN PUBLIC KEY-----", "")
                                  .replaceAll("-----END PUBLIC KEY-----", "")
@@ -47,9 +45,10 @@ static {
         X509EncodedKeySpec publicSpec = new X509EncodedKeySpec(decodedPublic);
         publicKey = kf.generatePublic(publicSpec);
     } catch (Exception e) {
-        throw new RuntimeException("Failed to load keys", e);
+        throw new RuntimeException("Failed to load keys from environment variables", e);
     }
 }
+
 
 
     public static String generateToken(String username, List<String> roles) {

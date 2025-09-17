@@ -127,9 +127,9 @@ public class BookRepository {
     }
 
     public List<BookAuthorDTO> findBooksWithoutStock() {
-        String jpql = "SELECT b FROM Book b WHERE b.id NOT IN (SELECT s.book.id FROM Stock s)";
+        String jpql = "SELECT new org.example.dto.BookAuthorDTO(b.id, b.title, b.isbn, b.price, b.author.author_id) " +
+                "FROM Book b WHERE b.id NOT IN (SELECT s.book.id FROM Stock s)";
         return entityManager.createQuery(jpql, BookAuthorDTO.class).getResultList();
-
     }
 
     public List<BookAuthorDTO> getMatchingBooks(String name){

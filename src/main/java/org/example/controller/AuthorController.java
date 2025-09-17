@@ -2,6 +2,7 @@ package org.example.controller;
 
 import jakarta.annotation.security.DeclareRoles;
 import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -25,7 +26,7 @@ import jakarta.enterprise.context.RequestScoped;
 public class AuthorController {
 
 
-    @Inject
+    @EJB
     AuthorRepository authorRepo; // auto-injected by the container
 
     @GET

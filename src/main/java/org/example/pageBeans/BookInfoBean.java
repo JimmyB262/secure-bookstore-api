@@ -1,6 +1,7 @@
 package org.example.pageBeans;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.ejb.EJB;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -30,7 +31,7 @@ public class BookInfoBean implements Serializable {
     private BookAuthorDTO selectedBook;
     private List<BookAuthorDTO> matchingBooks;
 
-    @Inject
+    @EJB
     AuthorRepository authorRepository;
 
     @PostConstruct

@@ -11,7 +11,7 @@
   <component name="ProjectResources">
     <resource url="https://jakarta.ee/xml/ns/jakartaee/web-facesconfig_4_0.xsd" location="$PROJECT_DIR$/needfile.xsd" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="ms-17" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

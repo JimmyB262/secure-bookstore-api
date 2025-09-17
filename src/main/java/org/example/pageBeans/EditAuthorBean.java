@@ -1,6 +1,7 @@
 package org.example.pageBeans;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.ejb.EJB;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -26,7 +27,7 @@ public class EditAuthorBean implements Serializable {
     private Integer id;
 
 
-    @Inject
+    @EJB
     private AuthorRepository authorRepository;
 
     @PostConstruct

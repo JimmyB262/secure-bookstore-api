@@ -3,6 +3,7 @@ package org.example.controller;
 
 import jakarta.annotation.security.DeclareRoles;
 import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -24,7 +25,7 @@ import java.util.List;
 public class BookControler {
 
 
-    @Inject
+    @EJB
     BookRepository bookRepo; // auto-injected by the container
 
 

@@ -1,6 +1,7 @@
 package org.example.pageBeans;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.ejb.EJB;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
@@ -45,10 +46,10 @@ public class StockBean {
     private List<Author> authors;
 
 
-    @Inject
+    @EJB
     BookRepository bookRepo;
 
-    @Inject
+    @EJB
     AuthorRepository authorRepo;
 
     private BookStockDTO newStock = new BookStockDTO();

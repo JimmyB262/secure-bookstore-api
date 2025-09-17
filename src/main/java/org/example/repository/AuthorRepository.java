@@ -1,5 +1,6 @@
 package org.example.repository;
 
+import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -17,7 +18,7 @@ public class AuthorRepository {
     @PersistenceContext(unitName = "myUnit")
     EntityManager entityManager;
 
-    @Inject
+    @EJB
     BookRepository BookRepo;
 
     public List<Author> getAuthors(){

@@ -3,6 +3,7 @@ package org.example.controller;
 
 import jakarta.annotation.security.DeclareRoles;
 import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -25,7 +26,7 @@ import java.util.List;
 @Path("/stock")
 public class StockController {
 
-    @Inject
+    @EJB
     StockRepository  stockRepo;
 
     @GET

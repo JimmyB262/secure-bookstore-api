@@ -1,5 +1,6 @@
 package org.example.pageBeans;
 
+import jakarta.ejb.EJB;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
@@ -35,10 +36,10 @@ public class BookBean {
     private Integer selectedAuthorId;
 
 
-    @Inject
+    @EJB
     AuthorRepository authorRepository;
 
-    @Inject
+    @EJB
     BookRepository bookRepository;
 
     private BookAuthorDTO newBook = new BookAuthorDTO();

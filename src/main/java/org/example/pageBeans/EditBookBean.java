@@ -1,6 +1,7 @@
 package org.example.pageBeans;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.ejb.EJB;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -29,10 +30,10 @@ public class EditBookBean implements Serializable {
     private BookStockDTO stock;
 
 
-    @Inject
+    @EJB
     private BookRepository bookRepository;
 
-    @Inject
+    @EJB
     private StockRepository stockRepository;
 
     @PostConstruct

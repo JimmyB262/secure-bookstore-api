@@ -22,14 +22,12 @@ public class JwtAuthFilter implements Filter {
 
         String path = request.getRequestURI();
 
-        // Allow public or static pages
         if (path.endsWith("login.xhtml") || path.endsWith("register.xhtml") ||
                 path.endsWith("logout.xhtml") || path.contains("/javax.faces.resource/")) {
             chain.doFilter(req, res);
             return;
         }
 
-        // Try to get JWT token from cookie
         String token = null;
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -41,14 +39,12 @@ public class JwtAuthFilter implements Filter {
             }
         }
 
-        // If no token or invalid, redirect to login
         if (token == null || !isValidToken(token)) {
             System.err.println("⛔ Invalid or missing JWT token. Redirecting to login.");
             response.sendRedirect(request.getContextPath() + "/login.xhtml");
             return;
         }
 
-        // Token is valid — continue with request
         chain.doFilter(req, res);
     }
 
@@ -64,7 +60,6 @@ public class JwtAuthFilter implements Filter {
 
     @Override
     public void destroy() {
-        // Not used
     }
 }
 

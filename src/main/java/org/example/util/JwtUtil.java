@@ -20,7 +20,6 @@ public class JwtUtil {
 
     static {
         try {
-            // Load public key from environment
             String publicKeyPem = System.getenv("MP_JWT_PUBLIC_KEY");
             if (publicKeyPem != null) {
                 publicKeyPem = publicKeyPem
@@ -31,12 +30,11 @@ public class JwtUtil {
                 X509EncodedKeySpec spec = new X509EncodedKeySpec(decoded);
                 KeyFactory kf = KeyFactory.getInstance("RSA");
                 publicKey = kf.generatePublic(spec);
-                System.out.println("✅ Public key loaded successfully");
+                System.out.println("Public key loaded successfully");
             } else {
-                System.err.println("⚠️ MP_JWT_PUBLIC_KEY environment variable not found.");
+                System.err.println("MP_JWT_PUBLIC_KEY environment variable not found.");
             }
 
-            // Load private key if needed (optional for token generation)
             String privateKeyPem = System.getenv("MP_JWT_PRIVATE_KEY");
             if (privateKeyPem != null) {
                 privateKeyPem = privateKeyPem
@@ -47,18 +45,19 @@ public class JwtUtil {
                 PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(decoded);
                 KeyFactory kf = KeyFactory.getInstance("RSA");
                 privateKey = kf.generatePrivate(spec);
-                System.out.println("✅ Private key loaded successfully");
+                System.out.println("Private key loaded successfully");
             } else {
-                System.out.println("ℹ️ MP_JWT_PRIVATE_KEY not set. Token generation disabled.");
+                System.out.println(" MP_JWT_PRIVATE_KEY not set. Token generation disabled.");
             }
 
         } catch (Exception e) {
-            System.err.println("❌ Error loading JWT keys: " + e.getMessage());
+            System.err.println(" Error loading JWT keys: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
     public static String generateToken(String username, List<String> roles) {
+        System.out.println("Someone called me");
         if (privateKey == null) {
             throw new IllegalStateException("Private key not loaded. Cannot generate JWT.");
         }

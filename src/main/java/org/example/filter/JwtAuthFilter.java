@@ -21,7 +21,7 @@ public class JwtAuthFilter implements Filter {
 
         String path = request.getRequestURI();
 
-        // Allow public pages and resources (adjust these as per your app)
+        // Allow public pages and resources
         if (path.endsWith("login.xhtml") || path.endsWith("register.xhtml") ||
                 path.contains("/javax.faces.resource/") || path.endsWith("logout.xhtml")) {
             chain.doFilter(req, res);

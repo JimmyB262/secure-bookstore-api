@@ -4,7 +4,6 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 <f:view>
-    <f:event type="preRenderView" listener="#{loginBean.initSession}"/>
     <h:head>
         <title>User Login</title>
 
@@ -15,7 +14,7 @@
         <div class="container d-flex justify-content-center align-items-center vh-100">
             <div class="card shadow p-4" style="width: 100%; max-width: 400px;">
                 <h4 class="mb-4 text-center">Login</h4>
-                <h:form>
+                <h:form id="loginForm">
                     <div class="mb-3">
                         <h:outputLabel for="username" value="Username:" class="form-label"/>
                         <h:inputText id="username" value="#{loginBean.username}" required="true" maxlength="20"
@@ -35,6 +34,7 @@
                     </div>
 
                     <h:messages globalOnly="true" layout="table" styleClass="mt-3 alert alert-danger"/>
+                    <h:messages globalOnly="false" layout="list" styleClass="mt-3 alert alert-danger"/>
                 </h:form>
             </div>
         </div>

@@ -1,6 +1,7 @@
 package org.example.pageBeans;
 
 
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Named;
 import jakarta.persistence.EntityManager;
@@ -28,10 +29,6 @@ public class LoginBean {
     @PersistenceContext
     private EntityManager em;
 
-    public void initSession() {
-        FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-    }
-
     @Transactional
     public String login() {
 
@@ -53,7 +50,6 @@ public class LoginBean {
             User user = query.getSingleResult();
 
             if (BCrypt.checkpw(password, user.getPassword())){
-
 
                 List<String> roles = List.of(user.getRoles().split("\\s*,\\s*"));
                 String token = JwtUtil.generateToken(user.getUsername(), roles);
